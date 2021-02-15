@@ -7,8 +7,8 @@ import database_updates
 app = Flask(__name__)
 
 bot_token = "1621891888:AAHBvpvmFNJDQoDlpB3ImaBwdQHOGn5d0Pg"
-bot_username = "TestVirtualRecruiterBot"
-bot_url = "https://c53f5f38a8d6.ngrok.io/" #change this URL to your ngrok url
+bot_username = "VirtualRecruiterBot"
+bot_url = "https://b9e5a020b8d7.ngrok.io/" #change this URL to your ngrok url
 #https://c53f5f38a8d6.ngrok.io/set_webhook
 bot = telegram.Bot(token=bot_token)
 

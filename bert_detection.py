@@ -10,6 +10,8 @@ from datetime import datetime
 import tzlocal
 import requests
 import urllib.request
+import slot_detection
+from bson import ObjectId
 
 model = keras.models.load_model("bert_intent_detection.hdf5",custom_objects={"BertModelLayer": BertModelLayer},compile=False)
 
@@ -62,7 +64,9 @@ def getCorrectResponse(inp, final_intent):
 
     first_name = inp.message.chat.first_name
     chat_id = inp.message.chat.id
-
+    user_text = inp.message.text.encode('utf-8').decode()
+  
+    
     for tg in data["intents"]:
         if tg['tag'] == final_intent:
             if final_intent == 'greetings':
@@ -70,6 +74,19 @@ def getCorrectResponse(inp, final_intent):
                     responses = random.choice(tg['secondary_responses']).format(first_name)
                 else:
                     responses = random.choice(tg['primary_responses'])
+            
+            elif final_intent == 'interview_schedule':
+                if (database_updates.get_prev_intent(chat_id) == 'hiring_request'):
+                    interview_datetime = slot_detection.schedule_slot_detection(user_text)
+                    ### prefferably give ObjectId
+                    candidate_id = ObjectId('601cca2524132720897f5c91')
+                    if database_updates.schedule_interview(candidate_id,interview_datetime,chat_id):
+                        responses = random.choice(tg['responses'])
+                    else:
+                        responses = "Sorry Couldn't process the request." ## can be added to secodary resp
+                else:
+                     responses = "Sorry please upload JD and then invoke this intent" ## can be tertiary response
+            
             else:
                 responses = random.choice(tg['responses'])
 
