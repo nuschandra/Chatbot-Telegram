@@ -28,28 +28,44 @@ def chat(inp):
 
     pred_token_ids = map(lambda tids: tids +[0]*(21-len(tids)),pred_token_ids)
     pred_token_ids = np.array(list(pred_token_ids))
-    predictions = model.predict(pred_token_ids).argmax(axis=-1)
+    predictions = model.predict(pred_token_ids)
+    print(predictions)
+    predictions_index = predictions.argmax(axis=-1)
     final_intent=''
+
+    if (predictions[predictions_index] < 0.9):
+        final_intent = "unknown"
+        response = "Sorry, I did not understand what you meant there."
+        return response, final_intent
+        
     for text, label in zip(sentences, predictions):
         final_intent=classes[label]
         print("text:", text, "\nintent:", classes[label])
         print()
     
-        response = getCorrectResponse(inp.message.date, final_intent)
+        response = getCorrectResponse(inp, final_intent)
     
-    return random.choice(response),final_intent
+    return response,final_intent
 
 
-def getCorrectResponse(msg_timestamp, final_intent):
-    unix_timestamp = msg_timestamp.timestamp()
+def getCorrectResponse(inp, final_intent):
+    unix_timestamp = inp.message.date.timestamp()
     local_timezone = tzlocal.get_localzone()
     local_time = datetime.fromtimestamp(unix_timestamp, local_timezone)
-    print(local_time.strftime("%Y-%m-%d %H:%M:%S.%f%z (%Z)"))
+    date_of_msg = local_time.strftime("%B %d %Y")
+
+    first_name = inp.message.chat.first_name
+    chat_id = inp.message.chat.id
 
     for tg in data["intents"]:
-        if final_intent == 'greetings':
-            responses = tg['primary_responses']
-            return responses
-        else:
-            responses = tg['responses']
-            return responses
+        if tg['tag'] == final_intent:
+            if final_intent == 'greetings':
+                if (database_updates.get_record_by_chat_id_and_date(date_of_msg,chat_id)):
+                    responses = random.choice(tg['secondary_responses']).format(first_name)
+                else:
+                    responses = random.choice(tg['primary_responses'])
+            else:
+                responses = random.choice(tg['responses'])
+
+    database_updates.insert_chatbot_user_data(date_of_msg,first_name,chat_id,final_intent)
+    return responses

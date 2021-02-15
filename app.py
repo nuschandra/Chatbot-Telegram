@@ -8,8 +8,8 @@ app = Flask(__name__)
 
 bot_token = "1537657914:AAEspo0IA7tiW2CCAnWLfsxOd0YabGC-r50"
 bot_username = "VirtualRecruiterBot"
-bot_url = "https://c53f5f38a8d6.ngrok.io/"
-
+bot_url = "https://b9e5a020b8d7.ngrok.io/" #change this URL to your ngrok url
+#https://c53f5f38a8d6.ngrok.io/set_webhook
 bot = telegram.Bot(token=bot_token)
 
 @app.route("/{}".format(bot_token), methods = ['POST'])
@@ -31,7 +31,6 @@ def process_input_message():
     else:
         response,intent = bert_detection.chat(update)
         print(response)
-        database_updates.insert_chatbot_user_data(first_name,chat_id,intent)
         bot.sendMessage(chat_id=chat_id, text=response, reply_to_message_id=msg_id)
     
     return 'ok'
@@ -44,6 +43,15 @@ def set_webhook():
         return "webhook setup ok"
     else:
         return "webhook setup failed"
+
+@app.route('/delete_webhook', methods=['GET'])
+def delete_webhook():
+    print("Inside deleting webhook")
+    s = bot.delete_webhook(drop_pending_updates=True)
+    if s:
+        return "webhook deleted"
+    else:
+        return "webhook delete failed"
 
 @app.route('/runMongo', methods=['GET'])
 def run_mongo():
