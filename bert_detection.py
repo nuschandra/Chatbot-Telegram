@@ -29,16 +29,20 @@ def chat(inp):
     pred_token_ids = map(lambda tids: tids +[0]*(21-len(tids)),pred_token_ids)
     pred_token_ids = np.array(list(pred_token_ids))
     predictions = model.predict(pred_token_ids)
-    print(predictions)
-    predictions_index = predictions.argmax(axis=-1)
+    predictions_index=predictions.argmax(axis=-1)
     final_intent=''
+    #if (predictions[predictions_index] < 0.9):
+    #    final_intent = "unknown"
+    #    response = "Sorry, I did not understand what you meant there."
+    #    return response, final_intent
 
-    if (predictions[predictions_index] < 0.9):
-        final_intent = "unknown"
-        response = "Sorry, I did not understand what you meant there."
-        return response, final_intent
-        
-    for text, label in zip(sentences, predictions):
+    for text, label in zip(sentences, predictions_index):
+        confidence = predictions[0][label]
+        if (confidence < 0.9):
+            final_intent = "unknown"
+            response = "Sorry, I did not understand what you meant there."
+            return response, final_intent
+
         final_intent=classes[label]
         print("text:", text, "\nintent:", classes[label])
         print()
