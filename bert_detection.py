@@ -8,6 +8,8 @@ import json
 import database_updates
 from datetime import datetime
 import tzlocal
+import requests
+import urllib.request
 
 model = keras.models.load_model("bert_intent_detection.hdf5",custom_objects={"BertModelLayer": BertModelLayer},compile=False)
 
@@ -73,3 +75,14 @@ def getCorrectResponse(inp, final_intent):
 
     database_updates.insert_chatbot_user_data(date_of_msg,first_name,chat_id,final_intent)
     return responses
+
+def process_file(file_id,chat_id):
+    url = 'https://api.telegram.org/bot1621891888:AAHBvpvmFNJDQoDlpB3ImaBwdQHOGn5d0Pg/getFile?file_id='+file_id
+    r = requests.get(url)
+    data = r.json()
+    file_path = data['result']['file_path']
+    download_url = "https://api.telegram.org/file/bot1621891888:AAHBvpvmFNJDQoDlpB3ImaBwdQHOGn5d0Pg/"+file_path
+    response = urllib.request.urlopen(download_url)    
+    file = open(str(chat_id) + ".pdf", 'wb')
+    file.write(response.read())
+    file.close()

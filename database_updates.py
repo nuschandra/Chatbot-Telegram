@@ -31,3 +31,18 @@ def get_record_by_chat_id_and_date(date_of_msg,chat_id):
             return True
         else:
             return False
+
+def check_user_status(chat_id):
+    schema = mydb["chatbot_user_details"]
+    myquery = {"chat_id": chat_id}
+    existing_user = list(schema.find(myquery))
+    print(existing_user)
+    if (len(existing_user) == 0):
+        return False
+    else:
+        status = existing_user[0]['status']
+        print(status)
+        if status == 'hiring_request':
+            return True
+        else:
+            return False
