@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from datetime import datetime
+from bson import ObjectId
 
 myclient =  MongoClient("mongodb+srv://user:user@cluster0.oklqw.mongodb.net/test")
 mydb = myclient["plp_project"]
@@ -48,19 +49,18 @@ def check_user_status(chat_id):
         else:
             return False
         
-def hire_request(chat_id):
+def hire_request(candidate_id):
     schema = mydb["resume_details"]
+    id = ObjectId(candidate_id)
+    myquery = {"_id": id}
     ## join resume_details and interview_details fetch suitable candidates after jd upload
-    
+    candidate = list(schema.find(myquery))
     """ remove the following dummy data"""
-    records = []
-    for record in schema.find():
-        records.append((record['Name'],record['Skills'],record['_id']))
-        
-    return records
+    candidate_details = "Name: " + str(candidate[0]['Name']) + "\n" + "Email: " + str(candidate[0]['Email']) + "\n" + "Phone: " + str(candidate[0]['Number'])
+    return candidate_details
 
 
-def schedule_interview(candidate_id,interview_datetime,chat_id):
+def schedule_interview(candidate_id,interview_datetime,chat_id, status):
     schema = mydb["interview_details"]
     """
     to be removed 
@@ -68,7 +68,7 @@ def schedule_interview(candidate_id,interview_datetime,chat_id):
     """
     candidate_id = mydb["resume_details"].find_one()['_id']  ## ObjectId(candidate_id) ## if int 
 
-    data = { "candidate_id": candidate_id, "interview_date":interview_datetime,"manager_id":chat_id, "created_date": datetime.now()}
+    data = { "candidate_id": candidate_id, "interview_date":interview_datetime,"manager_id":chat_id, "created_date": datetime.now(), "status":status}
     x = schema.insert_one(data)
     ##x.acknowledgedtimestamp status 
     return(x.acknowledged)

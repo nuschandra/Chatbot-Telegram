@@ -80,7 +80,7 @@ def getCorrectResponse(inp, final_intent):
                     interview_datetime = slot_detection.schedule_slot_detection(user_text)
                     ### prefferably give ObjectId
                     candidate_id = ObjectId('601cca2524132720897f5c91')
-                    if database_updates.schedule_interview(candidate_id,interview_datetime,chat_id):
+                    if database_updates.schedule_interview(candidate_id,interview_datetime,chat_id,"interview_scheduled"):
                         responses = random.choice(tg['responses'])
                     else:
                         responses = "Sorry Couldn't process the request." ## can be added to secodary resp
@@ -103,3 +103,9 @@ def process_file(file_id,chat_id):
     file = open(str(chat_id) + ".pdf", 'wb')
     file.write(response.read())
     file.close()
+
+def trigger_resume_fetching(chat_id):
+    #use pypdf to read the job description based on chat_id
+    resume_employee_ids = []
+    resume_employee_ids.append('601cca2524132720897f5c91')
+    return resume_employee_ids

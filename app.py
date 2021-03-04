@@ -1,5 +1,6 @@
 from flask import Flask, request
 import telegram
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from pymongo import MongoClient
 import bert_detection
 import database_updates
@@ -37,7 +38,6 @@ def process_input_message():
             print(response)
             bot.sendMessage(chat_id=chat_id, text=response, reply_to_message_id=msg_id)
     elif update['message']['document'] != None:
-        print("I am inside document method")
         file_type = update.message.document.mime_type
         print("File type is:" + file_type)
         if(database_updates.check_user_status(chat_id)):
@@ -49,6 +49,15 @@ def process_input_message():
                 bert_detection.process_file(file_id,chat_id)
                 response = "Thank you for uploading the job description. Our algorithm will identify and recommend the best suited candidates to you."
                 bot.sendMessage(chat_id=chat_id, text=response, reply_to_message_id=msg_id)
+                resume_id = bert_detection.trigger_resume_fetching(chat_id)
+                print(resume_id)
+                for ids in resume_id:
+                    file_to_send = "/Users/chandra/Desktop/Projects/Chatbot/Resumes/"+str(ids)+".pdf"
+                    get_candidate_details = database_updates.hire_request(ids)
+                    keyboard = [[InlineKeyboardButton("Accept", callback_data='1')],
+                                [InlineKeyboardButton("Reject", callback_data='2')]]
+                    bot.sendDocument(chat_id=chat_id,document=open(file_to_send, 'rb'),caption=get_candidate_details,reply_markup=InlineKeyboardMarkup(keyboard))
+
         else:
             error_message = "Sorry, I did not understand what you meant there."
             bot.sendMessage(chat_id=chat_id, text=error_message, reply_to_message_id=msg_id)
