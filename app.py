@@ -3,6 +3,7 @@ import telegram
 from pymongo import MongoClient
 import bert_detection
 import database_updates
+import ast
 
 app = Flask(__name__)
 
