@@ -13,11 +13,11 @@ import urllib.request
 import slot_detection
 from bson import ObjectId
 
-model = keras.models.load_model("bert_intent_detection.hdf5",custom_objects={"BertModelLayer": BertModelLayer},compile=False)
+# model = keras.models.load_model("bert_intent_detection.hdf5",custom_objects={"BertModelLayer": BertModelLayer},compile=False)
 
-tokenizer = FullTokenizer(vocab_file="vocab.txt")
-classes = ['greetings', 'hiring_request', 'goodbye', 'interview_schedule', 'schedule_list']
-print(classes)
+# tokenizer = FullTokenizer(vocab_file="vocab.txt")
+# classes = ['greetings', 'hiring_request', 'goodbye', 'interview_schedule', 'schedule_list']
+# print(classes)
 
 with open('intents.json') as file:
     data = json.load(file)
@@ -93,12 +93,12 @@ def getCorrectResponse(inp, final_intent):
     database_updates.insert_chatbot_user_data(date_of_msg,first_name,chat_id,final_intent)
     return responses
 
-def process_file(file_id,chat_id):
-    url = 'https://api.telegram.org/bot1621891888:AAHBvpvmFNJDQoDlpB3ImaBwdQHOGn5d0Pg/getFile?file_id='+file_id
+def process_file(file_id,chat_id,bot_token):
+    url = "https://api.telegram.org/bot"+bot_token+"/getFile?file_id="+file_id
     r = requests.get(url)
     data = r.json()
     file_path = data['result']['file_path']
-    download_url = "https://api.telegram.org/file/bot1621891888:AAHBvpvmFNJDQoDlpB3ImaBwdQHOGn5d0Pg/"+file_path
+    download_url = "https://api.telegram.org/file/bot"+bot_token+"/"+file_path
     response = urllib.request.urlopen(download_url)    
     file = open(str(chat_id) + ".pdf", 'wb')
     file.write(response.read())
@@ -108,4 +108,5 @@ def trigger_resume_fetching(chat_id):
     #use pypdf to read the job description based on chat_id
     resume_employee_ids = []
     resume_employee_ids.append('601cca2524132720897f5c91')
+    resume_employee_ids.append('602a2332829ac6fe97dc7b95')
     return resume_employee_ids
