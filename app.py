@@ -8,12 +8,12 @@ import ast
 
 app = Flask(__name__)
 
-bot_token = "1537657914:AAEspo0IA7tiW2CCAnWLfsxOd0YabGC-r50"
+bot_token = "1621891888:AAHBvpvmFNJDQoDlpB3ImaBwdQHOGn5d0Pg"
 bot_username = "VirtualRecruiterBot"
-bot_url = "https://43af60ebad91.ngrok.io/" ## old url but works without 
+bot_url = "https://b9e5a020b8d7.ngrok.io/"
 bot = telegram.Bot(token=bot_token)
 bot.delete_webhook(drop_pending_updates=True)
-bot_url =  "https://aa3caad65919.ngrok.io/"
+bot_url =  "https://7fca89a9de54.ngrok.io/"
 bot.setWebhook('{URL}{HOOK}'.format(URL=bot_url, HOOK=bot_token))
 
 
