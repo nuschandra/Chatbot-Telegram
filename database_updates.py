@@ -73,6 +73,11 @@ def schedule_interview(candidate_id,interview_datetime,chat_id, status):
     ##x.acknowledgedtimestamp status 
     return(x.acknowledged)
 
+def cancel_schedule(oid):
+    schema = mydb["interview_details"]
+    result = schema.delete_one({'_id': ObjectId(oid)})
+    return result
+
 def get_prev_intent(chat_id):
     schema = mydb["chatbot_user_details"]
     return schema.find_one({"chat_id":chat_id})['status']
