@@ -13,11 +13,11 @@ import urllib.request
 import slot_detection
 from bson import ObjectId
 
-# model = keras.models.load_model("bert_intent_detection.hdf5",custom_objects={"BertModelLayer": BertModelLayer},compile=False)
+model = keras.models.load_model("bert_intent_detection.hdf5",custom_objects={"BertModelLayer": BertModelLayer},compile=False)
 
-# tokenizer = FullTokenizer(vocab_file="vocab.txt")
-# classes = ['greetings', 'hiring_request', 'goodbye', 'interview_schedule', 'schedule_list']
-# print(classes)
+tokenizer = FullTokenizer(vocab_file="vocab.txt")
+classes = ['greetings', 'hiring_request', 'goodbye', 'interview_schedule', 'schedule_list']
+print(classes)
 
 with open('intents.json') as file:
     data = json.load(file)

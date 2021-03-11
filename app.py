@@ -1,10 +1,14 @@
-from flask import Flask, request
+from flask import Flask, request, render_template, redirect, url_for
+from werkzeug.utils import secure_filename
 import telegram
 from telegram import InlineKeyboardButton,InlineKeyboardMarkup
 from pymongo import MongoClient
 import bert_detection
 import database_updates
 import ast
+import os
+import uuid
+import spacy_ner_detection
 
 app = Flask(__name__)
 
@@ -134,9 +138,20 @@ def process_input_message():
         handle_call(bot, update)
 
     return 'ok'
-   
-    
 
+@app.route("/resumeUpload", methods=["GET","POST"])
+def upload_resume():
+    if request.method == 'POST':
+        uploaded_file = request.files['file']
+        if uploaded_file.filename != '':
+            directory = os.getcwd()
+            resume_dir = os.path.join(directory,"Resumes")
+            resume_uuid_name = str(uuid.uuid4().hex) + ".pdf"
+            resume_path = os.path.join(resume_dir,resume_uuid_name)
+            uploaded_file.save(resume_path)
+            spacy_ner_detection.extract_resume_details(resume_path,resume_uuid_name)
+        return redirect(url_for('upload_resume'))
+    return render_template('upload.html')
 
 if __name__ == "__main__":
     app.run(threaded=True)
