@@ -77,4 +77,9 @@ def get_prev_intent(chat_id):
     schema = mydb["chatbot_user_details"]
     return schema.find_one({"chat_id":chat_id})['status']
 
+def save_job_description(jd_id, chat_id, status):
+    schema = mydb["jd_collection"]
+    data = {"created_date":datetime.now(), "manager_id": chat_id, "job_id": jd_id, "status":status}
+    schema.insert_one(data)
+    
 

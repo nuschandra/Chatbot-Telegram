@@ -12,6 +12,9 @@ import requests
 import urllib.request
 import slot_detection
 from bson import ObjectId
+import uuid
+import os
+import spacy_ner_detection
 
 model = keras.models.load_model("bert_intent_detection.hdf5",custom_objects={"BertModelLayer": BertModelLayer},compile=False)
 
@@ -99,14 +102,22 @@ def process_file(file_id,chat_id,bot_token):
     data = r.json()
     file_path = data['result']['file_path']
     download_url = "https://api.telegram.org/file/bot"+bot_token+"/"+file_path
-    response = urllib.request.urlopen(download_url)    
-    file = open(str(chat_id) + ".pdf", 'wb')
+    response = urllib.request.urlopen(download_url)
+    job_id=str(uuid.uuid4().hex)
+    file_name = job_id + ".pdf"
+
+    directory = os.getcwd()
+    jd_file = os.path.join(directory,"job_descriptions/"+file_name)
+    file = open(jd_file, 'wb')
     file.write(response.read())
     file.close()
+    database_updates.save_job_description(job_id,chat_id,"OPEN")
+    return jd_file, job_id
 
-def trigger_resume_fetching(chat_id):
-    #use pypdf to read the job description based on chat_id
+def trigger_resume_fetching(jd_file,job_id):
+    extracted_jd = spacy_ner_detection.extract_jd_details(jd_file,job_id)
+
+    ## RUN WORD2VEC/TF-IDF at this point to obtain suitable resumes
     resume_employee_ids = []
-    resume_employee_ids.append('601cca2524132720897f5c91')
-    resume_employee_ids.append('602a2332829ac6fe97dc7b95')
+    resume_employee_ids.append('a4937c9f8f514aa1b52d97d9954972c6')
     return resume_employee_ids

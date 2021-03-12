@@ -17,7 +17,7 @@ bot_username = "VirtualRecruiterBot"
 bot_url = "https://b9e5a020b8d7.ngrok.io/"
 bot = telegram.Bot(token=bot_token)
 bot.delete_webhook(drop_pending_updates=True)
-bot_url =  "https://7fca89a9de54.ngrok.io/"
+bot_url =  "https://4447f5e1575c.ngrok.io/"
 bot.setWebhook('{URL}{HOOK}'.format(URL=bot_url, HOOK=bot_token))
 
 
@@ -106,10 +106,10 @@ def handle_call(bot,update):
                 bot.sendMessage(chat_id=chat_id, text=error_message, reply_to_message_id=msg_id)
             else:
                 file_id = update.message.document.file_id
-                bert_detection.process_file(file_id,chat_id,bot_token)
+                jd_file,job_id = bert_detection.process_file(file_id,chat_id,bot_token)
                 response = "Thank you for uploading the job description. Our algorithm will identify and recommend the best suited candidates to you."
                 bot.sendMessage(chat_id=chat_id, text=response, reply_to_message_id=msg_id)
-                resume_id = bert_detection.trigger_resume_fetching(chat_id)
+                resume_id = bert_detection.trigger_resume_fetching(jd_file,job_id)
                 print(resume_id)
                 for ids in resume_id:
                     file_to_send = "Resumes/"+str(ids)+".pdf"
