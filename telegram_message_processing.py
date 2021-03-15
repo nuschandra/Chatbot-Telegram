@@ -118,6 +118,13 @@ def trigger_resume_fetching(jd_file,job_id):
     extracted_jd = spacy_ner_detection.extract_jd_details(jd_file,job_id)
 
     ## RUN WORD2VEC/TF-IDF at this point to obtain suitable resumes
-    resume_employee_ids = []
-    resume_employee_ids.append('a4937c9f8f514aa1b52d97d9954972c6')
-    return resume_employee_ids
+    resume_info = []
+    candidate_details = {}
+    selected_id = 'a4937c9f8f514aa1b52d97d9954972c6'
+    candidate_details['resume_doc']=selected_id
+    candidate_details['name'],candidate_details['email']=database_updates.get_candidate_name_email(selected_id)
+
+    resume_info.append(candidate_details)
+    
+    return resume_info
+    

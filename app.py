@@ -3,12 +3,13 @@ from werkzeug.utils import secure_filename
 import telegram
 from telegram import InlineKeyboardButton,InlineKeyboardMarkup
 from pymongo import MongoClient
-import bert_detection
+import telegram_message_processing
 import database_updates
 import ast
 import os
 import uuid
 import spacy_ner_detection
+import telegramcalendar
 
 app = Flask(__name__)
 
@@ -17,7 +18,7 @@ bot_username = "VirtualRecruiterBot"
 bot_url = "https://b9e5a020b8d7.ngrok.io/"
 bot = telegram.Bot(token=bot_token)
 bot.delete_webhook(drop_pending_updates=True)
-bot_url =  "https://4447f5e1575c.ngrok.io/"
+bot_url =  "https://7163a6a3c012.ngrok.io/"
 bot.setWebhook('{URL}{HOOK}'.format(URL=bot_url, HOOK=bot_token))
 
 
@@ -50,15 +51,26 @@ def handle_callback(bot,update):
     
     context = ast.literal_eval(update.callback_query.data)
     if(context['type']=="show_confirm"):
+        bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         show_confirm(bot,chat_id,context)
     elif(context['type']=="delete_sce"):
+        bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         bot.send_message(chat_id=chat_id, text = "Confirmed the appointment!")
     elif(context['type']=="cancel"):
+        bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         bot.send_message(chat_id=chat_id, text = "Cancelled the appointment!")
-    elif(context['type']=="act_res"):
-        bot.send_message(chat_id=chat_id, text = "Accepted candidate")
-    elif(context['type']=="rej_res"):
+    elif(context['type']=="Accept"):
+        bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
+        show_calendar_for_interview(chat_id,context['can_id'])
+    elif(context['type']=="Reject"):
+        bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         bot.send_message(chat_id=chat_id, text = "Rejected candidate")
+    elif(context['type']=='Date'):
+        selected,date=telegramcalendar.process_calendar_selection(bot,update)
+        if selected:
+            bot.send_message(chat_id=update.callback_query.from_user.id,
+                        text="You selected %s" % (date.strftime("%d/%m/%Y")),
+                        reply_markup=None)
     return
 
 
@@ -84,7 +96,7 @@ def handle_call(bot,update):
             bot.sendMessage(chat_id=chat_id, text=welcome_msg, reply_to_message_id=msg_id)
     
         else:
-            response,intent = bert_detection.chat(update)
+            response,intent = telegram_message_processing.chat(update)
             print(response)    
         
             if intent == 'schedule_list':
@@ -106,20 +118,22 @@ def handle_call(bot,update):
                 bot.sendMessage(chat_id=chat_id, text=error_message, reply_to_message_id=msg_id)
             else:
                 file_id = update.message.document.file_id
-                jd_file,job_id = bert_detection.process_file(file_id,chat_id,bot_token)
+                jd_file,job_id = telegram_message_processing.process_file(file_id,chat_id,bot_token)
                 response = "Thank you for uploading the job description. Our algorithm will identify and recommend the best suited candidates to you."
                 bot.sendMessage(chat_id=chat_id, text=response, reply_to_message_id=msg_id)
-                resume_id = bert_detection.trigger_resume_fetching(jd_file,job_id)
-                print(resume_id)
-                for ids in resume_id:
+                resume_info = telegram_message_processing.trigger_resume_fetching(jd_file,job_id)
+                for info in resume_info:
+                    ids=info['resume_doc']
+                    name=info['name']
+                    email=info['email']
                     file_to_send = "Resumes/"+str(ids)+".pdf"
                     #get_candidate_details = database_updates.hire_request(ids)
-                    get_candidate_details = "candidate "+str(ids)
-                    accept={"type" : "act_res","can_id" : ids } 
-                    reject={"type" : "rej_res","can_id" : ids} 
+                    get_candidate_details = "Name: "+name+"\n"+"Email: "+email
+                    accept={"type":"Accept","can_id":ids} 
+                    reject={"type":"Reject","can_id":ids} 
                     keyboard = [[InlineKeyboardButton("Accept", callback_data=str(accept))],
                                 [InlineKeyboardButton("Reject", callback_data=str(reject))]]    
-                    bot.sendDocument(chat_id=chat_id,document=open(file_to_send, 'rb'),caption=get_candidate_details,reply_markup=InlineKeyboardMarkup(keyboard))
+                    bot.sendDocument(chat_id=chat_id,document=open(file_to_send, 'rb'),caption=get_candidate_details,reply_markup=InlineKeyboardMarkup(keyboard),filename=name+".pdf")
 
         else:
             error_message = "Sorry, I did not understand what you meant there."
@@ -152,6 +166,10 @@ def upload_resume():
             spacy_ner_detection.extract_resume_details(resume_path,resume_uuid_name)
         return redirect(url_for('upload_resume'))
     return render_template('upload.html')
+
+def show_calendar_for_interview(chat_id,candidate_id):
+    bot.send_message(chat_id=chat_id, text = "Please choose a date for your interview with the candidate.",reply_markup=telegramcalendar.create_calendar())
+
 
 if __name__ == "__main__":
     app.run(threaded=True)

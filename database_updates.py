@@ -81,5 +81,8 @@ def save_job_description(jd_id, chat_id, status):
     schema = mydb["jd_collection"]
     data = {"created_date":datetime.now(), "manager_id": chat_id, "job_id": jd_id, "status":status}
     schema.insert_one(data)
-    
 
+def get_candidate_name_email(candidate_id):
+    schema = mydb["resume_details"]
+    candidate= schema.find_one({"Resume_Doc":candidate_id})
+    return candidate['Name'], candidate['Email']
