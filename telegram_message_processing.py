@@ -60,10 +60,7 @@ def chat(inp):
 
 
 def getCorrectResponse(inp, final_intent):
-    unix_timestamp = inp.message.date.timestamp()
-    local_timezone = tzlocal.get_localzone()
-    local_time = datetime.fromtimestamp(unix_timestamp, local_timezone)
-    date_of_msg = local_time.strftime("%B %d %Y")
+    date_of_msg = get_current_date(inp)
 
     first_name = inp.message.chat.first_name
     chat_id = inp.message.chat.id
@@ -127,4 +124,11 @@ def trigger_resume_fetching(jd_file,job_id):
     resume_info.append(candidate_details)
     
     return resume_info
+
+def get_current_date(inp):
+    unix_timestamp = inp.message.date.timestamp()
+    local_timezone = tzlocal.get_localzone()
+    local_time = datetime.fromtimestamp(unix_timestamp, local_timezone)
+    date_of_msg = local_time.strftime("%d/%m/%Y")
+    return date_of_msg
     

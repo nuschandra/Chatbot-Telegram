@@ -1,12 +1,20 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup,ReplyKeyboardRemove
 import datetime
 import calendar
+import ast
+
 
 def create_callback_data(action,year,month,day):
     """ Create the callback data associated to each button"""
     callback_data=";".join([action,str(year),str(month),str(day)])
     select_date={"type":"Date","data":callback_data}
     return str(select_date)
+
+def create_time_callback_data(action,time):
+    """ Create the callback data associated to each button"""
+    callback_data=";".join([action,str(time)])
+    select_time={"type":"Time","data":callback_data}
+    return str(select_time)
 
 def separate_callback_data(data):
     """ Separate the callback data"""
@@ -53,6 +61,23 @@ def create_calendar(year=None,month=None):
 
     return InlineKeyboardMarkup(keyboard)
 
+def create_time_selection(time=None):
+    data_ignore = create_time_callback_data("IGNORE", time)
+    keyboard = []
+    row=[]
+    row.append(InlineKeyboardButton("Available Time Slots",callback_data=data_ignore))
+    keyboard.append(row)
+
+    row=[]
+    for time in ["9:00","10:00","11:00","12:00","13:00"]:
+        row.append(InlineKeyboardButton(time,callback_data=create_time_callback_data("TIME",str(time))))
+    keyboard.append(row)
+
+    row=[]
+    for time in ["14:00","15:00","16:00","17:00","18:00"]:
+        row.append(InlineKeyboardButton(time,callback_data=create_time_callback_data("TIME",str(time))))
+    keyboard.append(row)
+    return InlineKeyboardMarkup(keyboard)
 
 def process_calendar_selection(bot,update):
     """
@@ -73,8 +98,7 @@ def process_calendar_selection(bot,update):
     elif action == "DAY":
         bot.edit_message_text(text=query.message.text,
             chat_id=query.message.chat_id,
-            message_id=query.message.message_id
-            )
+            message_id=query.message.message_id)
         ret_data = True,datetime.datetime(int(year),int(month),int(day))
     elif action == "PREV-MONTH":
         pre = curr - datetime.timedelta(days=1)
@@ -88,6 +112,27 @@ def process_calendar_selection(bot,update):
             chat_id=query.message.chat_id,
             message_id=query.message.message_id,
             reply_markup=create_calendar(int(ne.year),int(ne.month)))
+    else:
+        bot.answer_callback_query(callback_query_id= query.id,text="Something went wrong!")
+        # UNKNOWN
+    return ret_data
+
+def process_time_selection(bot,update):
+    ret_data = (False,None)
+    query = update.callback_query
+    print(query)
+    context = ast.literal_eval(update.callback_query.data)
+    (action,time) = separate_callback_data(context['data'])
+    if action == "IGNORE":
+        bot.answer_callback_query(callback_query_id= query.id) 
+    elif action == "TIME":
+        bot.edit_message_text(text=query.message.text,
+            chat_id=query.message.chat_id,
+            message_id=query.message.message_id)
+        
+        d = datetime.datetime.strptime(time, "%H:%M")
+        selected_time = d.strftime("%I:%M %p")
+        ret_data = True,selected_time   
     else:
         bot.answer_callback_query(callback_query_id= query.id,text="Something went wrong!")
         # UNKNOWN

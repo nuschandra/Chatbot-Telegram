@@ -10,6 +10,8 @@ import os
 import uuid
 import spacy_ner_detection
 import telegramcalendar
+from datetime import datetime
+import tzlocal
 
 app = Flask(__name__)
 
@@ -18,7 +20,7 @@ bot_username = "VirtualRecruiterBot"
 bot_url = "https://b9e5a020b8d7.ngrok.io/"
 bot = telegram.Bot(token=bot_token)
 bot.delete_webhook(drop_pending_updates=True)
-bot_url =  "https://7163a6a3c012.ngrok.io/"
+bot_url =  "https://b76d63888d2a.ngrok.io/"
 bot.setWebhook('{URL}{HOOK}'.format(URL=bot_url, HOOK=bot_token))
 
 
@@ -61,15 +63,31 @@ def handle_callback(bot,update):
         bot.send_message(chat_id=chat_id, text = "Cancelled the appointment!")
     elif(context['type']=="Accept"):
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
-        show_calendar_for_interview(chat_id,context['can_id'])
+        show_calendar_for_interview(chat_id)
     elif(context['type']=="Reject"):
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         bot.send_message(chat_id=chat_id, text = "Rejected candidate")
     elif(context['type']=='Date'):
         selected,date=telegramcalendar.process_calendar_selection(bot,update)
         if selected:
+            local_timezone = tzlocal.get_localzone()
+            today = datetime.now(local_timezone).date().strftime("%d/%m/%Y")
+            current_selected_date = date.strftime("%d/%m/%Y")
+            if (current_selected_date<=today):
+                bot.send_message(chat_id=update.callback_query.from_user.id,
+                        text="The date you've selected is invalid. Please choose a valid date.",
+                        reply_markup=None)
+                show_calendar_for_interview(chat_id)
+
             bot.send_message(chat_id=update.callback_query.from_user.id,
                         text="You selected %s" % (date.strftime("%d/%m/%Y")),
+                        reply_markup=None)
+            show_time_slots_for_interview(chat_id)
+    elif(context['type']=='Time'):
+        selected,time=telegramcalendar.process_time_selection(bot,update)
+        if selected:
+            bot.send_message(chat_id=update.callback_query.from_user.id,
+                        text="Your interview has been scheduled at %s" % time % "",
                         reply_markup=None)
     return
 
@@ -167,9 +185,11 @@ def upload_resume():
         return redirect(url_for('upload_resume'))
     return render_template('upload.html')
 
-def show_calendar_for_interview(chat_id,candidate_id):
+def show_calendar_for_interview(chat_id):
     bot.send_message(chat_id=chat_id, text = "Please choose a date for your interview with the candidate.",reply_markup=telegramcalendar.create_calendar())
 
+def show_time_slots_for_interview(chat_id):
+    bot.send_message(chat_id=chat_id, text = "Please choose a time slot on the chosen date for your interview with the candidate.",reply_markup=telegramcalendar.create_time_selection())
 
 if __name__ == "__main__":
     app.run(threaded=True)
