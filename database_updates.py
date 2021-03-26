@@ -101,3 +101,8 @@ def save_interview_time(selected_time,candidate_id,manager_id):
     if (interview_to_update != None):
         updated_values = {"$set": {"interview_time":selected_time}}
         schema.update_one(myquery,updated_values)
+
+def cancel_schedule(oid):
+    schema = mydb["interview_details"]
+    result = schema.delete_one({'_id': ObjectId(oid)})
+    return result
