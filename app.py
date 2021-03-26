@@ -66,7 +66,9 @@ def handle_callback(bot,update):
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         bot.send_message(chat_id=chat_id, text = "Confirmed the appointment!")
     elif(action=="cancel"):
-        bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
+        action,obj_id=telegramcalendar.separate_callback_data(context)
+        database_updates.cancel_schedule(obj_id)
+        #bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         bot.send_message(chat_id=chat_id, text = "Cancelled the appointment!")
     elif(action=="Accept"):
         action,candidate_id=telegramcalendar.separate_callback_data(context)
