@@ -27,7 +27,7 @@ bot.setWebhook('{URL}{HOOK}'.format(URL=bot_url, HOOK=bot_token))
 def get_schedule(bot,chat_id,sch_list):
     button_list = []
     for cn,objid,sch in sch_list:
-        dic ={"type" : "show_confirm", "sce_id" : objid } 
+        dic=";".join(["show_confirm",objid])
         button_list.append(InlineKeyboardButton("Name: "+cn+"\n"+sch,callback_data=str(dic)))
        
     button_list  = [button_list[i:i + 1] for i in range(0, len(button_list), 1)]
@@ -35,9 +35,9 @@ def get_schedule(bot,chat_id,sch_list):
     bot.send_message(chat_id=chat_id, text='This is your schedule. Please click on the buttons below to confirm or cancel.',reply_markup=reply_markup)
     return
 
-def show_confirm(bot, chat_id, context):
-    yes = {"type": "ok"}
-    no = {"type": "cancel",  "sce_id": context['sce_id']}
+def show_confirm(bot, chat_id, obj_id):
+    yes = ";".join(["confirm"])
+    no = ";".join(["cancel",obj_id])
     button_list = [
         InlineKeyboardButton('Cancel', callback_data=str(no)),
         InlineKeyboardButton('Confirm', callback_data=str(yes))
@@ -57,8 +57,11 @@ def handle_callback(bot,update):
     action = telegramcalendar.separate_callback_data(context)[0]
     print(action)
     if(action=="show_confirm"):
-        bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
-        show_confirm(bot,chat_id,context)
+        #bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
+        action,obj_id=telegramcalendar.separate_callback_data(context)
+        show_confirm(bot,chat_id,obj_id)
+    if(action=="confirm"):
+        bot.send_message(chat_id=chat_id, text = "You have confirmed the interview with the candidate!")
     elif(action=="delete_sce"):
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         bot.send_message(chat_id=chat_id, text = "Confirmed the appointment!")
