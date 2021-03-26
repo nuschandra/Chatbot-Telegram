@@ -82,7 +82,22 @@ def save_job_description(jd_id, chat_id, status):
     data = {"created_date":datetime.now(), "manager_id": chat_id, "job_id": jd_id, "status":status}
     schema.insert_one(data)
 
-def get_candidate_name_email(candidate_id):
+def get_candidate_name_email_id(candidate_id):
     schema = mydb["resume_details"]
     candidate= schema.find_one({"Resume_Doc":candidate_id})
-    return candidate['Name'], candidate['Email']
+    return candidate['Name'], candidate['Email'],str(candidate['_id'])
+
+def save_interview_date(selected_date,candidate_id,manager_id,status):
+    can_id = ObjectId(candidate_id)
+    schema = mydb["interview_details"]
+    data = {"created_date":datetime.now(), "manager_id": manager_id, "interview_date": selected_date, "status":status, "candidate_id":can_id}
+    schema.insert_one(data)
+
+def save_interview_time(selected_time,candidate_id,manager_id):
+    can_id = ObjectId(candidate_id)
+    schema = mydb["interview_details"]
+    myquery = {"manager_id":manager_id,"candidate_id":can_id}
+    interview_to_update= schema.find_one(myquery)
+    if (interview_to_update != None):
+        updated_values = {"$set": {"interview_time":selected_time}}
+        schema.update_one(myquery,updated_values)

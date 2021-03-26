@@ -117,10 +117,10 @@ def trigger_resume_fetching(jd_file,job_id):
     ## RUN WORD2VEC/TF-IDF at this point to obtain suitable resumes
     resume_info = []
     candidate_details = {}
-    selected_id = 'a4937c9f8f514aa1b52d97d9954972c6'
+    selected_id = 'a2aab2536cc54bd890bb6dff9519c13d'
     candidate_details['resume_doc']=selected_id
-    candidate_details['name'],candidate_details['email']=database_updates.get_candidate_name_email(selected_id)
-
+    candidate_details['name'],candidate_details['email'],candidate_details['id']=database_updates.get_candidate_name_email_id(selected_id)
+    
     resume_info.append(candidate_details)
     
     return resume_info

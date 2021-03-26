@@ -20,7 +20,7 @@ bot_username = "VirtualRecruiterBot"
 bot_url = "https://b9e5a020b8d7.ngrok.io/"
 bot = telegram.Bot(token=bot_token)
 bot.delete_webhook(drop_pending_updates=True)
-bot_url =  "https://b76d63888d2a.ngrok.io/"
+bot_url =  "https://2b6461d5e87b.ngrok.io/"
 bot.setWebhook('{URL}{HOOK}'.format(URL=bot_url, HOOK=bot_token))
 
 
@@ -51,24 +51,29 @@ def handle_callback(bot,update):
     chat_id = update.callback_query.message.chat.id
     msg_id = update.callback_query.message.message_id
     
-    context = ast.literal_eval(update.callback_query.data)
-    if(context['type']=="show_confirm"):
+    context = update.callback_query.data
+    print("Context is " + context)
+    action = telegramcalendar.separate_callback_data(context)[0]
+    print(action)
+    if(action=="show_confirm"):
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         show_confirm(bot,chat_id,context)
-    elif(context['type']=="delete_sce"):
+    elif(action=="delete_sce"):
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         bot.send_message(chat_id=chat_id, text = "Confirmed the appointment!")
-    elif(context['type']=="cancel"):
+    elif(action=="cancel"):
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         bot.send_message(chat_id=chat_id, text = "Cancelled the appointment!")
-    elif(context['type']=="Accept"):
+    elif(action=="Accept"):
+        action,candidate_id=telegramcalendar.separate_callback_data(context)
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
-        show_calendar_for_interview(chat_id)
-    elif(context['type']=="Reject"):
+        show_calendar_for_interview(chat_id,candidate_id)
+    elif(action=="Reject"):
+        action,candidate_id=telegramcalendar.separate_callback_data(context)
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         bot.send_message(chat_id=chat_id, text = "Rejected candidate")
-    elif(context['type']=='Date'):
-        selected,date=telegramcalendar.process_calendar_selection(bot,update)
+    elif(action=="DATE"): # D stands for Date
+        selected,date,candidate_id=telegramcalendar.process_calendar_selection(bot,update)
         if selected:
             local_timezone = tzlocal.get_localzone()
             today = datetime.now(local_timezone).date().strftime("%d/%m/%Y")
@@ -78,17 +83,21 @@ def handle_callback(bot,update):
                         text="The date you've selected is invalid. Please choose a valid date.",
                         reply_markup=None)
                 show_calendar_for_interview(chat_id)
-
-            bot.send_message(chat_id=update.callback_query.from_user.id,
-                        text="You selected %s" % (date.strftime("%d/%m/%Y")),
+            else:
+                bot.send_message(chat_id=update.callback_query.from_user.id,
+                        text="You selected %s" % current_selected_date,
                         reply_markup=None)
-            show_time_slots_for_interview(chat_id)
-    elif(context['type']=='Time'):
-        selected,time=telegramcalendar.process_time_selection(bot,update)
+                if(candidate_id!=""):
+                    database_updates.save_interview_date(current_selected_date,candidate_id,chat_id,"interview_scheduled")
+                    show_time_slots_for_interview(chat_id,candidate_id)
+    elif(action=="TIME"): # T stands for time
+        selected,time,candidate_id=telegramcalendar.process_time_selection(bot,update)
         if selected:
             bot.send_message(chat_id=update.callback_query.from_user.id,
-                        text="Your interview has been scheduled at %s" % time % "",
+                        text="Your interview has been scheduled at %s" % time,
                         reply_markup=None)
+            database_updates.save_interview_time(time,candidate_id,chat_id)
+
     return
 
 
@@ -144,11 +153,12 @@ def handle_call(bot,update):
                     ids=info['resume_doc']
                     name=info['name']
                     email=info['email']
+                    candidate_id=info['id']
                     file_to_send = "Resumes/"+str(ids)+".pdf"
                     #get_candidate_details = database_updates.hire_request(ids)
                     get_candidate_details = "Name: "+name+"\n"+"Email: "+email
-                    accept={"type":"Accept","can_id":ids} 
-                    reject={"type":"Reject","can_id":ids} 
+                    accept=";".join(["Accept",candidate_id])
+                    reject=";".join(["Reject",candidate_id]) 
                     keyboard = [[InlineKeyboardButton("Accept", callback_data=str(accept))],
                                 [InlineKeyboardButton("Reject", callback_data=str(reject))]]    
                     bot.sendDocument(chat_id=chat_id,document=open(file_to_send, 'rb'),caption=get_candidate_details,reply_markup=InlineKeyboardMarkup(keyboard),filename=name+".pdf")
@@ -185,11 +195,11 @@ def upload_resume():
         return redirect(url_for('upload_resume'))
     return render_template('upload.html')
 
-def show_calendar_for_interview(chat_id):
-    bot.send_message(chat_id=chat_id, text = "Please choose a date for your interview with the candidate.",reply_markup=telegramcalendar.create_calendar())
+def show_calendar_for_interview(chat_id,can_id):
+    bot.send_message(chat_id=chat_id, text = "Please choose a date for your interview with the candidate.",reply_markup=telegramcalendar.create_calendar(can_id))
 
-def show_time_slots_for_interview(chat_id):
-    bot.send_message(chat_id=chat_id, text = "Please choose a time slot on the chosen date for your interview with the candidate.",reply_markup=telegramcalendar.create_time_selection())
+def show_time_slots_for_interview(chat_id,can_id):
+    bot.send_message(chat_id=chat_id, text = "Please choose a time slot on the chosen date for your interview with the candidate.",reply_markup=telegramcalendar.create_time_selection(can_id))
 
 if __name__ == "__main__":
     app.run(threaded=True)
