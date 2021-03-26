@@ -86,7 +86,8 @@ def getCorrectResponse(inp, final_intent):
                         responses = "Sorry Couldn't process the request." ## can be added to secodary resp
                 else:
                      responses = "Sorry please upload JD and then invoke this intent" ## can be tertiary response
-            
+            elif final_intent == 'schedule_list':
+                responses = slot_detection.schedule_list(user_text, chat_id)
             else:
                 responses = random.choice(tg['responses'])
 
