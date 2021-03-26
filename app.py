@@ -35,16 +35,17 @@ def get_schedule(bot,chat_id,sch_list):
     bot.send_message(chat_id=chat_id, text='This is your schedule. Please click on the buttons below to confirm or cancel.',reply_markup=reply_markup)
     return
 
-def show_confirm(bot,chat_id, context):
-    yes={"type" : "delete_sce",  "sce_id" : context['sce_id'] } 
-    no={"type" : "cancel"} 
-    button_list=[
-        InlineKeyboardButton('Cancel',callback_data=str(no)),
-        InlineKeyboardButton('Confirm',callback_data=str(yes))
+def show_confirm(bot, chat_id, context):
+    yes = {"type": "ok"}
+    no = {"type": "cancel",  "sce_id": context['sce_id']}
+    button_list = [
+        InlineKeyboardButton('Cancel', callback_data=str(no)),
+        InlineKeyboardButton('Confirm', callback_data=str(yes))
     ]
-    button_list  = [button_list[i:i + 2] for i in range(0, len(button_list), 2)]
-    reply_markup=InlineKeyboardMarkup(button_list)
-    bot.send_message(chat_id=chat_id, text='Confirm or Cancel.',reply_markup=reply_markup)
+    button_list = [button_list[i:i + 2] for i in range(0, len(button_list), 2)]
+    reply_markup = InlineKeyboardMarkup(button_list)
+    bot.send_message(chat_id=chat_id, text='Kindly click on the button below to confirm or cancel your interview with the above candidate.',
+                     reply_markup=reply_markup)
     return
     
 def handle_callback(bot,update):
