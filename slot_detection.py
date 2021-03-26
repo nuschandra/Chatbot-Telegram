@@ -53,13 +53,13 @@ def schedule_list(text, chat_id):
                 for entry in lakcol.find({'manager_id': chat_id}):
                     date = entry["interview_date"].strftime(
                         '%B') + ", " + entry["interview_date"].strftime('%d')
+                    print(date)
                     time = entry["interview_date"].strftime("%I:%M %p")
                     candidate_id = entry["candidate_id"]
                     dbid = entry["_id"]
                     for entry in mycol.find({'_id': candidate_id}):
                         name = entry["Name"]
                         email = entry["Email"]
-                        number = entry["Number"]
                         lst.append((name + " ", str(dbid), "  " +
                                     date + "  " + str(time)))
                 return lst
@@ -93,7 +93,6 @@ def schedule_list(text, chat_id):
                                 for entry in mycol.find({'_id': candidate_id}):
                                     name = entry["Name"]
                                     email = entry["Email"]
-                                    number = entry["Number"]
                                     lst.append(
                                         (name + " ", str(dbid), "  " + date + "  " + str(time)))
                         return lst
@@ -141,7 +140,6 @@ def schedule_list(text, chat_id):
                                 for entry in mycol.find({'_id': candidate_id}):
                                     name = entry["Name"]
                                     email = entry["Email"]
-                                    number = entry["Number"]
                                     lst.append(
                                         (name + " ", str(dbid), "  " + date + "  " + str(time)))
                         return lst
@@ -174,13 +172,13 @@ def schedule_list(text, chat_id):
                                 for entry in mycol.find({'_id': candidate_id}):
                                     name = entry["Name"]
                                     email = entry["Email"]
-                                    number = entry["Number"]
                                     lst.append(
                                         (name + " ", str(dbid), "  " + date + "  " + str(time)))
                         return lst
                     else:
                         return(f"No interviews found {ent['text']}")
                 else:
+                    print("I am in the method for dates such as 28-03-2021")
                     slot_break = slot.split("-")
                     sy, sm, sd = slot_break
                     ey, em, ed = sy, sm, sd
@@ -190,20 +188,21 @@ def schedule_list(text, chat_id):
                     end = datetime(ey, em, ed, 23, 59, 59, 99999)
                     count = lakcol.find(
                         {'interview_date': {'$lt': end, '$gte': start}}).count()
+
                     if count >= 1:
+                        print("There is a hit in the database")
                         lst = []
                         for entry in lakcol.find({'interview_date': {'$lt': end, '$gte': start}}):
+                            print("There is one interview to be returned")
                             if entry["manager_id"] == chat_id:
                                 date = entry["interview_date"].strftime(
-                                    '%B') + ", " + entry["interview_date"].strftime('%d')
-                                time = entry["interview_date"].strftime(
-                                    "%I:%M %p")
+                                    '%B') + " " + entry["interview_date"].strftime('%d')
+                                time = entry["interview_time"]
                                 candidate_id = entry["candidate_id"]
                                 dbid = entry["_id"]
                                 for entry in mycol.find({'_id': candidate_id}):
                                     name = entry["Name"]
                                     email = entry["Email"]
-                                    number = entry["Number"]
                                     lst.append(
                                         (name + " ", str(dbid), "  " + date + "  " + str(time)))
                         return lst
@@ -211,5 +210,6 @@ def schedule_list(text, chat_id):
                         return(f"No interviews found for {ent['text']}")
         else:
             return("No interviews scheduled for your id")
-    except:
+    except Exception as exception:
+        print(exception)
         return("Sorry, I could not understand that. Please check for any spelling errors or Please rephrase the question. If either doesn't work, please reach out to the support at abc@gmail.com for assistance.")

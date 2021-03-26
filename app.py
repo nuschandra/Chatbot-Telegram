@@ -28,11 +28,11 @@ def get_schedule(bot,chat_id,sch_list):
     button_list = []
     for cn,objid,sch in sch_list:
         dic ={"type" : "show_confirm", "sce_id" : objid } 
-        button_list.append(InlineKeyboardButton(cn+" "+sch,callback_data=str(dic)))
+        button_list.append(InlineKeyboardButton("Name: "+cn+"\n"+sch,callback_data=str(dic)))
        
     button_list  = [button_list[i:i + 1] for i in range(0, len(button_list), 1)]
     reply_markup=InlineKeyboardMarkup(button_list)
-    bot.send_message(chat_id=chat_id, text='This is your Schedule. Please select the the appointment from the following to confirm or cancel. :',reply_markup=reply_markup)
+    bot.send_message(chat_id=chat_id, text='This is your schedule. Please click on the buttons below to confirm or cancel.',reply_markup=reply_markup)
     return
 
 def show_confirm(bot,chat_id, context):
@@ -75,8 +75,7 @@ def handle_callback(bot,update):
     elif(action=="DATE"): # D stands for Date
         selected,date,candidate_id=telegramcalendar.process_calendar_selection(bot,update)
         if selected:
-            local_timezone = tzlocal.get_localzone()
-            today = datetime.now(local_timezone).date().strftime("%d/%m/%Y")
+            today = datetime.now().strftime("%d/%m/%Y")
             current_selected_date = date.strftime("%d/%m/%Y")
             if (current_selected_date<=today):
                 bot.send_message(chat_id=update.callback_query.from_user.id,
@@ -88,7 +87,7 @@ def handle_callback(bot,update):
                         text="You selected %s" % current_selected_date,
                         reply_markup=None)
                 if(candidate_id!=""):
-                    database_updates.save_interview_date(current_selected_date,candidate_id,chat_id,"interview_scheduled")
+                    database_updates.save_interview_date(date,candidate_id,chat_id,"interview_scheduled")
                     show_time_slots_for_interview(chat_id,candidate_id)
     elif(action=="TIME"): # T stands for time
         selected,time,candidate_id=telegramcalendar.process_time_selection(bot,update)
@@ -126,13 +125,15 @@ def handle_call(bot,update):
             response,intent = telegram_message_processing.chat(update)
             print(response)    
         
-            if intent == 'schedule_list':
-            # if text == 'schedule_list':
-                sch_list = [("Candidate Name1","602a22d7829ac6fe97dc7b93","May 12, 4pm"),
-                            ("Candidate Name2","602a2332829ac6fe97dc7b95","Dec 2, 5pm"),
-                            ("Candidate Name3","602a2af515fb6f9e7a3e7d6f","Mar 12, 2pm")]
-                get_schedule(bot,chat_id,sch_list)
-                response = "returned scheduledlist"
+            if intent == 'schedule_list' and type(response) != str:
+                # if text == 'schedule_list':
+                # sch_list = [("Candidate Name1","602a22d7829ac6fe97dc7b93","May 12, 4pm"),
+                #             ("Candidate Name2","602a2332829ac6fe97dc7b95","Dec 2, 5pm"),
+                #             ("Candidate Name3","602a2af515fb6f9e7a3e7d6f","Mar 12, 2pm")]
+
+                get_schedule(bot, chat_id, response)
+                return
+
             bot.sendMessage(chat_id=chat_id, text=response, reply_to_message_id=msg_id) 
             
     elif update['message']['document'] != None:
