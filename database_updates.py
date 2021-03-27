@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 from datetime import datetime
 from bson import ObjectId
+from datetime import date
 
 myclient =  MongoClient("mongodb+srv://user:user@cluster0.oklqw.mongodb.net/test")
 mydb = myclient["plp_project"]
@@ -106,3 +107,53 @@ def cancel_schedule(oid):
     schema = mydb["interview_details"]
     result = schema.delete_one({'_id': ObjectId(oid)})
     return result
+
+def get_candidate_and_interview_info(object_id):
+    schema = mydb["interview_details"]
+    interview_id = ObjectId(object_id)
+    myquery = {"_id":interview_id}
+    interview_info= schema.find_one(myquery)
+    date = interview_info["interview_date"].strftime(
+                                    '%B') + " " + interview_info["interview_date"].strftime('%d')
+    time = interview_info["interview_time"]
+    candidate_id=ObjectId(interview_info["candidate_id"])
+    schema=mydb["resume_details"]
+    myquery = {"_id":candidate_id}
+    resume_info= schema.find_one(myquery)
+    name=resume_info["Name"]
+
+    return name,date,time
+
+def get_interview_details_manager_candidate_id(manager_id,candidate_id):
+    schema = mydb["interview_details"]
+    can_id=ObjectId(candidate_id)
+    myquery = {"manager_id":manager_id,"candidate_id":can_id}
+    interview_info= schema.find_one(myquery)
+
+    if(interview_info!=None):
+        date = interview_info["interview_date"].strftime(
+                                    '%B') + " " + interview_info["interview_date"].strftime('%d')
+        time = interview_info["interview_time"]
+        return date,time
+    else:
+        return None,None
+
+def find_interviews_scheduled_for_the_day():
+    # dd/mm/YY
+    today_date = date.today().strftime("%d-%m-%Y")
+    schema = mydb["interview_details"]
+    slot_break = today_date.split("-")
+    sd, sm, sy = slot_break
+    ed, em, ey = sd, sm, sy
+    sy, sm, sd, ey, em, ed = int(sy), int(sm), int(sd), int(ey), int(em), int(ed)
+    start = datetime(sy, sm, sd, 0, 0, 0, 0)
+    end = datetime(ey, em, ed, 23, 59, 59, 99999)
+    list_of_interviews = list(schema.find({'interview_date': {'$lt': end, '$gte': start}}))
+    return list_of_interviews
+
+def get_candidate_info(candidate_id):
+    can_id=ObjectId(candidate_id)
+    schema = mydb["resume_details"]
+    myquery = {"_id":can_id}
+    candidate_info= schema.find_one(myquery)
+    return candidate_info["Name"],candidate_info["Email"]

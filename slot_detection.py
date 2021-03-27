@@ -53,8 +53,7 @@ def schedule_list(text, chat_id):
                 for entry in lakcol.find({'manager_id': chat_id}):
                     date = entry["interview_date"].strftime(
                         '%B') + ", " + entry["interview_date"].strftime('%d')
-                    print(date)
-                    time = entry["interview_date"].strftime("%I:%M %p")
+                    time = entry["interview_time"]
                     candidate_id = entry["candidate_id"]
                     dbid = entry["_id"]
                     for entry in mycol.find({'_id': candidate_id}):
@@ -86,8 +85,7 @@ def schedule_list(text, chat_id):
                             if entry["manager_id"] == chat_id:
                                 date = entry["interview_date"].strftime(
                                     '%B') + ", " + entry["interview_date"].strftime('%d')
-                                time = entry["interview_date"].strftime(
-                                    "%I:%M %p")
+                                time = entry["interview_time"]
                                 candidate_id = entry["candidate_id"]
                                 dbid = entry["_id"]
                                 for entry in mycol.find({'_id': candidate_id}):
@@ -133,8 +131,7 @@ def schedule_list(text, chat_id):
                             if entry["manager_id"] == chat_id:
                                 date = entry["interview_date"].strftime(
                                     '%B') + ", " + entry["interview_date"].strftime('%d')
-                                time = entry["interview_date"].strftime(
-                                    "%I:%M %p")
+                                time = entry["interview_time"]
                                 candidate_id = entry["candidate_id"]
                                 dbid = entry["_id"]
                                 for entry in mycol.find({'_id': candidate_id}):
@@ -165,8 +162,7 @@ def schedule_list(text, chat_id):
                             if entry["manager_id"] == chat_id:
                                 date = entry["interview_date"].strftime(
                                     '%B') + ", " + entry["interview_date"].strftime('%d')
-                                time = entry["interview_date"].strftime(
-                                    "%I:%M %p")
+                                time = entry["interview_time"]
                                 candidate_id = entry["candidate_id"]
                                 dbid = entry["_id"]
                                 for entry in mycol.find({'_id': candidate_id}):

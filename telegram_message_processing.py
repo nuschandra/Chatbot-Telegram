@@ -133,3 +133,6 @@ def get_current_date(inp):
     date_of_msg = local_time.strftime("%d/%m/%Y")
     return date_of_msg
     
+def check_duplicate_interview(chat_id,candidate_id):
+    date,time= database_updates.get_interview_details_manager_candidate_id(chat_id,candidate_id)
+    return date,time

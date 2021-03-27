@@ -12,6 +12,10 @@ import spacy_ner_detection
 import telegramcalendar
 from datetime import datetime
 import tzlocal
+import schedule
+from threading import Thread
+from time import sleep
+from bson import ObjectId
 
 app = Flask(__name__)
 
@@ -20,7 +24,7 @@ bot_username = "VirtualRecruiterBot"
 bot_url = "https://b9e5a020b8d7.ngrok.io/"
 bot = telegram.Bot(token=bot_token)
 bot.delete_webhook(drop_pending_updates=True)
-bot_url =  "https://2b6461d5e87b.ngrok.io/"
+bot_url =  "https://732fa7b2da05.ngrok.io/"
 bot.setWebhook('{URL}{HOOK}'.format(URL=bot_url, HOOK=bot_token))
 
 
@@ -35,8 +39,8 @@ def get_schedule(bot,chat_id,sch_list):
     bot.send_message(chat_id=chat_id, text='This is your schedule. Please click on the buttons below to confirm or cancel.',reply_markup=reply_markup)
     return
 
-def show_confirm(bot, chat_id, obj_id):
-    yes = ";".join(["confirm"])
+def show_confirm(bot, chat_id, obj_id, name, date, time,msg_id):
+    yes = ";".join(["confirm",obj_id])
     no = ";".join(["cancel",obj_id])
     button_list = [
         InlineKeyboardButton('Cancel', callback_data=str(no)),
@@ -44,7 +48,8 @@ def show_confirm(bot, chat_id, obj_id):
     ]
     button_list = [button_list[i:i + 2] for i in range(0, len(button_list), 2)]
     reply_markup = InlineKeyboardMarkup(button_list)
-    bot.send_message(chat_id=chat_id, text='Kindly click on the button below to confirm or cancel your interview with the above candidate.',
+    text = 'Kindly click on the candidate name below to confirm or cancel your interview.\n\n' + "Name: "+name+"\n"+"Timing: "+date + ", " + time
+    bot.edit_message_text(chat_id=chat_id, text=text,message_id=msg_id,
                      reply_markup=reply_markup)
     return
     
@@ -57,23 +62,29 @@ def handle_callback(bot,update):
     action = telegramcalendar.separate_callback_data(context)[0]
     print(action)
     if(action=="show_confirm"):
-        #bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
+        bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         action,obj_id=telegramcalendar.separate_callback_data(context)
-        show_confirm(bot,chat_id,obj_id)
+        name,date,time=database_updates.get_candidate_and_interview_info(obj_id)
+        show_confirm(bot,chat_id,obj_id,name,date,time,msg_id)
     if(action=="confirm"):
-        bot.send_message(chat_id=chat_id, text = "You have confirmed the interview with the candidate!")
+        action,obj_id=telegramcalendar.separate_callback_data(context)
+        name,date,time=database_updates.get_candidate_and_interview_info(obj_id)
+        bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "Thank you for confirming the interview! The details are as below:\n\n" + "Name: "+name+"\n"+"Timing: "+date + ", " + time, reply_markup=None)
     elif(action=="delete_sce"):
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         bot.send_message(chat_id=chat_id, text = "Confirmed the appointment!")
     elif(action=="cancel"):
         action,obj_id=telegramcalendar.separate_callback_data(context)
         database_updates.cancel_schedule(obj_id)
-        #bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
-        bot.send_message(chat_id=chat_id, text = "Cancelled the appointment!")
+        bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "I have cancelled the interview with the candidate.", reply_markup=None)
     elif(action=="Accept"):
         action,candidate_id=telegramcalendar.separate_callback_data(context)
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
-        show_calendar_for_interview(chat_id,candidate_id)
+        date,time=telegram_message_processing.check_duplicate_interview(chat_id,candidate_id)
+        if (date==None and time ==None):
+            show_calendar_for_interview(chat_id,candidate_id)
+        else:
+            bot.send_message(chat_id=chat_id, text = "You already have an interview scheduled with this candidate on " + date + " at " + time)
     elif(action=="Reject"):
         action,candidate_id=telegramcalendar.separate_callback_data(context)
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
@@ -89,7 +100,7 @@ def handle_callback(bot,update):
                         reply_markup=None)
                 show_calendar_for_interview(chat_id)
             else:
-                bot.send_message(chat_id=update.callback_query.from_user.id,
+                bot.edit_message_text(chat_id=update.callback_query.from_user.id,message_id=msg_id,
                         text="You selected %s" % current_selected_date,
                         reply_markup=None)
                 if(candidate_id!=""):
@@ -98,7 +109,7 @@ def handle_callback(bot,update):
     elif(action=="TIME"): # T stands for time
         selected,time,candidate_id=telegramcalendar.process_time_selection(bot,update)
         if selected:
-            bot.send_message(chat_id=update.callback_query.from_user.id,
+            bot.edit_message_text(chat_id=update.callback_query.from_user.id,message_id=msg_id,
                         text="Your interview has been scheduled at %s" % time,
                         reply_markup=None)
             database_updates.save_interview_time(time,candidate_id,chat_id)
@@ -208,5 +219,23 @@ def show_calendar_for_interview(chat_id,can_id):
 def show_time_slots_for_interview(chat_id,can_id):
     bot.send_message(chat_id=chat_id, text = "Please choose a time slot on the chosen date for your interview with the candidate.",reply_markup=telegramcalendar.create_time_selection(can_id))
 
+def schedule_checker():
+    while True:
+        schedule.run_pending()
+        sleep(1)
+
+def send_reminder():
+    print("Scheduler running now")
+    scheduled_interviews = database_updates.find_interviews_scheduled_for_the_day()
+    for interview in scheduled_interviews:
+        chat_id=interview['manager_id']
+        name,email=database_updates.get_candidate_info(interview['candidate_id'])
+        text="This is to remind you that you have an interview scheduled today. The interview details are: \n\n" + "Name: " + name + "\nTime: " + interview['interview_time']
+        bot.send_message(chat_id=chat_id,text=text)
+
+schedule.every().day.at("08:00").do(send_reminder)
+Thread(target=schedule_checker).start()
+
 if __name__ == "__main__":
+
     app.run(threaded=True)
