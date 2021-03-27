@@ -48,11 +48,45 @@ def show_confirm(bot, chat_id, obj_id, name, date, time,msg_id):
     ]
     button_list = [button_list[i:i + 2] for i in range(0, len(button_list), 2)]
     reply_markup = InlineKeyboardMarkup(button_list)
-    text = 'Kindly click on the candidate name below to confirm or cancel your interview.\n\n' + "Name: "+name+"\n"+"Timing: "+date + ", " + time
+    text = 'Kindly click on the buttons to confirm or cancel your interview.\n\n' + "Name: "+name+"\n"+"Timing: "+date + ", " + time
     bot.edit_message_text(chat_id=chat_id, text=text,message_id=msg_id,
                      reply_markup=reply_markup)
     return
-    
+
+def update_performance(bot,chat_id,completed_interviews):
+    if (len(completed_interviews)==0):
+        bot.send_message(chat_id=chat_id, text='These are the interviews you have completed so far. Kindly click on the candidate name to update the performance.')
+        return
+    button_list = []
+    for interview in completed_interviews:
+        objid=interview['_id']
+        candidate_id=str(interview['candidate_id'])
+        name,email=database_updates.get_candidate_info(candidate_id)
+        date = interview["interview_date"].strftime(
+                                    '%B') + " " + interview["interview_date"].strftime('%d')
+        time = interview["interview_time"]
+        dic=";".join(["update_performance",str(objid)])
+        button_list.append(InlineKeyboardButton("Name: "+name+"\n"+date + ", "+time,callback_data=str(dic)))
+       
+    button_list  = [button_list[i:i + 1] for i in range(0, len(button_list), 1)]
+    reply_markup=InlineKeyboardMarkup(button_list)
+    bot.send_message(chat_id=chat_id, text='Kindly click on the candidate names to update the performance.',reply_markup=reply_markup)
+    return
+
+def select_reject_candidate(bot, chat_id, obj_id, name, date, time,msg_id):
+    yes = ";".join(["hire",obj_id])
+    no = ";".join(["hire_reject",obj_id])
+    button_list = [
+        InlineKeyboardButton('Reject', callback_data=str(no)),
+        InlineKeyboardButton('Hire', callback_data=str(yes))
+    ]
+    button_list = [button_list[i:i + 2] for i in range(0, len(button_list), 2)]
+    reply_markup = InlineKeyboardMarkup(button_list)
+    text = 'Kindly click on the buttons below to reject or hire the candidate.\n\n' + "Name: "+name+"\n"+"Timing: "+date + ", " + time
+    bot.edit_message_text(chat_id=chat_id, text=text,message_id=msg_id,
+                     reply_markup=reply_markup)
+    return
+
 def handle_callback(bot,update):
     chat_id = update.callback_query.message.chat.id
     msg_id = update.callback_query.message.message_id
@@ -61,6 +95,22 @@ def handle_callback(bot,update):
     print("Context is " + context)
     action = telegramcalendar.separate_callback_data(context)[0]
     print(action)
+    if(action=='update_performance'):
+        action,obj_id=telegramcalendar.separate_callback_data(context)
+        name,date,time=database_updates.get_candidate_and_interview_info(obj_id)
+        select_reject_candidate(bot,chat_id,obj_id,name,date,time,msg_id)
+    if(action=='hire'):
+        action,obj_id=telegramcalendar.separate_callback_data(context)
+        if(database_updates.update_hiring_status(obj_id,"Candidate Hired")):
+            bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "Thank you for the confirmation. We shall notify the candidate on the good news",reply_markup=None)
+        else:
+            bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "Sorry, you have already updated the performance of this candidate.",reply_markup=None)
+    if(action=='hire_reject'):
+        action,obj_id=telegramcalendar.separate_callback_data(context)
+        if (database_updates.update_hiring_status(obj_id,"Candidate Rejected")):
+            bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "Thank you for the confirmation. We shall notify the candidate that their application is unsuccessful.",reply_markup=None)
+        else:
+            bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "Sorry, you have already updated the performance of this candidate.",reply_markup=None)
     if(action=="show_confirm"):
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         action,obj_id=telegramcalendar.separate_callback_data(context)
@@ -69,7 +119,7 @@ def handle_callback(bot,update):
     if(action=="confirm"):
         action,obj_id=telegramcalendar.separate_callback_data(context)
         name,date,time=database_updates.get_candidate_and_interview_info(obj_id)
-        bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "Thank you for confirming the interview! The details are as below:\n\n" + "Name: "+name+"\n"+"Timing: "+date + ", " + time, reply_markup=None)
+        bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "Thank you for confirming the interview! The details are as below:\n\n" + "Name: "+name+"\n"+"Timing: "+date + ", " + time,reply_markup=None)
     elif(action=="delete_sce"):
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         bot.send_message(chat_id=chat_id, text = "Confirmed the appointment!")
@@ -149,6 +199,10 @@ def handle_call(bot,update):
                 #             ("Candidate Name3","602a2af515fb6f9e7a3e7d6f","Mar 12, 2pm")]
 
                 get_schedule(bot, chat_id, response)
+                return
+
+            if intent == 'update_performance' and type(response)!=str:
+                update_performance(bot,chat_id,response)
                 return
 
             bot.sendMessage(chat_id=chat_id, text=response, reply_to_message_id=msg_id) 

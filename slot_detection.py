@@ -205,7 +205,7 @@ def schedule_list(text, chat_id):
                     else:
                         return(f"No interviews found for {ent['text']}")
         else:
-            return("No interviews scheduled for your id")
+            return("You have no interviews scheduled at the moment.")
     except Exception as exception:
         print(exception)
         return("Sorry, I could not understand that. Please check for any spelling errors or Please rephrase the question. If either doesn't work, please reach out to the support at abc@gmail.com for assistance.")

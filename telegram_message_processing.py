@@ -19,7 +19,7 @@ import spacy_ner_detection
 model = keras.models.load_model("bert_intent_detection.hdf5",custom_objects={"BertModelLayer": BertModelLayer},compile=False)
 
 tokenizer = FullTokenizer(vocab_file="vocab.txt")
-classes = ['greetings', 'hiring_request', 'goodbye', 'interview_schedule', 'schedule_list']
+classes = ['greetings', 'hiring_request', 'goodbye', 'schedule_list', 'bot_skill', 'update_performance']
 print(classes)
 
 with open('intents.json') as file:
@@ -74,20 +74,10 @@ def getCorrectResponse(inp, final_intent):
                     responses = random.choice(tg['secondary_responses']).format(first_name)
                 else:
                     responses = random.choice(tg['primary_responses'])
-            
-            elif final_intent == 'interview_schedule':
-                if (database_updates.get_prev_intent(chat_id) == 'hiring_request'):
-                    interview_datetime = slot_detection.schedule_slot_detection(user_text)
-                    ### prefferably give ObjectId
-                    candidate_id = ObjectId('601cca2524132720897f5c91')
-                    if database_updates.schedule_interview(candidate_id,interview_datetime,chat_id,"interview_scheduled"):
-                        responses = random.choice(tg['responses'])
-                    else:
-                        responses = "Sorry Couldn't process the request." ## can be added to secodary resp
-                else:
-                     responses = "Sorry please upload JD and then invoke this intent" ## can be tertiary response
             elif final_intent == 'schedule_list':
                 responses = slot_detection.schedule_list(user_text, chat_id)
+            elif final_intent == 'update_performance':
+                responses = database_updates.find_completed_interviews(chat_id)
             else:
                 responses = random.choice(tg['responses'])
 

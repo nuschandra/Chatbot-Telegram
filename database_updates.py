@@ -157,3 +157,53 @@ def get_candidate_info(candidate_id):
     myquery = {"_id":can_id}
     candidate_info= schema.find_one(myquery)
     return candidate_info["Name"],candidate_info["Email"]
+
+def find_completed_interviews(manager_id):
+    # dd/mm/YY
+    today_date = date.today().strftime("%d-%m-%Y")
+    schema = mydb["interview_details"]
+    slot_break = today_date.split("-")
+    sd, sm, sy = slot_break
+    sy, sm, sd = int(sy), int(sm), int(sd)
+    start = datetime(sy, sm, sd, 0, 0, 0, 0)
+    completed_interviews = list(schema.find({'interview_date': {'$lt': start},'status':'interview_scheduled'}))
+
+    current_day_interviews = list(schema.find({'interview_date': {'$eq': start},'status':'interview_scheduled'}))
+    for interview in current_day_interviews:
+        interview_time = interview['interview_time']
+        if(compare_am_pm_times(interview_time)):
+            completed_interviews.append(interview)
+
+    return completed_interviews
+
+def compare_am_pm_times(interview_time):
+    current_time = datetime.now().strftime("%I:%M%p")  # current_time ="12:00PM"
+
+    if interview_time[5:7] == 'AM' and current_time == 'PM':
+        return True
+    elif interview_time[5:7] == 'PM' and current_time == 'AM':
+        return False
+    else: # same part of day
+        if int(interview_time[0:2]) < int(current_time[0:2]): # compare Hour
+            return True
+        elif int(interview_time[0:2]) > int(current_time[0:2]):
+            return False
+        else:
+            if int(interview_time[3:5]) < int(current_time[3:5]): # compare Minute
+                return True
+            elif int(interview_time[3:5]) > int(current_time[3:5]):
+                return False
+            else:
+                return False
+
+def update_hiring_status(object_id,status):
+    interview_obj_id = ObjectId(object_id)
+    schema = mydb["interview_details"]
+    myquery = {"_id":interview_obj_id,"status":"interview_scheduled"}
+    interview_to_update= schema.find_one(myquery)
+    if (interview_to_update != None):
+        updated_values = {"$set": {"status":status}}
+        schema.update_one(myquery,updated_values)
+        return True
+    else:
+        return False
