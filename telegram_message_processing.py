@@ -92,7 +92,7 @@ def process_file(file_id,chat_id,bot_token):
     download_url = "https://api.telegram.org/file/bot"+bot_token+"/"+file_path
     response = urllib.request.urlopen(download_url)
     job_id=str(uuid.uuid4().hex)
-    file_name = job_id + ".pdf"
+    file_name = job_id + ".txt"
 
     directory = os.getcwd()
     jd_file = os.path.join(directory,"job_descriptions/"+file_name)

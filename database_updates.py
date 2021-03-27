@@ -207,3 +207,12 @@ def update_hiring_status(object_id,status):
         return True
     else:
         return False
+
+def save_candidate(name,email,linkedin_contact,file_name):
+    schema = mydb["resume_details"]
+    
+    data = {"Name":name,"Email": email, "LinkedInContact":linkedin_contact, "Status": "RESUME_UPLOADED", "Resume_Doc": file_name}
+    myquery = {"LinkedInContact": linkedin_contact}
+    existing_user = list(schema.find(myquery))
+    if (len(existing_user) == 0):
+        schema.insert_one(data)

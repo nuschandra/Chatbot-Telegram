@@ -10,6 +10,7 @@ from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
 from pdfminer.pdfpage import PDFPage
 from pdfminer.pdfparser import PDFParser
 import re
+import database_updates
 
 nlp=spacy.load('resume_model')
 jd_nlp = spacy.load('jd_model')
@@ -36,22 +37,11 @@ def convert_pdf_to_txt(path):
     print(pdf_text)
     return pdf_text
 
-def save_candidate(resume_info,file_name):
-    schema = mydb["resume_details"]
-    email = resume_info['Email']
-    data = {"Name":resume_info['Name'][0], "Email": resume_info['Email'][0], "Status": "RESUME_UPLOADED", "Resume_Doc": file_name}
-    myquery = {"Email": email}
-    existing_user = list(schema.find(myquery))
-    if (len(existing_user) == 0):
-        schema.insert_one(data)
 
 
 def extract_resume_details(path,resume_file_name):
     data = convert_pdf_to_txt(path)
-    
     directory = os.getcwd()
-    file_name = resume_file_name[:resume_file_name.find('.pdf')]
-    print(file_name)
     f=open(os.path.join(directory,"ExtractedResumes/"+file_name+".txt"),"w")
 
     # Extracting Skills, Names, Experience etc from Resume
@@ -62,7 +52,7 @@ def extract_resume_details(path,resume_file_name):
     for ent in doc_to_test.ents:
         resume_dict[ent.label_].append(ent.text)
 
-    save_candidate(resume_dict,file_name)
+    database_updates.save_candidate(name,email,linkedin_contact,file_name)
     for i in set(resume_dict.keys()):
 
         f.write("\n\n")
@@ -113,3 +103,40 @@ def extract_jd_details(jd_file_path,job_id):
         f.write(i +":"+"\n")
         for j in set(result[i]):
             f.write(j.replace('\n','')+"\n")
+
+def extract_name_rule(text_file):
+    blue_portion_titles=[' \n','Contact\n','Top Skills\n','Languages\n','Certifications\n','Honors-Awards\n','Publications\n','Patents\n']
+    check=True
+    with open(text_file) as f:
+        for line in f:
+            if(check):
+                if(line in blue_portion_titles):
+                    check=False
+                    continue
+                elif('www.linkedin' in line):
+                    check=False
+                    continue
+                else:
+                    name=line.replace("\n","")
+                    return name
+            if(line=='\n'):
+                check=True
+
+    return "N/A"
+
+def extract_email_rule(pdf_text):
+    regex = '\S+@\S+'
+    email = re.findall(regex,pdf_text)
+    if(len(email)!=0):
+        return email[0]
+    else:
+        return "N/A"
+
+def extract_linkedin_contact_rule(pdf_text):
+    regex = 'www.linkedin.com/in\S+'
+    text_file=pdf_text.replace("\n","")
+    contact = re.findall(regex, text_file) 
+    if(len(contact)!=0):
+        return contact[0]
+    else:
+        return "N/A"

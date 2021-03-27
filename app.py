@@ -16,6 +16,7 @@ import schedule
 from threading import Thread
 from time import sleep
 from bson import ObjectId
+import recommendation
 
 app = Flask(__name__)
 
@@ -212,8 +213,8 @@ def handle_call(bot,update):
         print("File type is:" + file_type)
         if(database_updates.check_user_status(chat_id)):
         # if (True):
-            if file_type != 'application/pdf':
-                error_message = "Sorry, kindly make sure you upload a pdf document only."
+            if file_type != 'text/plain':
+                error_message = "Sorry, kindly make sure you upload a txt file only."
                 bot.sendMessage(chat_id=chat_id, text=error_message, reply_to_message_id=msg_id)
             else:
                 file_id = update.message.document.file_id
@@ -263,7 +264,8 @@ def upload_resume():
             resume_uuid_name = str(uuid.uuid4().hex) + ".pdf"
             resume_path = os.path.join(resume_dir,resume_uuid_name)
             uploaded_file.save(resume_path)
-            spacy_ner_detection.extract_resume_details(resume_path,resume_uuid_name)
+            #spacy_ner_detection.extract_resume_details(resume_path,resume_uuid_name)
+            recommendation.trigger_resume_fetching(resume_path)
         return redirect(url_for('upload_resume'))
     return render_template('upload.html')
 
