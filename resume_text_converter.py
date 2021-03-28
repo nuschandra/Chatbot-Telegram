@@ -37,10 +37,10 @@ def convert_pdf_to_txt(path):
     #f.close()
     return pdf_text
 
-resume_dir=os.path.join(directory,"TextResumes/97f3db9410ad474ba60023e99e7647e0.txt")
-#text_file = convert_pdf_to_txt(resume_dir)
+resume_dir=os.path.join(directory,"Resumes/Atri.pdf")
+text_file = convert_pdf_to_txt(resume_dir)
 
-blue_portion_titles=[' \n','Contact\n','Top Skills\n','Languages\n','Certifications\n','Honors-Awards\n','Publications\n','Patents\n']
+'''blue_portion_titles=[' \n','Contact\n','Top Skills\n','Languages\n','Certifications\n','Honors-Awards\n','Publications\n','Patents\n']
 check=True
 with open(resume_dir) as f:
     for line in f:
@@ -56,14 +56,17 @@ with open(resume_dir) as f:
                 print("The name is: " + name)
                 break
         if(line=='\n'):
-            check=True
+            check=True'''
 
-'''regex = '\S+@\S+'
+regex = '\S+@\S+'
 email = re.findall(regex, text_file) 
 if(len(email)!=0):
     print(email[0])
 
-regex = 'www.linkedin.com/in\S+'
-text_file=text_file.replace("\n","")
-contact = re.findall(regex, text_file) 
-print(contact)'''
+regex = '(www.linkedin.com)+(.|\n|\r)*\(LinkedIn\)'
+contact = re.search(regex, text_file)
+if(contact!=None):
+    contact=contact.group().replace("\n","")
+    print(contact)
+else:
+    print("N/A")

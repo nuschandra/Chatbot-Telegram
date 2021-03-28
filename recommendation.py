@@ -137,13 +137,13 @@ def extract_resume_details(path,names,titles,skills,filenames,degree):
     file_name = path[-36:-4]
     text_file = os.path.join(directory,"TextResumes/"+file_name+".txt")
     f=open(text_file,"w")
-    data = data.replace(u"\xa0", u" ")
-    f.write(data)
+    details_data = data.replace(u"\xa0", u" ")
+    f.write(details_data)
     f.close()
 
     name=spacy_ner_detection.extract_name_rule(text_file)
-    email=spacy_ner_detection.extract_email_rule(data)
-    linkedin_contact=spacy_ner_detection.extract_linkedin_contact_rule(data)
+    email=spacy_ner_detection.extract_email_rule(details_data)
+    linkedin_contact=spacy_ner_detection.extract_linkedin_contact_rule(details_data)
     
     database_updates.save_candidate(name,email,linkedin_contact,file_name)
 
@@ -155,6 +155,14 @@ def extract_resume_details(path,names,titles,skills,filenames,degree):
     for ent in doc_to_test.ents:
         resume_dict[ent.label_].append(ent.text)
     
+    f=open(os.path.join(directory,"ExtractedResumes/"+file_name+".txt"),"w")
+
+    for i in set(resume_dict.keys()):
+
+        f.write("\n\n")
+        f.write(i +":"+"\n")
+        for j in set(resume_dict[i]):
+            f.write(j.replace('\n','')+"\n")
     # for i in set(resume_dict.keys()):
         # print(resume_dict)
     if 'Experience' in resume_dict.keys() and 'Skills' in resume_dict.keys() and 'Degree' in resume_dict.keys():
@@ -361,12 +369,12 @@ def resume_recommendation(jd_path,df,threshold = 0.3,topn = 15):
 ###############################################################################
 
 def resume_details(resume_directory,new_resume_path = ''):
+    names = []
+    degree = []
+    titles = []
+    skills =[]
+    filenames = []
     if not os.path.isfile('resume_details.csv'):
-        names = []
-        degree = []
-        titles = []
-        skills =[]
-        filenames = []
         for f in os.listdir(resume_directory):
             path = os.path.join(resume_directory,f)
             print(path)
@@ -388,7 +396,8 @@ def resume_details(resume_directory,new_resume_path = ''):
         df_new = process_resume_details(names,titles,skills,filenames,degree)
         df = pd.concat([df,df_new])
         df.reset_index(drop=True, inplace=True)
-        
+        df.to_csv('resume_details.csv')
+
         ## update co variance matrix 
         sentences = list(set(df_new['train1']))
         

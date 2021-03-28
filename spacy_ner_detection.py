@@ -133,10 +133,10 @@ def extract_email_rule(pdf_text):
         return "N/A"
 
 def extract_linkedin_contact_rule(pdf_text):
-    regex = 'www.linkedin.com/in\S+'
-    text_file=pdf_text.replace("\n","")
-    contact = re.findall(regex, text_file) 
-    if(len(contact)!=0):
-        return contact[0]
+    regex = '(www.linkedin.com)+(.|\n|\r)*\(LinkedIn\)'
+    contact = re.search(regex, pdf_text)
+    if(contact!=None):
+        contact=contact.group().replace("\n","")
+        return contact
     else:
         return "N/A"
