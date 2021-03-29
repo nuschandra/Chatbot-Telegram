@@ -77,4 +77,8 @@ def get_prev_intent(chat_id):
     schema = mydb["chatbot_user_details"]
     return schema.find_one({"chat_id":chat_id})['status']
 
+        
+def get_open_jd():
+    schema = mydb["jd_collection"]
+    return list(map(lambda val: (val['manager_id'], val['job_id']), schema.find({'status': "OPEN" })))
 
