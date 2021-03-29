@@ -20,5 +20,8 @@
         <input type = "submit" value='Submit'/>
     </div>
     </form>
+    {% if error %}
+    <p class=error><strong>Error:</strong> {{ error }}
+    {% endif %}
   </body>
 </html>

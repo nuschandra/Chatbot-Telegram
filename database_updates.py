@@ -216,3 +216,6 @@ def save_candidate(name,email,linkedin_contact,file_name):
     existing_user = list(schema.find(myquery))
     if (len(existing_user) == 0):
         schema.insert_one(data)
+        return True
+    else:
+        return False

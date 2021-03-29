@@ -12,7 +12,7 @@ from pdfminer.pdfparser import PDFParser
 import re
 import database_updates
 
-nlp=spacy.load('resume_model')
+nlp=spacy.load('resume_model1')
 jd_nlp = spacy.load('jd_model')
 jd_exp_nlp = spacy.load('jd_exp_model')
 

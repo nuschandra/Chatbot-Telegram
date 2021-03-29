@@ -256,6 +256,7 @@ def process_input_message():
 
 @app.route("/resumeUpload", methods=["GET","POST"])
 def upload_resume():
+    error=None
     if request.method == 'POST':
         uploaded_file = request.files['file']
         if uploaded_file.filename != '':
@@ -265,9 +266,14 @@ def upload_resume():
             resume_path = os.path.join(resume_dir,resume_uuid_name)
             uploaded_file.save(resume_path)
             #spacy_ner_detection.extract_resume_details(resume_path,resume_uuid_name)
-            recommendation.trigger_resume_fetching(resume_path)
+            try:
+                recommendation.populate_resume(resume_path)
+            except Exception as e:
+                if(str(e)=="The resume is already present in our system."):
+                    error="The resume is already present in our system."
+                    return render_template('upload.html',error=error)
         return redirect(url_for('upload_resume'))
-    return render_template('upload.html')
+    return render_template('upload.html',error=error)
 
 def show_calendar_for_interview(chat_id,can_id):
     bot.send_message(chat_id=chat_id, text = "Please choose a date for your interview with the candidate.",reply_markup=telegramcalendar.create_calendar(can_id))

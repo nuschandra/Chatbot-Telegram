@@ -15,6 +15,7 @@ from bson import ObjectId
 import uuid
 import os
 import spacy_ner_detection
+import recommendation
 
 model = keras.models.load_model("bert_intent_detection.hdf5",custom_objects={"BertModelLayer": BertModelLayer},compile=False)
 
@@ -103,17 +104,21 @@ def process_file(file_id,chat_id,bot_token):
     return jd_file, job_id
 
 def trigger_resume_fetching(jd_file,job_id):
-    extracted_jd = spacy_ner_detection.extract_jd_details(jd_file,job_id)
+    #extracted_jd = spacy_ner_detection.extract_jd_details(jd_file,job_id)
 
     ## RUN WORD2VEC/TF-IDF at this point to obtain suitable resumes
+    recommended_resumes=recommendation.trigger_resume_fetching(jd_file)
     resume_info = []
-    candidate_details = {}
-    selected_id = 'a2aab2536cc54bd890bb6dff9519c13d'
-    candidate_details['resume_doc']=selected_id
-    candidate_details['name'],candidate_details['email'],candidate_details['id']=database_updates.get_candidate_name_email_id(selected_id)
-    
-    resume_info.append(candidate_details)
-    
+    max_count=0
+    for resume in recommended_resumes:
+        resume_file_name=resume[-36:-4]
+        candidate_details = {}
+        candidate_details['resume_doc']=resume_file_name
+        candidate_details['name'],candidate_details['email'],candidate_details['id']=database_updates.get_candidate_name_email_id(resume_file_name)
+        resume_info.append(candidate_details)    
+        max_count+=1
+        if(max_count==3):
+            break
     return resume_info
 
 def get_current_date(inp):
