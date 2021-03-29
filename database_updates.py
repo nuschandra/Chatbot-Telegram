@@ -219,3 +219,7 @@ def save_candidate(name,email,linkedin_contact,file_name):
         return True
     else:
         return False
+
+def get_open_jd():
+    schema = mydb["jd_collection"]
+    return list(map(lambda val: (val['manager_id'], val['job_id']), schema.find({'status': "OPEN" })))
