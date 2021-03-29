@@ -14,6 +14,7 @@ from nltk.corpus import stopwords
 import numpy as np
 from nltk import word_tokenize, pos_tag
 import nltk
+from nltk import ngrams
 from word2number import w2n
 import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer 
@@ -109,11 +110,15 @@ def extract_jd_details(jd_path):
               "Skill": skill}
     return(result)
 
-
-def join_grams(joinlist):
-    ret = []
-    for i in joinlist:
-        ret.append(i.lstrip().rstrip().lower().replace(' ',''))
+	
+def join_grams(joinlist):	
+    ret = []	
+    for i in joinlist:	
+        n=1	
+        while(n<=len(i.split(' '))):	
+            for gram in ngrams(i.split(), n): 	
+                ret.append(''.join(gram).lower())	
+            n+=1	
     return ' '.join(ret)
 
 def convert_pdf_to_txt(path):
@@ -260,13 +265,17 @@ def similar_doc(df,data,topn):
     skill_match = df[['skills1','filename']].copy()
     skill_match = skill_match.drop_duplicates().copy()
     #skill_match['degree'] = skill_match['degree'].apply(lambda x : x.lower().replace(',','').replace('\'',''))
-    skill_match['train'] = skill_match['skills1']
+    #skill_match['train'] = skill_match['skills1']
+
+    train = [' '.join([j if j in i.split() else 'dummy' for j in data.split() ]) for i in skill_match['skills1'].tolist()]
+
     tfidfvectoriser=TfidfVectorizer()
-    tfidfvectoriser.fit(skill_match['train'])
-    tfidf_vectors=tfidfvectoriser.transform(skill_match['train'])
+    tfidfvectoriser.fit(train)
+    tfidf_vectors=tfidfvectoriser.transform(train)
     
     test_vec = tfidfvectoriser.transform([data])
-    pairwise_similarities = cosine_similarity(tfidf_vectors,test_vec).reshape((-1,))
+    pairwise_similarities = np.dot([tfidf_vectors],[test_vec.T])
+    # pairwise_similarities = cosine_similarity(tfidf_vectors,test_vec).reshape((-1,))
     # print(pairwise_similarities)
     indices = np.nonzero(pairwise_similarities)[0]
     
@@ -402,14 +411,28 @@ def jd_exp_extraction(exp):
     
 
 
-def resume_recommendation(jd_path,df,threshold = 0.15,topn = 15):
+def resume_recommendation(jd_path,df,threshold = 0.15,topn = 15, co_occ_update = True):
     print("Recommending resumes...")
     jd_dict = extract_jd_details(jd_path)
     
     ## updating cooccurence matrix for jd skills 
     sentences  = join_grams(jd_dict['Title']) + " " +join_grams(jd_dict['Skill'])
-    co_occurrence_matrix = co_occ_matrix([sentences])
-    
+    if co_occ_update:
+        co_occurrence_matrix = co_occ_matrix([sentences])
+    else:
+        d = pickle.load(open('co_occ_dict.pkl','rb'))
+        vocab = set()
+        for key, value in d.items():
+            vocab.add(key[0])
+            vocab.add(key[1])
+        vocab = sorted(vocab)
+        co_occurrence_matrix = pd.DataFrame(data=np.zeros((len(vocab), len(vocab)), dtype=np.int16),
+                      index=vocab,
+                      columns=vocab)
+        for key, value in d.items():
+            co_occurrence_matrix.at[key[0], key[1]] = value
+            co_occurrence_matrix.at[key[1], key[0]] = value
+			
     data  = join_grams(jd_dict['Skill'])
     
     filenames_s = similar_doc(df,data,topn)
@@ -490,3 +513,21 @@ def trigger_resume_fetching(jd_path):
     df = pd.read_csv('resume_details.csv',keep_default_na=False)
     recom_file = resume_recommendation(jd_path,df,threshold = 0.15,topn = 15)
     return recom_file
+
+
+def new_resumes_recommendation(new_resume_path):
+    new_resume_path="D:\Intelligent Systems\Practical Language Processing\Project\Chatbot-Telegram-chandra-branch\Chatbot-Telegram-chandra-branch\LinkedinResumes\\Profile(1).pdf"
+    open_jd = database_updates.get_open_jd()
+    directory = os.getcwd()
+    resume_directory = os.path.join(directory,"Resumes")
+
+    df,co_occurrence_matrix =  resume_details(resume_directory,new_resume_path)
+    
+    managerids = []
+    
+    for managerid,filename in open_jd:
+        path = os.path.join(directory,"JDs",filename+'.txt')
+        if new_resume_path in [os.path.split(i)[-1] for i in resume_recommendation(path,df,threshold = 0.3,topn = 15,co_occ_update = False)]:
+            managerids.append(managerid)
+
+    return list(set(managerids))
