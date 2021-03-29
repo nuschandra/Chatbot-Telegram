@@ -39,6 +39,7 @@ grammar = r"""
 cp = nltk.RegexpParser(grammar)
 
 def co_occ_matrix(sentences):
+    print("Calculating co-occurence matrix")
     if os.path.isfile('co_occ_dict.pkl'):
         d = pickle.load(open('co_occ_dict.pkl','rb'))
     else:
@@ -71,6 +72,7 @@ def co_occ_matrix(sentences):
 
 
 def extract_jd_details(jd_path):
+    print("Hehe! Extracting JD details")
     f=open(jd_path,'r', encoding='utf-8')
     text = ""
     for x in f:
@@ -217,13 +219,14 @@ def extract_resume_details(path,names,titles,skills,filenames,degree):
             titles.append(j.replace('\n',''))
             skills.append(li)
             filenames.append(path)
-            names.append(' '.join(name))
+            names.append(name)
             degree.append(' '.join(extracted_degree))
     else:
         skills.append(li)
         filenames.append(path)
-        names.append(' '.join(name))
+        names.append(name)
         degree.append(' '.join(extracted_degree))
+        titles.append('')
 
     return names,titles,skills,filenames,degree
 
@@ -252,9 +255,8 @@ def extract_months(text):
         return 0
 
 
-   
-
 def similar_doc(df,data,topn):
+    print("I am going to calculate tf-idf")
     skill_match = df[['skills1','filename']].copy()
     skill_match = skill_match.drop_duplicates().copy()
     #skill_match['degree'] = skill_match['degree'].apply(lambda x : x.lower().replace(',','').replace('\'',''))
@@ -276,12 +278,15 @@ def similar_doc(df,data,topn):
 
 
 def similar_exp(rec_skill,jd_exp,threshold,jd_title,df,co_occurrence_matrix):
+    print("Experience based matching")
     rec_exp = []
     for i in rec_skill:
         exp = 0
         for j in df[df['filename'] == i]['title1'].tolist():
             # print(np.dot(co_occurrence_matrix[jd_title.lower().lstrip().rstrip().replace(' ','_')].tolist(),co_occurrence_matrix[j].T.tolist()))
             # if (np.dot(co_occurrence_matrix[jd_title.lower().lstrip().rstrip().replace(' ','')].tolist(),co_occurrence_matrix[j].T.tolist()) > threshold):
+            cosine_similarity_value = cosine_similarity([co_occurrence_matrix[jd_title.lower().lstrip().rstrip().replace(' ','')].tolist()],[co_occurrence_matrix[j].T.tolist()])
+            print("The title similarity value is: " + str(cosine_similarity_value))
             if (cosine_similarity([co_occurrence_matrix[jd_title.lower().lstrip().rstrip().replace(' ','')].tolist()],[co_occurrence_matrix[j].T.tolist()]) > threshold):
                 print(df[(df.filename == i) & (df.title1 == j)]['title1'].values[0])
                 exp += df[(df.filename == i) & (df.title1 == j)]['exp'].values[0]
@@ -340,7 +345,7 @@ def process_resume_details(names,titles,skills,filenames,degree):
     df['title'] = pd.Series(result)
     df = df.drop(['titles'], axis=1)
     df['skills1'] = df['skills'].apply(join_grams)
-    df['title1'] = df['title'].apply(lambda x: x.lower().lstrip().rstrip().replace(' ','') if type(x)==str)
+    df['title1'] = df['title'].apply(lambda x: x.lower().lstrip().rstrip().replace(' ',''))
     df['train1'] = df['title1']+' ' + df['skills1'] 
     df =  df[df['train1'].notna()]
     df['exp'] = df['experience'].apply(extract_months)
@@ -351,6 +356,7 @@ def process_resume_details(names,titles,skills,filenames,degree):
 
 
 def jd_exp_extraction(exp):
+    print("Extracting experience from JD")
     tokens = word_tokenize(" ".join(exp))
     tokens_pos = pos_tag(tokens)
     
@@ -396,7 +402,8 @@ def jd_exp_extraction(exp):
     
 
 
-def resume_recommendation(jd_path,df,threshold = 0.3,topn = 15):
+def resume_recommendation(jd_path,df,threshold = 0.15,topn = 15):
+    print("Recommending resumes...")
     jd_dict = extract_jd_details(jd_path)
     
     ## updating cooccurence matrix for jd skills 
@@ -406,10 +413,12 @@ def resume_recommendation(jd_path,df,threshold = 0.3,topn = 15):
     data  = join_grams(jd_dict['Skill'])
     
     filenames_s = similar_doc(df,data,topn)
-    
+    print("The number of resumes matching by skill is: " + str(len(filenames_s)))
     jd_exp = jd_exp_extraction([' '.join(jd_dict['Exp'])])
     jd_title = join_grams([jd_dict['Title'][0]])
     filenames_e = similar_exp(filenames_s,jd_exp,threshold,jd_title,df,co_occurrence_matrix)
+    print("The number of resumes matching by experience is: " + str(len(filenames_e)))
+
     return filenames_e
 
 
@@ -439,7 +448,7 @@ def resume_details(resume_directory,new_resume_path = ''):
         
     ##### for new resume give the path in below
     elif os.path.isfile(new_resume_path):
-        df = pd.read_csv('resume_details.csv')
+        df = pd.read_csv('resume_details.csv',keep_default_na=False)
         try:
             names,titles,skills,filenames,degree = extract_resume_details(new_resume_path,names,titles,skills,filenames,degree)
         except:
@@ -478,6 +487,6 @@ def populate_resume(file_path):
 ###########################################################################
 
 def trigger_resume_fetching(jd_path):
-    df = pd.read_csv('resume_details.csv')
-    recom_file = resume_recommendation(jd_path,df,threshold = 0.3,topn = 15)
+    df = pd.read_csv('resume_details.csv',keep_default_na=False)
+    recom_file = resume_recommendation(jd_path,df,threshold = 0.15,topn = 15)
     return recom_file

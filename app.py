@@ -222,6 +222,11 @@ def handle_call(bot,update):
                 response = "Thank you for uploading the job description. Our algorithm will identify and recommend the best suited candidates to you."
                 bot.sendMessage(chat_id=chat_id, text=response, reply_to_message_id=msg_id)
                 resume_info = telegram_message_processing.trigger_resume_fetching(jd_file,job_id)
+                if (len(resume_info)==0):
+                    response = "Sorry! We did not find any resume matching your requirements. We will notify if we find anything in the future."
+                    bot.sendMessage(chat_id=chat_id, text=response)
+                    return
+                    
                 for info in resume_info:
                     ids=info['resume_doc']
                     name=info['name']
