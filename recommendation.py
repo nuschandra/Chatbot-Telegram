@@ -30,6 +30,18 @@ nlp=spacy.load('resume_model1')
 nlp_experience = spacy.load('resume_model')
 nlp_degree = spacy.load('resume_model5')
 
+lookup_dict = {'javascript' : ['js','javascript','jscript','java script'],
+'nodejs' : ['node.js','node','nodejs','node js'],
+'angularjs' : ['angularjs','angular.js','angular','angular js'],
+'reactjs' : ['reactjs','react.js','react','react js'],
+'vuejs' : ['vue.js','vue','vuejs','vue js'],
+'artificial intelligence' : ['ai','artificial intelligence'],
+'machine learning' : ['ml','machine learning'],
+'deep learning' : ['dl','deep learning'],
+'ms sql' : ['microsoft sql','ms sql','mssql'],
+'sql' : ['sql','structured query language'],
+'database' : ['database','db','databases']}
+
 grammar = r"""
     NP1: {<CD><NN|NNS>}
     NP2: {<NN><CD>}
@@ -110,6 +122,12 @@ def extract_jd_details(jd_path):
               "Skill": skill}
     return(result)
 
+def look_up_skill(skills):
+    for i in skills:
+        for key in lookup_dict:
+            if i.lower() in lookup_dict[key]:
+                skills[skills.index(i)] = key
+    return list(set(skills))
 	
 def join_grams(joinlist):	
     ret = []	
@@ -119,7 +137,7 @@ def join_grams(joinlist):
             for gram in ngrams(i.split(), n): 	
                 ret.append(''.join(gram).lower())	
             n+=1	
-    return ' '.join(ret)
+    return ' '.join(list(set(ret)))
 
 def convert_pdf_to_txt(path):
     resource_manager = PDFResourceManager()
@@ -274,7 +292,7 @@ def similar_doc(df,data,topn):
     tfidf_vectors=tfidfvectoriser.transform(train)
     
     test_vec = tfidfvectoriser.transform([data])
-    pairwise_similarities = np.dot([tfidf_vectors],[test_vec.T])
+    pairwise_similarities = np.dot([tfidf_vectors],[test_vec.T]).toarray().reshape((-1,))
     # pairwise_similarities = cosine_similarity(tfidf_vectors,test_vec).reshape((-1,))
     # print(pairwise_similarities)
     indices = np.nonzero(pairwise_similarities)[0]
@@ -353,6 +371,7 @@ def process_resume_details(names,titles,skills,filenames,degree):
     df['experience'] = pd.Series(experience)
     df['title'] = pd.Series(result)
     df = df.drop(['titles'], axis=1)
+    df['skills'] = df['skills'].apply(look_up_skill)
     df['skills1'] = df['skills'].apply(join_grams)
     df['title1'] = df['title'].apply(lambda x: x.lower().lstrip().rstrip().replace(' ',''))
     df['train1'] = df['title1']+' ' + df['skills1'] 
@@ -414,9 +433,11 @@ def jd_exp_extraction(exp):
 def resume_recommendation(jd_path,df,threshold = 0.15,topn = 15, co_occ_update = True):
     print("Recommending resumes...")
     jd_dict = extract_jd_details(jd_path)
-    
+
+    jd_dict['Skill'] = look_up_skill(jd_dict['Skill'])
+
     ## updating cooccurence matrix for jd skills 
-    sentences  = join_grams(jd_dict['Title']) + " " +join_grams(jd_dict['Skill'])
+    sentences  = ''.join(jd_dict['Title'][0].split()).lower() + " " +join_grams(jd_dict['Skill'])
     if co_occ_update:
         co_occurrence_matrix = co_occ_matrix([sentences])
     else:
@@ -438,7 +459,7 @@ def resume_recommendation(jd_path,df,threshold = 0.15,topn = 15, co_occ_update =
     filenames_s = similar_doc(df,data,topn)
     print("The number of resumes matching by skill is: " + str(len(filenames_s)))
     jd_exp = jd_exp_extraction([' '.join(jd_dict['Exp'])])
-    jd_title = join_grams([jd_dict['Title'][0]])
+    jd_title = ''.join(jd_dict['Title'][0].split()).lower()
     filenames_e = similar_exp(filenames_s,jd_exp,threshold,jd_title,df,co_occurrence_matrix)
     print("The number of resumes matching by experience is: " + str(len(filenames_e)))
 
@@ -500,7 +521,7 @@ def populate_resume(file_path):
     directory = os.getcwd()
     resume_directory = os.path.join(directory,"Resumes")
 
-    #jd_path = r'D:\Intelligent Systems\Practical Language Processing\Project\coocc_jd\jd_212.txt'
+    #jd_path = r'D:\Intelligent Systems\Practical Language Processing\Project\coocc_jd\jd_509.txt'
     try:
         df,co_occurrence_matrix =  resume_details(resume_directory,file_path)
     except:
@@ -509,7 +530,7 @@ def populate_resume(file_path):
 ###########################################################################
 ###########################################################################
 
-def trigger_resume_fetching(jd_path):
+def trigger_resume_fetching(jd_path,job_id,chat_id):
     df = pd.read_csv('resume_details.csv',keep_default_na=False)
     recom_file = resume_recommendation(jd_path,df,threshold = 0.15,topn = 15)
     return recom_file

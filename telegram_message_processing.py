@@ -16,6 +16,7 @@ import uuid
 import os
 import spacy_ner_detection
 import recommendation
+import string
 
 model = keras.models.load_model("bert_intent_detection.hdf5",custom_objects={"BertModelLayer": BertModelLayer},compile=False)
 
@@ -85,14 +86,14 @@ def getCorrectResponse(inp, final_intent):
     database_updates.insert_chatbot_user_data(date_of_msg,first_name,chat_id,final_intent)
     return responses
 
-def process_file(file_id,chat_id,bot_token):
+def process_file(file_id,bot_token):
     url = "https://api.telegram.org/bot"+bot_token+"/getFile?file_id="+file_id
     r = requests.get(url)
     data = r.json()
     file_path = data['result']['file_path']
     download_url = "https://api.telegram.org/file/bot"+bot_token+"/"+file_path
     response = urllib.request.urlopen(download_url)
-    job_id=str(uuid.uuid4().hex)
+    job_id=''.join(random.choices(string.ascii_letters + string.digits, k=16))
     file_name = job_id + ".txt"
 
     directory = os.getcwd()
@@ -100,14 +101,25 @@ def process_file(file_id,chat_id,bot_token):
     file = open(jd_file, 'wb')
     file.write(response.read())
     file.close()
-    database_updates.save_job_description(job_id,chat_id,"OPEN")
     return jd_file, job_id
 
-def trigger_resume_fetching(jd_file,job_id):
+def save_jd_in_database(jd_file,job_id,chat_id):
+    jd_dict = recommendation.extract_jd_details(jd_file)
+    if 'Title' not in jd_dict.keys():
+        title=='N/A'
+    else:
+        title=jd_dict['Title'][0]
+
+    try:
+        database_updates.save_job_description(job_id,chat_id,"OPEN",title.lower())
+    except Exception as e:
+        raise e
+
+def trigger_resume_fetching(jd_file,job_id,chat_id):
     #extracted_jd = spacy_ner_detection.extract_jd_details(jd_file,job_id)
 
     ## RUN WORD2VEC/TF-IDF at this point to obtain suitable resumes
-    recommended_resumes=recommendation.trigger_resume_fetching(jd_file)
+    recommended_resumes=recommendation.trigger_resume_fetching(jd_file,job_id,chat_id)
     resume_info = []
     max_count=0
     for resume in recommended_resumes:
@@ -115,6 +127,12 @@ def trigger_resume_fetching(jd_file,job_id):
         candidate_details = {}
         candidate_details['resume_doc']=resume_file_name
         candidate_details['name'],candidate_details['email'],candidate_details['id']=database_updates.get_candidate_name_email_id(resume_file_name)
+        
+        job_title=database_updates.get_job_title_based_on_jobid(job_id)
+        date,time,status=check_duplicate_interview(chat_id,candidate_id,job_title)
+        states_not_to_return=['interview_scheduled','Candidate Hired','Candidate Rejected']
+        if status in states_not_to_return:
+            continue
         resume_info.append(candidate_details)    
         max_count+=1
         if(max_count==3):
@@ -128,6 +146,8 @@ def get_current_date(inp):
     date_of_msg = local_time.strftime("%d/%m/%Y")
     return date_of_msg
     
-def check_duplicate_interview(chat_id,candidate_id):
-    date,time= database_updates.get_interview_details_manager_candidate_id(chat_id,candidate_id)
-    return date,time
+def check_duplicate_interview(chat_id,candidate_id,job_title):
+    date,time,status= database_updates.get_interview_details_manager_candidate_id_title(chat_id,candidate_id,job_title)
+    
+    return date,time,status
+        

@@ -78,9 +78,13 @@ def get_prev_intent(chat_id):
     schema = mydb["chatbot_user_details"]
     return schema.find_one({"chat_id":chat_id})['status']
 
-def save_job_description(jd_id, chat_id, status):
+def save_job_description(jd_id, chat_id, status,title):
     schema = mydb["jd_collection"]
-    data = {"created_date":datetime.now(), "manager_id": chat_id, "job_id": jd_id, "status":status}
+    data = {"created_date":datetime.now(), "manager_id": chat_id, "job_id": jd_id, "status":status,"job_title":title}
+    myquery={'manager_id':chat_id,'job_title':title}
+    existing_jd=schema.find_one(myquery)
+    if(existing_jd!=None):
+        raise Exception("You already have a job opening for this role")
     schema.insert_one(data)
 
 def get_candidate_name_email_id(candidate_id):
@@ -88,16 +92,17 @@ def get_candidate_name_email_id(candidate_id):
     candidate= schema.find_one({"Resume_Doc":candidate_id})
     return candidate['Name'], candidate['Email'],str(candidate['_id'])
 
-def save_interview_date(selected_date,candidate_id,manager_id,status):
+def save_interview_date(selected_date,candidate_id,manager_id,job_id,status):
     can_id = ObjectId(candidate_id)
     schema = mydb["interview_details"]
-    data = {"created_date":datetime.now(), "manager_id": manager_id, "interview_date": selected_date, "status":status, "candidate_id":can_id}
-    schema.insert_one(data)
+    title = get_job_title_based_on_jobid(job_id)
+    data = {"created_date":datetime.now(), "manager_id": manager_id, "interview_date": selected_date, "status":status, "candidate_id":can_id,"job_id":job_id,"job_title":title}
+    oid = schema.insert_one(data)
+    return str(oid)
 
-def save_interview_time(selected_time,candidate_id,manager_id):
-    can_id = ObjectId(candidate_id)
+def save_interview_time(selected_time,interview_oid):
     schema = mydb["interview_details"]
-    myquery = {"manager_id":manager_id,"candidate_id":can_id}
+    myquery = {"_id":interview_oid}
     interview_to_update= schema.find_one(myquery)
     if (interview_to_update != None):
         updated_values = {"$set": {"interview_time":selected_time}}
@@ -117,26 +122,39 @@ def get_candidate_and_interview_info(object_id):
                                     '%B') + " " + interview_info["interview_date"].strftime('%d')
     time = interview_info["interview_time"]
     candidate_id=ObjectId(interview_info["candidate_id"])
+    title=interview_info['job_title']
     schema=mydb["resume_details"]
     myquery = {"_id":candidate_id}
     resume_info= schema.find_one(myquery)
     name=resume_info["Name"]
 
-    return name,date,time
+    return name,date,time,title
 
-def get_interview_details_manager_candidate_id(manager_id,candidate_id):
+def get_interview_details_manager_candidate_id_title(manager_id,candidate_id,title):
     schema = mydb["interview_details"]
     can_id=ObjectId(candidate_id)
-    myquery = {"manager_id":manager_id,"candidate_id":can_id}
+    myquery = {"manager_id":manager_id,"candidate_id":can_id,"title":title}
     interview_info= schema.find_one(myquery)
 
     if(interview_info!=None):
         date = interview_info["interview_date"].strftime(
                                     '%B') + " " + interview_info["interview_date"].strftime('%d')
         time = interview_info["interview_time"]
-        return date,time
+        status= interview_info['status']
+        return date,time,status
     else:
-        return None,None
+        return None,None,None
+    
+def get_job_title_based_on_jobid(manager_id,job_id):
+    schema = mydb["jd_collection"]
+    myquery={"job_id":job_id}
+    job_info= schema.find_one(myquery)
+
+    if(job_info!=None):
+        title=job_info["job_title"]
+        return title
+    else:
+        raise Exception("There is some database corruption")
 
 def find_interviews_scheduled_for_the_day():
     # dd/mm/YY
@@ -223,3 +241,28 @@ def save_candidate(name,email,linkedin_contact,file_name):
 def get_open_jd():
     schema = mydb["jd_collection"]
     return list(map(lambda val: (val['manager_id'], val['job_id']), schema.find({'status': "OPEN" })))
+
+def get_job_info_from_interview_obj_id(interview_oid):
+    schema = mydb['interview_details']
+    myquery={"_id":interview_oid}
+    interview = schema.find_one(myquery)
+    return interview['job_id'],interview['job_title']
+    
+def close_job(job_id):
+    schema = mydb['jd_collection']
+    myquery={"job_id":job_id}
+    interview = schema.find_one(myquery)
+    if (interview != None):
+        updated_values = {"$set": {"status":"CLOSED"}}
+        schema.update_one(myquery,updated_values)
+
+def reject_pending_candidates(job_id,chat_id):
+    schema = mydb['interview_details']
+    myquery={"job_id":job_id,"manager_id":chat_id,"status":"interview_scheduled"}
+    updated_values = {"$set": {"status":"Candidate Rejected"}}
+    
+    pending_candidates = list(schema.find(myquery))
+    if (len(pending_candidates) == 0):
+        return
+    else:
+        schema.update_many(myquery,updated_values)

@@ -25,7 +25,7 @@ bot_username = "VirtualRecruiterBot"
 bot_url = "https://b9e5a020b8d7.ngrok.io/"
 bot = telegram.Bot(token=bot_token)
 bot.delete_webhook(drop_pending_updates=True)
-bot_url =  "https://732fa7b2da05.ngrok.io/"
+bot_url =  "https://583f0327e6b9.ngrok.io/"
 bot.setWebhook('{URL}{HOOK}'.format(URL=bot_url, HOOK=bot_token))
 
 
@@ -66,15 +66,16 @@ def update_performance(bot,chat_id,completed_interviews):
         date = interview["interview_date"].strftime(
                                     '%B') + " " + interview["interview_date"].strftime('%d')
         time = interview["interview_time"]
+        title=interview['job_title']
         dic=";".join(["update_performance",str(objid)])
-        button_list.append(InlineKeyboardButton("Name: "+name+"\n"+date + ", "+time,callback_data=str(dic)))
+        button_list.append(InlineKeyboardButton("Name: "+name+"\n"+date + ", "+time +"\n"+"Title: "+title,callback_data=str(dic)))
        
     button_list  = [button_list[i:i + 1] for i in range(0, len(button_list), 1)]
     reply_markup=InlineKeyboardMarkup(button_list)
     bot.send_message(chat_id=chat_id, text='Kindly click on the candidate names to update the performance.',reply_markup=reply_markup)
     return
 
-def select_reject_candidate(bot, chat_id, obj_id, name, date, time,msg_id):
+def select_reject_candidate(bot, chat_id, obj_id, name, date, time,msg_id,title):
     yes = ";".join(["hire",obj_id])
     no = ";".join(["hire_reject",obj_id])
     button_list = [
@@ -83,9 +84,22 @@ def select_reject_candidate(bot, chat_id, obj_id, name, date, time,msg_id):
     ]
     button_list = [button_list[i:i + 2] for i in range(0, len(button_list), 2)]
     reply_markup = InlineKeyboardMarkup(button_list)
-    text = 'Kindly click on the buttons below to reject or hire the candidate.\n\n' + "Name: "+name+"\n"+"Timing: "+date + ", " + time
+    text = 'Kindly click on the buttons below to reject or hire the candidate.\n\n' + "Name: "+name+"\n"+"Timing: "+date + ", " + time + "\n"+"Title: "+title
     bot.edit_message_text(chat_id=chat_id, text=text,message_id=msg_id,
                      reply_markup=reply_markup)
+    return
+
+def close_job_opening(job_id,job_title):
+    close = ";".join(["close",job_id])
+    open_job = ";".join(["open",job_id])
+    button_list = [
+        InlineKeyboardButton('Close', callback_data=str(close)),
+        InlineKeyboardButton('Keep it open', callback_data=str(open_job))
+    ]
+    button_list = [button_list[i:i + 2] for i in range(0, len(button_list), 2)]
+    reply_markup = InlineKeyboardMarkup(button_list)
+    close_job_text="Since you have hired a candidate, would you like to close the " + job_title + " opening? You can keep it open if you would like to hire more candidates for this role."
+    bot.send_message(chat_id=chat_id, text=close_job_text,reply_markup=reply_markup)
     return
 
 def handle_callback(bot,update):
@@ -96,14 +110,23 @@ def handle_callback(bot,update):
     print("Context is " + context)
     action = telegramcalendar.separate_callback_data(context)[0]
     print(action)
+    if(action=='close'):
+        action,job_id=telegramcalendar.separate_callback_data(context)
+        database_updates.close_job(job_id)
+        database_updates.reject_pending_candidates(job_id,chat_id)
+        bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "Thank you for the confirmation. We have closed this job opening.",reply_markup=None)
+    if(action=='open'):
+        bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "Thank you for the confirmation.",reply_markup=None)
     if(action=='update_performance'):
         action,obj_id=telegramcalendar.separate_callback_data(context)
-        name,date,time=database_updates.get_candidate_and_interview_info(obj_id)
-        select_reject_candidate(bot,chat_id,obj_id,name,date,time,msg_id)
+        name,date,time,title=database_updates.get_candidate_and_interview_info(obj_id)
+        select_reject_candidate(bot,chat_id,obj_id,name,date,time,msg_id,title)
     if(action=='hire'):
         action,obj_id=telegramcalendar.separate_callback_data(context)
+        job_id,job_title = database_updates.get_job_info_from_interview_obj_id(interview_oid)
         if(database_updates.update_hiring_status(obj_id,"Candidate Hired")):
             bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "Thank you for the confirmation. We shall notify the candidate on the good news",reply_markup=None)
+            close_job_opening(job_id,job_title)
         else:
             bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "Sorry, you have already updated the performance of this candidate.",reply_markup=None)
     if(action=='hire_reject'):
@@ -129,19 +152,27 @@ def handle_callback(bot,update):
         database_updates.cancel_schedule(obj_id)
         bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "I have cancelled the interview with the candidate.", reply_markup=None)
     elif(action=="Accept"):
-        action,candidate_id=telegramcalendar.separate_callback_data(context)
+        action,candidate_id,job_id=telegramcalendar.separate_callback_data(context)
+        job_title=database_updates.get_job_title_based_on_jobid(job_id)
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
-        date,time=telegram_message_processing.check_duplicate_interview(chat_id,candidate_id)
-        if (date==None and time ==None):
-            show_calendar_for_interview(chat_id,candidate_id)
+        date,time,status=telegram_message_processing.check_duplicate_interview(chat_id,candidate_id,job_title)
+        if (date==None and time==None and status==None):
+            show_calendar_for_interview(chat_id,candidate_id,job_id)
         else:
-            bot.send_message(chat_id=chat_id, text = "You already have an interview scheduled with this candidate on " + date + " at " + time)
+            if(status=='interview_scheduled'):
+                bot.send_message(chat_id=chat_id, text = "You already have an interview scheduled with this candidate on " + date + " at " + time + " for the " + job_title + " role.")
+            elif(status=='Candidate Hired'):
+                bot.send_message(chat_id=chat_id, text = "You have already hired this candidate for the " + job_title + " role.")
+            elif(status=='Candidate Rejected'):
+                bot.send_message(chat_id=chat_id, text = "You have already rejected this candidate for the " + job_title + " role.")
+
     elif(action=="Reject"):
-        action,candidate_id=telegramcalendar.separate_callback_data(context)
+        action,candidate_id,job_id=telegramcalendar.separate_callback_data(context)
+        database_updates.save_interview_date("N/A",candidate_id,chat_id,job_id,"Candidate Rejected")
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         bot.send_message(chat_id=chat_id, text = "Rejected candidate")
     elif(action=="DATE"): # D stands for Date
-        selected,date,candidate_id=telegramcalendar.process_calendar_selection(bot,update)
+        selected,date,candidate_id,job_id=telegramcalendar.process_calendar_selection(bot,update)
         if selected:
             today = datetime.now().strftime("%d/%m/%Y")
             current_selected_date = date.strftime("%d/%m/%Y")
@@ -149,21 +180,21 @@ def handle_callback(bot,update):
                 bot.send_message(chat_id=update.callback_query.from_user.id,
                         text="The date you've selected is invalid. Please choose a valid date.",
                         reply_markup=None)
-                show_calendar_for_interview(chat_id)
+                show_calendar_for_interview(chat_id,candidate_id,job_id)
             else:
                 bot.edit_message_text(chat_id=update.callback_query.from_user.id,message_id=msg_id,
                         text="You selected %s" % current_selected_date,
                         reply_markup=None)
                 if(candidate_id!=""):
-                    database_updates.save_interview_date(date,candidate_id,chat_id,"interview_scheduled")
-                    show_time_slots_for_interview(chat_id,candidate_id)
+                    interview_oid = database_updates.save_interview_date(date,candidate_id,chat_id,job_id,"interview_scheduled")
+                    show_time_slots_for_interview(chat_id,interview_oid)
     elif(action=="TIME"): # T stands for time
-        selected,time,candidate_id=telegramcalendar.process_time_selection(bot,update)
+        selected,time,interview_oid=telegramcalendar.process_time_selection(bot,update)
         if selected:
             bot.edit_message_text(chat_id=update.callback_query.from_user.id,message_id=msg_id,
                         text="Your interview has been scheduled at %s" % time,
                         reply_markup=None)
-            database_updates.save_interview_time(time,candidate_id,chat_id)
+            database_updates.save_interview_time(time,candidate_id,interview_oid)
 
     return
 
@@ -218,10 +249,17 @@ def handle_call(bot,update):
                 bot.sendMessage(chat_id=chat_id, text=error_message, reply_to_message_id=msg_id)
             else:
                 file_id = update.message.document.file_id
-                jd_file,job_id = telegram_message_processing.process_file(file_id,chat_id,bot_token)
+                jd_file,job_id = telegram_message_processing.process_file(file_id,bot_token)
+                try:
+                    telegram_message_processing.save_jd_in_database(jd_file,job_id,chat_id)
+                except Exception as e:
+                    bot.sendMessage(chat_id=chat_id, text=str(e), reply_to_message_id=msg_id)
+                    return
+
                 response = "Thank you for uploading the job description. Our algorithm will identify and recommend the best suited candidates to you."
                 bot.sendMessage(chat_id=chat_id, text=response, reply_to_message_id=msg_id)
-                resume_info = telegram_message_processing.trigger_resume_fetching(jd_file,job_id)
+            
+                resume_info = telegram_message_processing.trigger_resume_fetching(jd_file,job_id,chat_id)
                 if (len(resume_info)==0):
                     response = "Sorry! We did not find any resume matching your requirements. We will notify if we find anything in the future."
                     bot.sendMessage(chat_id=chat_id, text=response)
@@ -235,8 +273,8 @@ def handle_call(bot,update):
                     file_to_send = "Resumes/"+str(ids)+".pdf"
                     #get_candidate_details = database_updates.hire_request(ids)
                     get_candidate_details = "Name: "+name+"\n"+"Email: "+email
-                    accept=";".join(["Accept",candidate_id])
-                    reject=";".join(["Reject",candidate_id]) 
+                    accept=";".join(["Accept",candidate_id,job_id])
+                    reject=";".join(["Reject",candidate_id,job_id]) 
                     keyboard = [[InlineKeyboardButton("Accept", callback_data=str(accept))],
                                 [InlineKeyboardButton("Reject", callback_data=str(reject))]]    
                     bot.sendDocument(chat_id=chat_id,document=open(file_to_send, 'rb'),caption=get_candidate_details,reply_markup=InlineKeyboardMarkup(keyboard),filename=name+".pdf")
@@ -280,11 +318,11 @@ def upload_resume():
         return redirect(url_for('upload_resume'))
     return render_template('upload.html',error=error)
 
-def show_calendar_for_interview(chat_id,can_id):
-    bot.send_message(chat_id=chat_id, text = "Please choose a date for your interview with the candidate.",reply_markup=telegramcalendar.create_calendar(can_id))
+def show_calendar_for_interview(chat_id,can_id,job_id):
+    bot.send_message(chat_id=chat_id, text = "Please choose a date for your interview with the candidate.",reply_markup=telegramcalendar.create_calendar(can_id,job_id))
 
-def show_time_slots_for_interview(chat_id,can_id):
-    bot.send_message(chat_id=chat_id, text = "Please choose a time slot on the chosen date for your interview with the candidate.",reply_markup=telegramcalendar.create_time_selection(can_id))
+def show_time_slots_for_interview(chat_id,interview_oid):
+    bot.send_message(chat_id=chat_id, text = "Please choose a time slot on the chosen date for your interview with the candidate.",reply_markup=telegramcalendar.create_time_selection(interview_oid))
 
 def schedule_checker():
     while True:
