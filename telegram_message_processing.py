@@ -127,7 +127,7 @@ def trigger_resume_fetching(jd_file,job_id,chat_id):
         candidate_details = {}
         candidate_details['resume_doc']=resume_file_name
         candidate_details['name'],candidate_details['email'],candidate_details['id']=database_updates.get_candidate_name_email_id(resume_file_name)
-        
+        candidate_id=candidate_details['id']
         job_title=database_updates.get_job_title_based_on_jobid(job_id)
         date,time,status=check_duplicate_interview(chat_id,candidate_id,job_title)
         states_not_to_return=['interview_scheduled','Candidate Hired','Candidate Rejected']
@@ -151,3 +151,39 @@ def check_duplicate_interview(chat_id,candidate_id,job_title):
     
     return date,time,status
         
+def check_candidate_availability(selected_date,selected_time,candidate_id):
+    candidate_interview_dates = database_updates.get_candidate_busy_dates(candidate_id)
+    if (len(candidate_interview_dates)==0):
+        return True
+    else:
+        for dates in candidate_interview_dates:
+            selected_date = selected_date.strftime("%d/%m/%Y")
+            db_date=dates["interview_date"].strftime("%d/%m/%Y")
+            if (selected_date==db_date):
+                db_time=dates["interview_time"]
+                if(selected_time==db_time):
+                    return False
+                else:
+                    continue
+            else:
+                continue
+        return True
+
+def check_manager_availability(selected_date,selected_time,manager_id):
+    manager_interview_dates = database_updates.get_manager_busy_dates(manager_id)
+    if (len(manager_interview_dates)==0):
+        return True
+    else:
+        for dates in manager_interview_dates:
+            selected_date = selected_date.strftime("%d/%m/%Y")
+            db_date=dates["interview_date"].strftime("%d/%m/%Y")
+            if (selected_date==db_date):
+                db_time=dates["interview_time"]
+                if(selected_time==db_time):
+                    return False
+                else:
+                    continue
+            else:
+                continue
+        return True
+

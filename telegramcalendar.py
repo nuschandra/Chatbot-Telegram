@@ -9,9 +9,9 @@ def create_callback_data(type_of_callback,action,year,month,day,candidate_id,job
     callback_data=";".join([type_of_callback,action,str(year),str(month),str(day),candidate_id,job_id])
     return str(callback_data)
 
-def create_time_callback_data(type_of_callback,action,time,candidate_id,job_id):
+def create_time_callback_data(type_of_callback,action,time,interview_oid):
     """ Create the callback data associated to each button"""
-    callback_data=";".join([type_of_callback,action,str(time),candidate_id])
+    callback_data=";".join([type_of_callback,action,str(time),interview_oid])
     return str(callback_data)
 
 def separate_callback_data(data):
@@ -29,7 +29,7 @@ def create_calendar(candidate_id,job_id,year=None,month=None):
     now = datetime.datetime.now()
     if year == None: year = now.year
     if month == None: month = now.month
-    data_ignore = create_callback_data("DATE","IGNORE", year, month, 0, "","")
+    data_ignore = create_callback_data("D","IGNORE", year, month, 0, "","")
     keyboard = []
     #First row - Month and Year
     row=[]
@@ -48,13 +48,13 @@ def create_calendar(candidate_id,job_id,year=None,month=None):
             if(day==0):
                 row.append(InlineKeyboardButton(" ",callback_data=data_ignore))
             else:
-                row.append(InlineKeyboardButton(str(day),callback_data=create_callback_data("DATE","DAY",year,month,day,candidate_id,job_id)))
+                row.append(InlineKeyboardButton(str(day),callback_data=create_callback_data("D","D",year,month,day,candidate_id,job_id)))
         keyboard.append(row)
     #Last row - Buttons
     row=[]
-    row.append(InlineKeyboardButton("<",callback_data=create_callback_data("DATE","P-M",year,month,day,"","")))
+    row.append(InlineKeyboardButton("<",callback_data=create_callback_data("D","P-M",year,month,day,"","")))
     row.append(InlineKeyboardButton(" ",callback_data=data_ignore))
-    row.append(InlineKeyboardButton(">",callback_data=create_callback_data("DATE","N-M",year,month,day,"","")))
+    row.append(InlineKeyboardButton(">",callback_data=create_callback_data("D","N-M",year,month,day,"","")))
     keyboard.append(row)
 
     return InlineKeyboardMarkup(keyboard)
@@ -93,7 +93,7 @@ def process_calendar_selection(bot,update):
     curr = datetime.datetime(int(year), int(month), 1)
     if action == "IGNORE":
         bot.answer_callback_query(callback_query_id= query.id)
-    elif action == "DAY":
+    elif action == "D":
         bot.edit_message_text(text=query.message.text,
             chat_id=query.message.chat_id,
             message_id=query.message.message_id)

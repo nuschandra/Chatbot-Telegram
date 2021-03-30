@@ -96,13 +96,22 @@ def save_interview_date(selected_date,candidate_id,manager_id,job_id,status):
     can_id = ObjectId(candidate_id)
     schema = mydb["interview_details"]
     title = get_job_title_based_on_jobid(job_id)
-    data = {"created_date":datetime.now(), "manager_id": manager_id, "interview_date": selected_date, "status":status, "candidate_id":can_id,"job_id":job_id,"job_title":title}
-    oid = schema.insert_one(data)
-    return str(oid)
+    myquery={'job_id':job_id,'candidate_id':candidate_id}
+    existing_time_slot=schema.find_one(myquery)
+    if(existing_time_slot==None):
+        data = {"created_date":datetime.now(), "manager_id": manager_id, "interview_date": selected_date, "status":status, "candidate_id":can_id,"job_id":job_id,"job_title":title}
+        oid = schema.insert_one(data)
+    else:
+        updated_values = {"$set": {"interview_date":selected_date}}
+        oid=schema.update_one(myquery,updated_values)
+
+    return str(oid.inserted_id)
 
 def save_interview_time(selected_time,interview_oid):
     schema = mydb["interview_details"]
-    myquery = {"_id":interview_oid}
+    print(interview_oid)
+    interview_id=ObjectId(interview_oid)
+    myquery = {"_id":interview_id}
     interview_to_update= schema.find_one(myquery)
     if (interview_to_update != None):
         updated_values = {"$set": {"interview_time":selected_time}}
@@ -128,7 +137,7 @@ def get_candidate_and_interview_info(object_id):
     resume_info= schema.find_one(myquery)
     name=resume_info["Name"]
 
-    return name,date,time,title
+    return name,date,time,title,str(candidate_id)
 
 def get_interview_details_manager_candidate_id_title(manager_id,candidate_id,title):
     schema = mydb["interview_details"]
@@ -145,7 +154,7 @@ def get_interview_details_manager_candidate_id_title(manager_id,candidate_id,tit
     else:
         return None,None,None
     
-def get_job_title_based_on_jobid(manager_id,job_id):
+def get_job_title_based_on_jobid(job_id):
     schema = mydb["jd_collection"]
     myquery={"job_id":job_id}
     job_info= schema.find_one(myquery)
@@ -244,7 +253,7 @@ def get_open_jd():
 
 def get_job_info_from_interview_obj_id(interview_oid):
     schema = mydb['interview_details']
-    myquery={"_id":interview_oid}
+    myquery={"_id":ObjectId(interview_oid)}
     interview = schema.find_one(myquery)
     return interview['job_id'],interview['job_title']
     
@@ -266,3 +275,16 @@ def reject_pending_candidates(job_id,chat_id):
         return
     else:
         schema.update_many(myquery,updated_values)
+
+def get_candidate_busy_dates(candidate_id):
+    schema=mydb['interview_details']
+    candidate_id=ObjectId(candidate_id)
+    myquery={'candidate_id':candidate_id}
+    candidate_interviews=list(schema.find(myquery))
+    return candidate_interviews
+
+def get_manager_busy_dates(manager_id):
+    schema=mydb['interview_details']
+    myquery={'manager_id':str(manager_id)}
+    manager_interviews=list(schema.find(myquery))
+    return manager_interviews

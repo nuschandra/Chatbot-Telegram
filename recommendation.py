@@ -371,6 +371,7 @@ def process_resume_details(names,titles,skills,filenames,degree):
     df['experience'] = pd.Series(experience)
     df['title'] = pd.Series(result)
     df = df.drop(['titles'], axis=1)
+    df = df[df['title']!=''].copy()
     df['skills'] = df['skills'].apply(look_up_skill)
     df['skills1'] = df['skills'].apply(join_grams)
     df['title1'] = df['title'].apply(lambda x: x.lower().lstrip().rstrip().replace(' ',''))
