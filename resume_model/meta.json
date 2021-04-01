@@ -24,9 +24,7 @@
   "labels":{
     "ner":[
       "Degree",
-      "Email",
       "Experience",
-      "Name",
       "Skills"
     ]
   }

@@ -52,9 +52,9 @@ def create_calendar(candidate_id,job_id,year=None,month=None):
         keyboard.append(row)
     #Last row - Buttons
     row=[]
-    row.append(InlineKeyboardButton("<",callback_data=create_callback_data("D","P-M",year,month,day,"","")))
+    row.append(InlineKeyboardButton("<",callback_data=create_callback_data("D","P-M",year,month,day,candidate_id,job_id)))
     row.append(InlineKeyboardButton(" ",callback_data=data_ignore))
-    row.append(InlineKeyboardButton(">",callback_data=create_callback_data("D","N-M",year,month,day,"","")))
+    row.append(InlineKeyboardButton(">",callback_data=create_callback_data("D","N-M",year,month,day,candidate_id,job_id)))
     keyboard.append(row)
 
     return InlineKeyboardMarkup(keyboard)
@@ -103,13 +103,13 @@ def process_calendar_selection(bot,update):
         bot.edit_message_text(text=query.message.text,
             chat_id=query.message.chat_id,
             message_id=query.message.message_id,
-            reply_markup=create_calendar(int(pre.year),int(pre.month)))
+            reply_markup=create_calendar(candidate_id,job_id,int(pre.year),int(pre.month)))
     elif action == "N-M":
         ne = curr + datetime.timedelta(days=31)
         bot.edit_message_text(text=query.message.text,
             chat_id=query.message.chat_id,
             message_id=query.message.message_id,
-            reply_markup=create_calendar(int(ne.year),int(ne.month)))
+            reply_markup=create_calendar(candidate_id,job_id,int(ne.year),int(ne.month)))
     else:
         bot.answer_callback_query(callback_query_id= query.id,text="Something went wrong!")
         # UNKNOWN

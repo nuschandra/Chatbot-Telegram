@@ -17,8 +17,18 @@ from threading import Thread
 from time import sleep
 from bson import ObjectId
 import recommendation
+from flask_mail import Mail, Message
 
 app = Flask(__name__)
+mail=Mail(app)
+
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT']=465
+app.config['MAIL_USERNAME']='wayne.enterprises.plp@gmail.com'
+app.config['MAIL_PASSWORD']='wayne@123'
+app.config['MAIL_USE_TLS']=False
+app.config['MAIL_USE_SSL']=True
+mail=Mail(app)
 
 bot_token = "1621891888:AAHBvpvmFNJDQoDlpB3ImaBwdQHOGn5d0Pg"
 bot_username = "VirtualRecruiterBot"
@@ -50,13 +60,13 @@ def show_confirm(bot, chat_id, obj_id, name, date, time,msg_id):
     button_list = [button_list[i:i + 2] for i in range(0, len(button_list), 2)]
     reply_markup = InlineKeyboardMarkup(button_list)
     text = 'Kindly click on the buttons to confirm or cancel your interview.\n\n' + "Name: "+name+"\n"+"Timing: "+date + ", " + time
-    bot.edit_message_text(chat_id=chat_id, text=text,message_id=msg_id,
+    bot.send_message(chat_id=chat_id, text=text,
                      reply_markup=reply_markup)
     return
 
 def update_performance(bot,chat_id,completed_interviews):
     if (len(completed_interviews)==0):
-        bot.send_message(chat_id=chat_id, text='These are the interviews you have completed so far. Kindly click on the candidate name to update the performance.')
+        bot.send_message(chat_id=chat_id, text='You have no interviews to update at the moment.')
         return
     button_list = []
     for interview in completed_interviews:
@@ -85,7 +95,7 @@ def select_reject_candidate(bot, chat_id, obj_id, name, date, time,msg_id,title)
     button_list = [button_list[i:i + 2] for i in range(0, len(button_list), 2)]
     reply_markup = InlineKeyboardMarkup(button_list)
     text = 'Kindly click on the buttons below to reject or hire the candidate.\n\n' + "Name: "+name+"\n"+"Timing: "+date + ", " + time + "\n"+"Title: "+title
-    bot.edit_message_text(chat_id=chat_id, text=text,message_id=msg_id,
+    bot.send_message(chat_id=chat_id, text=text,message_id=msg_id,
                      reply_markup=reply_markup)
     return
 
@@ -136,28 +146,33 @@ def handle_callback(bot,update):
         else:
             bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "Sorry, you have already updated the performance of this candidate.",reply_markup=None)
     if(action=="show_confirm"):
-        bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         action,obj_id=telegramcalendar.separate_callback_data(context)
         name,date,time,title,can_id=database_updates.get_candidate_and_interview_info(obj_id)
         show_confirm(bot,chat_id,obj_id,name,date,time,msg_id)
     if(action=="confirm"):
         action,obj_id=telegramcalendar.separate_callback_data(context)
         name,date,time,title,can_id=database_updates.get_candidate_and_interview_info(obj_id)
-        bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "Thank you for confirming the interview! The details are as below:\n\n" + "Name: "+name+"\n"+"Timing: "+date + ", " + time,reply_markup=None)
+        bot.edit_message_text(chat_id=chat_id, message_id=msg_id,text = "Thank you for confirming the interview! The details are as below:\n\n" + "Name: "+name+"\n"+"Timing: "+date + ", " + time,reply_markup=None)
     elif(action=="delete_sce"):
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         bot.send_message(chat_id=chat_id, text = "Confirmed the appointment!")
     elif(action=="cancel"):
         action,obj_id=telegramcalendar.separate_callback_data(context)
+        job_id,job_title=database_updates.get_job_info_from_interview_obj_id(obj_id)
+        name,db_date,db_time,title,can_id=database_updates.get_candidate_and_interview_info(obj_id)
         database_updates.cancel_schedule(obj_id)
-        bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "I have cancelled the interview with the candidate.", reply_markup=None)
+        text="I have cancelled the interview with the candidate. Kindly reschedule the interview to another date and time."
+        bot.delete_message(chat_id,msg_id)
+        show_calendar_for_interview(text,chat_id,can_id,job_id)
+
     elif(action=="Accept"):
         action,candidate_id,job_id=telegramcalendar.separate_callback_data(context)
         job_title=database_updates.get_job_title_based_on_jobid(job_id)
         bot.editMessageReplyMarkup(chat_id=chat_id, message_id=msg_id, reply_markup=None)
         date,time,status=telegram_message_processing.check_duplicate_interview(chat_id,candidate_id,job_title)
         if (date==None and time==None and status==None):
-            show_calendar_for_interview(chat_id,candidate_id,job_id)
+            text='Please choose a date for your interview with the candidate.'
+            show_calendar_for_interview(text,chat_id,candidate_id,job_id)
         else:
             if(status=='interview_scheduled'):
                 bot.send_message(chat_id=chat_id, text = "You already have an interview scheduled with this candidate on " + date + " at " + time + " for the " + job_title + " role.")
@@ -174,13 +189,10 @@ def handle_callback(bot,update):
     elif(action=="D"): # D stands for Date
         selected,date,candidate_id,job_id=telegramcalendar.process_calendar_selection(bot,update)
         if selected:
-            today = datetime.now().strftime("%d/%m/%Y")
-            current_selected_date = date.strftime("%d/%m/%Y")
-            if (current_selected_date<=today):
-                bot.send_message(chat_id=update.callback_query.from_user.id,
-                        text="The date you've selected is invalid. Please choose a valid date.",
-                        reply_markup=None)
-                show_calendar_for_interview(chat_id,candidate_id,job_id)
+            today = datetime.now()
+            if (date<=today):
+                text='The date you have selected is in the past. Please choose a valid date.'
+                show_calendar_for_interview(text,chat_id,candidate_id,job_id)
             else:
                 #bot.edit_message_text(chat_id=update.callback_query.from_user.id,message_id=msg_id,
                 #        text="You selected %s" % current_selected_date,
@@ -191,23 +203,26 @@ def handle_callback(bot,update):
     elif(action=="TIME"): # T stands for time
         selected,time,interview_oid=telegramcalendar.process_time_selection(bot,update)
         if selected:
-            database_updates.save_interview_time(time,interview_oid)
-            name,date,time,title,can_id=database_updates.get_candidate_and_interview_info(interview_oid)
-            if (telegram_message_processing.check_candidate_availability(date,time,can_id)):
-                if(telegram_message_processing.check_manager_availability(date,time,chat_id)):
+            name,db_date,db_time,title,can_id=database_updates.get_candidate_and_interview_info(interview_oid)
+            if (telegram_message_processing.check_candidate_availability(db_date,time,can_id)):
+                if(telegram_message_processing.check_manager_availability(db_date,time,chat_id)):
+                    database_updates.save_interview_time(time,interview_oid)
                     bot.edit_message_text(chat_id=update.callback_query.from_user.id,message_id=msg_id,
-                        text="Your interview has been scheduled at " + time + " on "  + date + " with " + name + " for the " + title + " role.",
+                        text="Your interview has been scheduled at " + time + " on "  + db_date + " with " + name + " for the " + title + " role.",
                         reply_markup=None)
                 else:
+                    job_id,job_title=database_updates.get_job_info_from_interview_obj_id(interview_oid)
                     database_updates.cancel_schedule(interview_oid)
+                    bot.delete_message(chat_id,msg_id)
                     response = "You have scheduled another interview on the given date and time. Therefore, kindly choose another date and time for your interview."
-                    bot.edit_message_text(chat_id=update.callback_query.from_user.id,message_id=msg_id,
-                        text=response,reply_markup=None)
+                    show_calendar_for_interview(response,chat_id,can_id,job_id)
+
             else:
-                database_updates.cancel_schedule(interview_oid)
-                response = "The candidate has another interview on the given date and time. Therefore, kindly choose another date and time for your interview."
                 job_id,job_title=database_updates.get_job_info_from_interview_obj_id(interview_oid)
-                show_calendar_for_interview(chat_id,can_id,job_id)
+                database_updates.cancel_schedule(interview_oid)
+                bot.delete_message(chat_id=chat_id,message_id=msg_id)
+                response = "The candidate has another interview on the given date and time. Therefore, kindly choose another date and time for your interview."
+                show_calendar_for_interview(response,chat_id,can_id,job_id)
 
     return
 
@@ -284,7 +299,7 @@ def handle_call(bot,update):
                     name=info['name']
                     email=info['email']
                     candidate_id=info['id']
-                    file_to_send = "Resumes/"+str(ids)+".pdf"
+                    file_to_send = os.path.join(os.getcwd(),"Resumes/"+str(ids)+".pdf")
                     #get_candidate_details = database_updates.hire_request(ids)
                     get_candidate_details = "Name: "+name+"\n"+"Email: "+email
                     accept=";".join(["Accept",candidate_id,job_id])
@@ -314,8 +329,12 @@ def process_input_message():
 @app.route("/resumeUpload", methods=["GET","POST"])
 def upload_resume():
     error=None
+    flag=False
     if request.method == 'POST':
         uploaded_file = request.files['file']
+        if(request.form.get('want-daily-emails')):
+            flag=True
+
         if uploaded_file.filename != '':
             directory = os.getcwd()
             resume_dir = os.path.join(directory,"Resumes")
@@ -324,16 +343,54 @@ def upload_resume():
             uploaded_file.save(resume_path)
             #spacy_ner_detection.extract_resume_details(resume_path,resume_uuid_name)
             try:
-                recommendation.populate_resume(resume_path)
+                name,email,linkedin_contact=recommendation.save_resume_in_db(resume_path,flag)
             except Exception as e:
+                os.remove(resume_path)
                 if(str(e)=="The resume is already present in our system."):
                     error="The resume is already present in our system."
                     return render_template('upload.html',error=error)
+            
+            send_email_to_candidate(name,flag)
+            resume_matched_list=recommendation.new_resumes_recommendation(resume_path,name)
+            if(len(resume_matched_list)>0):
+                send_resumes_to_managers(resume_matched_list,resume_path)
         return redirect(url_for('upload_resume'))
     return render_template('upload.html',error=error)
 
-def show_calendar_for_interview(chat_id,can_id,job_id):
-    bot.send_message(chat_id=chat_id, text = "Please choose a date for your interview with the candidate.",reply_markup=telegramcalendar.create_calendar(can_id,job_id))
+def send_email_to_candidate(name,flag):
+    msg=Message('Acknowledging resume submission',sender='wayne.enterprises.plp@gmail.com',recipients=['lakshmi.4296@gmail.com'])
+    body = "Hi " + name + ",\n\n" + "We would like to acknowledge that we have received your resume. We will now match your resume against any job openings that maybe created by our hiring managers in the future. If your resume is deemed successful, we will certaintly reach out to you for further action.\n\n"
+    if(flag):
+        body_flag = "We also note that you would like to receive daily updates on the status of your application."
+    else:
+        body_flag = "We also note that you would not like to receive daily updates on the status of your application."
+    body_close = "\n\nRegards,\nWayne Enterprises"
+    msg.body=body + body_flag+body_close
+    mail.send(msg)
+    return "Sent"
+    
+def send_resumes_to_managers(resume_matched_list,resume_path):
+    resume_file_name=resume_path[-36:-4]
+    name,email,candidate_id=database_updates.get_candidate_name_email_id(resume_file_name)
+    file_to_send = os.path.join(os.getcwd(),"Resumes/"+str(resume_file_name)+".pdf")
+    #get_candidate_details = database_updates.hire_request(ids)
+    get_candidate_details = "Name: "+name+"\n"+"Email: "+email
+
+    for resume in resume_matched_list:
+        job_id=resume['job_id']
+        job_title=resume['job_title']
+        chat_id=resume['manager_id']
+        accept=";".join(["Accept",candidate_id,job_id])
+        reject=";".join(["Reject",candidate_id,job_id]) 
+        keyboard = [[InlineKeyboardButton("Accept", callback_data=str(accept))],
+                    [InlineKeyboardButton("Reject", callback_data=str(reject))]]  
+
+        caption="We recently found a resume that may match the requirements you have indicated for the role of " + job_title + ".\n\n"  
+        bot.sendDocument(chat_id=chat_id,document=open(file_to_send, 'rb'),caption=caption+get_candidate_details,reply_markup=InlineKeyboardMarkup(keyboard),filename=name+".pdf")
+    return
+
+def show_calendar_for_interview(text,chat_id,can_id,job_id):
+    bot.send_message(chat_id=chat_id, text = text,reply_markup=telegramcalendar.create_calendar(can_id,job_id))
 
 def show_time_slots_for_interview(chat_id,interview_oid,msg_id):
     bot.edit_message_text(chat_id=chat_id,message_id=msg_id,text = "Please choose a time slot on the chosen date for your interview with the candidate.",reply_markup=telegramcalendar.create_time_selection(interview_oid))

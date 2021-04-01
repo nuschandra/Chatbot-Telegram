@@ -99,10 +99,10 @@ def save_interview_date(selected_date,candidate_id,manager_id,job_id,status):
     myquery={'job_id':job_id,'candidate_id':candidate_id}
     existing_time_slot=schema.find_one(myquery)
     if(existing_time_slot==None):
-        data = {"created_date":datetime.now(), "manager_id": manager_id, "interview_date": selected_date, "status":status, "candidate_id":can_id,"job_id":job_id,"job_title":title}
+        data = {"created_date":datetime.now(), "manager_id": manager_id, "interview_date": selected_date, "status":status, "candidate_id":can_id,"job_id":job_id,"job_title":title,"interview_time":"N/A"}
         oid = schema.insert_one(data)
     else:
-        updated_values = {"$set": {"interview_date":selected_date}}
+        updated_values = {"$set": {"interview_date":selected_date,"interview_time":"N/A"}}
         oid=schema.update_one(myquery,updated_values)
 
     return str(oid.inserted_id)
@@ -235,10 +235,10 @@ def update_hiring_status(object_id,status):
     else:
         return False
 
-def save_candidate(name,email,linkedin_contact,file_name):
+def save_candidate(name,email,linkedin_contact,file_name,want_email_flag):
     schema = mydb["resume_details"]
     
-    data = {"Name":name,"Email": email, "LinkedInContact":linkedin_contact, "Status": "RESUME_UPLOADED", "Resume_Doc": file_name}
+    data = {"Name":name,"Email": email, "LinkedInContact":linkedin_contact, "Status": "RESUME_UPLOADED", "Resume_Doc": file_name,"want_email_flag":want_email_flag}
     myquery = {"LinkedInContact": linkedin_contact}
     existing_user = list(schema.find(myquery))
     if (len(existing_user) == 0):
@@ -249,7 +249,7 @@ def save_candidate(name,email,linkedin_contact,file_name):
 
 def get_open_jd():
     schema = mydb["jd_collection"]
-    return list(map(lambda val: (val['manager_id'], val['job_id']), schema.find({'status': "OPEN" })))
+    return list(map(lambda val: (val['manager_id'], val['job_id'],val['job_title']), schema.find({'status': "OPEN" })))
 
 def get_job_info_from_interview_obj_id(interview_oid):
     schema = mydb['interview_details']
@@ -285,6 +285,6 @@ def get_candidate_busy_dates(candidate_id):
 
 def get_manager_busy_dates(manager_id):
     schema=mydb['interview_details']
-    myquery={'manager_id':str(manager_id)}
+    myquery={'manager_id':manager_id}
     manager_interviews=list(schema.find(myquery))
     return manager_interviews

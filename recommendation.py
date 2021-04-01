@@ -26,9 +26,9 @@ nlp_model = spacy.load('jd_model')
 nlp_exp_model = spacy.load('jd_exp_model')
 mystopwords=stopwords.words("English") + ['experience','computer,','science','expert','knowledge','plus','proficiency','understanding','excellent','ability','skill','responsibility']
 
-nlp=spacy.load('resume_model1')
-nlp_experience = spacy.load('resume_model')
-nlp_degree = spacy.load('resume_model5')
+nlp=spacy.load('resume_model')
+#nlp_experience = spacy.load('resume_model')
+#nlp_degree = spacy.load('resume_model5')
 
 lookup_dict = {'javascript' : ['js','javascript','jscript','java script'],
 'nodejs' : ['node.js','node','nodejs','node js'],
@@ -157,42 +157,31 @@ def convert_pdf_to_txt(path):
     # print(pdf_text)
     return pdf_text
 
-def extract_resume_details(path,names,titles,skills,filenames,degree):
+def extract_resume_details(path,names,titles,skills,filenames,degree,name):
     data = convert_pdf_to_txt(path)
 
     directory = os.getcwd()
     file_name = path[-36:-4]
-    text_file = os.path.join(directory,"TextResumes/"+file_name+".txt")
-    f=open(text_file,"w")
-    details_data = data.replace(u"\xa0", u" ")
-    f.write(details_data)
-    f.close()
-
-    name=str(spacy_ner_detection.extract_name_rule(text_file))
-    email=str(spacy_ner_detection.extract_email_rule(details_data))
-    linkedin_contact=str(spacy_ner_detection.extract_linkedin_contact_rule(details_data))
-    
-    if(not database_updates.save_candidate(name,email,linkedin_contact,file_name)):
-        raise Exception("The resume is already present in our system.")
 
     # Extracting Skills from Resume
     doc_to_test=nlp(data)
 
     # Extracting exp from Resume
-    doc_exp=nlp_experience(data)
+    #doc_exp=nlp_experience(data)
 
     # Extracting degree from Resume
-    doc_degree=nlp_degree(data)
+    #doc_degree=nlp_degree(data)
     resume_dict={}
-    resume_exp={}
-    resume_degree={}
+    
+    #resume_exp={}
+    #resume_degree={}
 
     for ent in doc_to_test.ents:
         resume_dict[ent.label_]=[]
     for ent in doc_to_test.ents:
         resume_dict[ent.label_].append(ent.text)
     
-    for ent in doc_exp.ents:
+    '''for ent in doc_exp.ents:
         resume_exp[ent.label_]=[]
     for ent in doc_exp.ents:
         resume_exp[ent.label_].append(ent.text)
@@ -200,19 +189,18 @@ def extract_resume_details(path,names,titles,skills,filenames,degree):
     for ent in doc_degree.ents:
         resume_degree[ent.label_]=[]
     for ent in doc_degree.ents:
-        resume_degree[ent.label_].append(ent.text)
+        resume_degree[ent.label_].append(ent.text)'''
     
     f=open(os.path.join(directory,"ExtractedResumes/"+file_name+".txt"),"w")
 
     for i in set(resume_dict.keys()):
 
         f.write("\n\n")
-        if (i=="Skills"):
-            f.write(i +":"+"\n")
-            for j in set(resume_dict[i]):
-                f.write(j.replace('\n','')+"\n")
+        f.write(i +":"+"\n")
+        for j in set(resume_dict[i]):
+            f.write(j.replace('\n','')+"\n")
     
-    for i in set(resume_exp.keys()):
+    '''for i in set(resume_exp.keys()):
 
         f.write("\n\n")
         if (i=="Experience"):
@@ -226,7 +214,7 @@ def extract_resume_details(path,names,titles,skills,filenames,degree):
         if (i=="Degree"):
             f.write(i +":"+"\n")
             for j in set(resume_degree[i]):
-                f.write(j.replace('\n','')+"\n")
+                f.write(j.replace('\n','')+"\n")'''
     
     # for i in set(resume_dict.keys()):
         # print(resume_dict)
@@ -235,10 +223,10 @@ def extract_resume_details(path,names,titles,skills,filenames,degree):
     if 'Skills' in resume_dict.keys():
         for j in set(resume_dict['Skills']):
             li.append(j.replace('\n',''))
-    if 'Degree' in resume_degree.keys():
-        extracted_degree=resume_degree['Degree']
-    if 'Experience' in resume_exp.keys():
-        for j in set(resume_exp['Experience']):
+    if 'Degree' in resume_dict.keys():
+        extracted_degree=resume_dict['Degree']
+    if 'Experience' in resume_dict.keys():
+        for j in set(resume_dict['Experience']):
             titles.append(j.replace('\n',''))
             skills.append(li)
             filenames.append(path)
@@ -253,6 +241,25 @@ def extract_resume_details(path,names,titles,skills,filenames,degree):
 
     return names,titles,skills,filenames,degree
 
+def extract_name_email_linkedin(path,want_email_flag):
+    data = convert_pdf_to_txt(path)
+
+    directory = os.getcwd()
+    file_name = path[-36:-4]
+    text_file = os.path.join(directory,"TextResumes/"+file_name+".txt")
+    f=open(text_file,"w")
+    details_data = data.replace(u"\xa0", u" ")
+    f.write(details_data)
+    f.close()
+
+    name=str(spacy_ner_detection.extract_name_rule(text_file))
+    email=str(spacy_ner_detection.extract_email_rule(details_data))
+    linkedin_contact=str(spacy_ner_detection.extract_linkedin_contact_rule(details_data))
+    
+    if(not database_updates.save_candidate(name,email,linkedin_contact,file_name,want_email_flag)):
+        raise Exception("The resume is already present in our system.")
+
+    return name,email,linkedin_contact
 
 def extract_months(text):
     try:
@@ -470,7 +477,7 @@ def resume_recommendation(jd_path,df,threshold = 0.15,topn = 15, co_occ_update =
 
 ###############################################################################
 
-def resume_details(resume_directory,new_resume_path = ''):
+def resume_details(resume_directory,name,new_resume_path = ''):
     names = []
     degree = []
     titles = []
@@ -482,7 +489,7 @@ def resume_details(resume_directory,new_resume_path = ''):
             print(path)
             try :
                 if '.pdf' in path:
-                    names,titles,skills,filenames,degree = extract_resume_details(path,names,titles,skills,filenames,degree)
+                    names,titles,skills,filenames,degree = extract_resume_details(path,names,titles,skills,filenames,degree,name)
             except:
                 continue
         df = process_resume_details(names,titles,skills,filenames,degree)
@@ -495,7 +502,7 @@ def resume_details(resume_directory,new_resume_path = ''):
     elif os.path.isfile(new_resume_path):
         df = pd.read_csv('resume_details.csv',keep_default_na=False)
         try:
-            names,titles,skills,filenames,degree = extract_resume_details(new_resume_path,names,titles,skills,filenames,degree)
+            names,titles,skills,filenames,degree = extract_resume_details(new_resume_path,names,titles,skills,filenames,degree,name)
         except:
             raise Exception("The resume is already present in our system.") 
         df_new = process_resume_details(names,titles,skills,filenames,degree)
@@ -517,7 +524,7 @@ def resume_details(resume_directory,new_resume_path = ''):
 ############given jd
 
 
-def populate_resume(file_path):
+'''def populate_resume(file_path):
 
     directory = os.getcwd()
     resume_directory = os.path.join(directory,"Resumes")
@@ -526,7 +533,7 @@ def populate_resume(file_path):
     try:
         df,co_occurrence_matrix =  resume_details(resume_directory,file_path)
     except:
-        raise Exception("The resume is already present in our system.")
+        raise Exception("The resume is already present in our system.")'''
  
 ###########################################################################
 ###########################################################################
@@ -537,19 +544,32 @@ def trigger_resume_fetching(jd_path,job_id,chat_id):
     return recom_file
 
 
-def new_resumes_recommendation(new_resume_path):
-    new_resume_path="D:\Intelligent Systems\Practical Language Processing\Project\Chatbot-Telegram-chandra-branch\Chatbot-Telegram-chandra-branch\LinkedinResumes\\Profile(1).pdf"
-    open_jd = database_updates.get_open_jd()
+def save_resume_in_db(new_resume_path,want_email_flag):
+    try:
+        name,email,linkedin_contact=extract_name_email_linkedin(new_resume_path,want_email_flag)
+        return name,email,linkedin_contact
+    except:
+        raise Exception("The resume is already present in our system.")
+    
+def new_resumes_recommendation(new_resume_path,name):
     directory = os.getcwd()
+
+    open_jd = database_updates.get_open_jd()
     resume_directory = os.path.join(directory,"Resumes")
 
-    df,co_occurrence_matrix =  resume_details(resume_directory,new_resume_path)
-    
-    managerids = []
-    
-    for managerid,filename in open_jd:
-        path = os.path.join(directory,"JDs",filename+'.txt')
-        if new_resume_path in [os.path.split(i)[-1] for i in resume_recommendation(path,df,threshold = 0.3,topn = 15,co_occ_update = False)]:
-            managerids.append(managerid)
+    df,co_occurrence_matrix =  resume_details(resume_directory,name,new_resume_path)
 
-    return list(set(managerids))
+    managerids = []
+    candidate_dict={}
+    for managerid,filename,title in open_jd:
+        path = os.path.join(directory,"job_descriptions",filename+'.txt')
+        resume_file_name=os.path.split(new_resume_path)[-1]
+        print("Newly entered resume is " + resume_file_name)
+        if resume_file_name in [os.path.split(i)[-1] for i in resume_recommendation(path,df,threshold = 0.15,topn = 15,co_occ_update = False)]:
+            print("New resume got matched " + resume_file_name)
+            candidate_dict['manager_id']=managerid
+            candidate_dict['job_id']=filename
+            candidate_dict['job_title']=title
+            managerids.append(candidate_dict)
+
+    return list(managerids)

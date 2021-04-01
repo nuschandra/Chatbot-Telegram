@@ -157,8 +157,8 @@ def check_candidate_availability(selected_date,selected_time,candidate_id):
         return True
     else:
         for dates in candidate_interview_dates:
-            selected_date = selected_date.strftime("%d/%m/%Y")
-            db_date=dates["interview_date"].strftime("%d/%m/%Y")
+            db_date=dates["interview_date"].strftime(
+                                    '%B') + " " + dates["interview_date"].strftime('%d')
             if (selected_date==db_date):
                 db_time=dates["interview_time"]
                 if(selected_time==db_time):
@@ -175,8 +175,8 @@ def check_manager_availability(selected_date,selected_time,manager_id):
         return True
     else:
         for dates in manager_interview_dates:
-            selected_date = selected_date.strftime("%d/%m/%Y")
-            db_date=dates["interview_date"].strftime("%d/%m/%Y")
+            db_date=dates["interview_date"].strftime(
+                                    '%B') + " " + dates["interview_date"].strftime('%d')
             if (selected_date==db_date):
                 db_time=dates["interview_time"]
                 if(selected_time==db_time):
