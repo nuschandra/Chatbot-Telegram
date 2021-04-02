@@ -205,18 +205,23 @@ def find_completed_interviews(manager_id):
 
 def compare_am_pm_times(interview_time):
     current_time = datetime.now().strftime("%I:%M%p")  # current_time ="12:00PM"
-
-    if interview_time[5:7] == 'AM' and current_time == 'PM':
+    if interview_time[5:7].lower() == 'AM'.lower() and current_time[5:7].lower() == 'PM'.lower():
         return True
-    elif interview_time[5:7] == 'PM' and current_time == 'AM':
+    elif interview_time[5:7].lower() == 'PM'.lower() and current_time[5:7].lower() == 'AM'.lower():
         return False
-    else: # same part of day
-        if int(interview_time[0:2]) < int(current_time[0:2]): # compare Hour
+    else:  # same part of day
+        if(interview_time[0:2] == "12"):
+            interview_time = "00" + ":" + interview_time[3:7]
+
+        if(current_time[0:2] == "12"):
+            current_time = "00" + ":" + current_time[3:7]
+
+        if int(interview_time[0:2]) < int(current_time[0:2]):  # compare Hour
             return True
         elif int(interview_time[0:2]) > int(current_time[0:2]):
             return False
         else:
-            if int(interview_time[3:5]) < int(current_time[3:5]): # compare Minute
+            if int(interview_time[3:5]) < int(current_time[3:5]):  # compare Minute
                 return True
             elif int(interview_time[3:5]) > int(current_time[3:5]):
                 return False

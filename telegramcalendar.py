@@ -129,7 +129,7 @@ def process_time_selection(bot,update):
             message_id=query.message.message_id)
         
         d = datetime.datetime.strptime(time, "%H:%M")
-        selected_time = d.strftime("%I:%M %p")
+        selected_time = d.strftime("%I:%M%p")
         ret_data = True,selected_time, interview_oid
     else:
         bot.answer_callback_query(callback_query_id= query.id,text="Something went wrong!")
