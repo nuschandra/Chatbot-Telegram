@@ -1,0 +1,93 @@
+
+
+
+
+
+
+Skills:
+Spring
+ExtJS 4
+JSon
+Linux
+jdbcTemplate
+javascript
+MongoDB
+JSON
+C++
+JIRA
+programming
+IoT
+Jira
+Jsp
+REST
+JNI
+AFIS
+svn
+linux
+C#
+mockito
+NIST
+spring
+XDK
+Html5
+Sql
+Junit
+Docker
+Jenkins
+SPA
+Tomcat
+Hibernate
+Microsoft Visual Studio
+ExtJs
+JUnit
+Contains
+Github
+c++
+signal processing
+TortoisSVN
+SOAP
+jsp
+data stream
+OS
+SQL
+Java
+Jquery
+Node.js
+Engg
+Azure
+SpringBoot
+ExtJS
+Javascript
+java
+data analysis
+python
+Bootstrap
+J2EE
+
+
+
+
+
+
+
+
+Experience:
+Senior Software DeveloperAugust 2014 - September 2015 (1 year 2 months)
+Software EngineerJanuary 2013 - July 2014 (1 year 7 months)
+Senior Software EngineerMarch 2009 - February 2012 (3 years)
+Senior Java DeveloperJanuary 2021 - Present (3 months)
+Senior Software DeveloperMarch 2012 - December 2012 (10 months)
+Lead Software EngineerSeptember 2019 - December 2020 (1 year 4 months)
+Senior Software EngineerOctober 2015 - July 2016 (10 months)
+Senior Software EngineerAugust 2016 - August 2019 (3 years 1 month)
+
+
+Degree:
+B. Sc. in Computer Science and Engg., Computer Science
+Hub to trigger alarms- Expose REST API endpoint for the
+
+
+
+
+
+
