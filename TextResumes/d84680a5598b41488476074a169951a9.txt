@@ -1,0 +1,137 @@
+Contact
+
+www.linkedin.com/in/sakshi-
+goyal-8a285171 (LinkedIn)
+
+Top Skills
+Data Structures & Algorithms
+Programming
+C#
+
+Languages
+English (Professional Working)
+Hindi (Native or Bilingual)
+Punjabi (Full Professional)
+
+ 
+
+ 
+
+ 
+
+Sakshi Goyal
+Software Engineer | Data Structure & Algorithms
+Singapore
+
+Summary
+*Hands on experience with Object Oriented based design and
+development.
+*Possess strong analytical, problem solving skills, Data Structures &
+Algorithms.
+*Experience in Server Side Programming languages like C#, Python,
+Java.
+*Hands on experience with Front End Technologies like HTML,
+CSS , and JavaScript using ECMAScript 6.
+*Hands on experience with Relational DataBase design,
+maintenance, writing complex sql queries and Stored Procedures.
+*Good experience in creation of Microservices.
+*Efficient knowledge of creation and consumption of Web Services
+API using REST and SOAP.
+*Hands on experience with ASP.Net,  ADO.Net, MVC using .Net
+Framework.
+*Hands on experience in writing Unit Test using MS Unit and NUnit
+Framework.
+*Having experience with agile methodology.
+
+Tools -> ElasticSearch , Kibana, Pycharm, Visual Studio,
+Eclipse,TFS, SVN, GitHub, MS Sql Server, DebugDiag, Apache, IIS,
+Maven, Swagger, PostmanAPI
+
+Experience
+
+Crédit Agricole CIB
+Software Engineer
+January 2020 - Present (1 year 3 months)
+Singapore
+
+*Implemented ElasticSearch Stack using FileBeat.
+*Actively participated in the design and architectural discussion.
+*Implementation of new features like creation of new Payment flows for the
+banking system.
+
+Page 1 of 3
+
+ 
+
+ 
+
+ 
+
+*Involved in providing detailed estimation and various technical aspects of the
+project .
+*Writing complex queries and optimising stored procedures. 
+*Involved in creation of MicroServices and web services API using REST.
+*Consumption of API using Knockout.
+
+Philips
+Software Engineer 
+December 2018 - August 2019 (9 months)
+Bengaluru, Karnataka, India
+
+*Involved in research and system designing process for various features.
+*Analyse requirements, design and develop functionalities based on the
+product requirements.
+*Involved in creation and consumption of Web Services API using SOAP.  
+*Involved in creation of unit test and fixing the bugs.
+*Involved in development and deployment process.
+
+Thomson Reuters
+Associate Software Engineer
+April 2017 - December 2018 (1 year 9 months)
+Bengaluru Area, India
+
+*Collaborated with Microsoft team,  to understand the MS Word technical
+specifications to design and develop functionality.
+*Involved in constantly optimising the product.
+*Involved in creation and consumption of Web Service API using REST.  
+*Independently engaged with business team to understand, research,
+implement and document the requirements.      
+*Initiative to support other file types for Document Proofing in Legal firms using
+Python.                 
+
+Virtusa
+2 years
+Software Engineer
+July 2016 - April 2017 (10 months)
+Chennai Area, India
+
+*Involved in taking CCD Metrics, fixing code coverage and code complexity.
+*Involved in preparing PPT, and demo to client of new developed features.
+*Creation of new User Interface using MVC architecture.
+*Writing complex queries and optimising stored procedures.
+*Involved in creation and consumption of API’s.
+
+Page 2 of 3
+
+ 
+
+ 
+
+ 
+
+Associate Software Engineer
+May 2015 - June 2016 (1 year 2 months)
+Chennai Area, India
+
+Infosys
+Trainee
+December 2014 - March 2015 (4 months)
+Mysuru Area, India
+
+Education
+Shaheed Udham Singh College of Engg. and Tech, Tangori
+Bachelor of Technology (BTech), Computer Science · (2010 - 2014)
+
+Page 3 of 3
+
+

@@ -1,0 +1,95 @@
+ 
+
+ 
+
+ 
+
+Contact
+pradeepkrathnayaka@gmail.co
+m
+
+www.linkedin.com/in/
+pradeeprathnayaka (LinkedIn)
+pradeepkrathnayaka.blogspot.com/
+(Blog)
+
+PRADEEP RATHNAYAKA
+FULL STACK DEVELOPER, SENIOR SOFTWARE ENGINEER,
+Java, Java EE, Microservice Architecture, Cloud Native(Azure,AWS),
+Docker, Kubernetes, Internet of Things(IOT),Kafka, Angular,
+BigData(Hadoop, Apache Spark)...
+Singapore
+
+Top Skills
+Hibernate
+Java Enterprise Edition
+JSP
+
+Languages
+English
+
+Summary
+Software Engineer with 10+ years of experience in client/server
+environment including full life cycle development(SDLC). Expertise
+in design, development and deployment of web-based and desktop
+applications. Strongly involved in database modeling, design and
+querying, coding, testing, tuning, troubleshooting and supporting new
+and existing software. Outstanding ability to work in teams as well as
+independently. Strongly analytical, quick learner with and excellent
+communication skills.
+
+Java Ecosystem and Frameworks 
+JAVA, Java EE, Spring and Spring Boot, Microservices, Spring MVC,
+Spring Security, Hibernate, JPA, Struts2, Web Services, RESTful
+API/SOAP, Swagger 2, JWT, Oauth2, ELK Stack, BDD, TDD with
+JUnit5
+
+Internet of Things & Ecosystem 
+Knowledge and experience of IOT device communication (Sensor,
+actuator,Gateway..), protocols (mqtt, modbus,BACnet..) ,HiveMQ,
+mosquitto mqtt broker, security, Time Series, Eclipse Paho 
+
+Frontend Development 
+JavaScript, Typescript,Bootstrap, FoundationJS, JQuery,HTML,
+CSS, Node.js,
+Angular 8/9: NgRx, RxJS, Nebular theme
+
+Cloud
+AWS, AZURE
+
+DevOps Practices
+Docker, Kubernetes, Jenkins, Maven, Gradle GIT,Bitbucket,
+SourceTree ,SVN
+
+Page 1 of 2
+
+ 
+
+ 
+
+ 
+
+Databases 
+SQL: MySQL,Oracle, PostgreSQL, DB2
+NoSql: MongoDB, Cassandra
+
+In memory cache
+Scalable application with Redis, Hazelcast, Memcached, GemFire,
+Geode
+
+BigData & Hadoop Ecosystem
+HDFS, YARN, Apache Hive, Apache Sqoop, Kafka, Apache Spark,
+Zookeeper
+
+: https://github.com/pradeepkrathnayaka
+: https://pradeepkrathnayaka.github.io/
+: https://pradeepkrathnayaka.blogspot.com/
+: @topradeep
+
+Education
+University of Moratuwa
+BSc in IT, Information Technlogy · (2006 - 2009)
+
+Page 2 of 2
+
+
