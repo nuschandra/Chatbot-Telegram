@@ -58,7 +58,7 @@ with open('academic_degree.json') as json_file:
 
 def degree_flag(resume_degree, jd_degree):
     if jd_degree == []:
-        return 'NA'
+        return 'Qualified'
     degree = ['associate','diploma','bachelor','master','doctor','phd']
     jd_deg = []
     
