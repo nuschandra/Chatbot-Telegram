@@ -299,9 +299,13 @@ def handle_call(bot,update):
                     name=info['name']
                     email=info['email']
                     candidate_id=info['id']
+                    degree=info['degree']
                     file_to_send = os.path.join(os.getcwd(),"Resumes/"+str(ids)+".pdf")
                     #get_candidate_details = database_updates.hire_request(ids)
-                    get_candidate_details = "Name: "+name+"\n"+"Email: "+email
+                    get_candidate_details = "Name: "+name+"\n"
+                    if email!='N/A':
+                        get_candidate_details = get_candidate_details + "Email: " + email+"\n"
+                    get_candidate_details=get_candidate_details+"Degree: " + degree
                     accept=";".join(["Accept",candidate_id,job_id])
                     reject=";".join(["Reject",candidate_id,job_id]) 
                     keyboard = [[InlineKeyboardButton("Accept", callback_data=str(accept))],
@@ -374,7 +378,7 @@ def send_resumes_to_managers(resume_matched_list,resume_path):
     name,email,candidate_id=database_updates.get_candidate_name_email_id(resume_file_name)
     file_to_send = os.path.join(os.getcwd(),"Resumes/"+str(resume_file_name)+".pdf")
     #get_candidate_details = database_updates.hire_request(ids)
-    get_candidate_details = "Name: "+name+"\n"+"Email: "+email
+
 
     for resume in resume_matched_list:
         job_id=resume['job_id']
@@ -385,6 +389,10 @@ def send_resumes_to_managers(resume_matched_list,resume_path):
         keyboard = [[InlineKeyboardButton("Accept", callback_data=str(accept))],
                     [InlineKeyboardButton("Reject", callback_data=str(reject))]]  
 
+        get_candidate_details = "Name: "+name+"\n"
+        if email!='N/A':
+            get_candidate_details=get_candidate_details+"Email: "+email + "\n"
+        get_candidate_details=get_candidate_details+"Degree: "+resume['degree']
         caption="We recently found a resume that may match the requirements you have indicated for the role of " + job_title + ".\n\n"  
         bot.sendDocument(chat_id=chat_id,document=open(file_to_send, 'rb'),caption=caption+get_candidate_details,reply_markup=InlineKeyboardMarkup(keyboard),filename=name+".pdf")
     return

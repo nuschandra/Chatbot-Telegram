@@ -21,6 +21,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import database_updates
 import spacy_ner_detection
+import json
 
 nlp_model = spacy.load('jd_model')
 nlp_exp_model = spacy.load('jd_exp_model')
@@ -50,6 +51,34 @@ grammar = r"""
     NP5: {<JJ><NNS>}
     """
 cp = nltk.RegexpParser(grammar)
+
+with open('academic_degree.json') as json_file:
+    degree_lookup = json.load(json_file)
+
+
+def degree_flag(resume_degree, jd_degree):
+    if jd_degree == []:
+        return 'NA'
+    degree = ['associate','diploma','bachelor','master','doctor','phd']
+    jd_deg = []
+    
+    for i in degree:
+        if i in  word_tokenize(" ".join(jd_degree).replace('.','').replace('\'',' ').lower()):
+            jd_deg.append(i)
+            
+    for i in degree_lookup.keys():
+        for j in degree_lookup[i]:
+            if j.lower() in resume_degree.replace('.','').replace('\'',' ').lower():
+                resume_deg = i
+    
+    print(jd_deg,resume_deg)
+    if degree.index(jd_deg[0]) < degree.index(resume_deg):
+        return 'Over Qualified'
+    elif degree.index(jd_deg[0]) > degree.index(resume_deg):
+         return 'Not Qualified'
+    else:
+        print('Qualified',jd_deg,resume_deg)
+        return 'Qualified'
 
 def co_occ_matrix(sentences):
     print("Calculating co-occurence matrix")
@@ -201,15 +230,12 @@ def extract_resume_details(path,names,titles,skills,filenames,degree,name):
             f.write(j.replace('\n','')+"\n")
     
     '''for i in set(resume_exp.keys()):
-
         f.write("\n\n")
         if (i=="Experience"):
             f.write(i +":"+"\n")
             for j in set(resume_exp[i]):
                 f.write(j.replace('\n','')+"\n")
-
     for i in set(resume_degree.keys()):
-
         f.write("\n\n")
         if (i=="Degree"):
             f.write(i +":"+"\n")
@@ -470,8 +496,10 @@ def resume_recommendation(jd_path,df,threshold = 0.15,topn = 15, co_occ_update =
     jd_title = ''.join(jd_dict['Title'][0].split()).lower()
     filenames_e = similar_exp(filenames_s,jd_exp,threshold,jd_title,df,co_occurrence_matrix)
     print("The number of resumes matching by experience is: " + str(len(filenames_e)))
-
-    return filenames_e
+    filenames_d = []
+    for i in filenames_e:
+        filenames_d.append((i,degree_flag(df[df.filename ==i].head(1)['degree'].values[0], jd_dict['Degree'])))
+    return filenames_d
 
 
 
@@ -525,10 +553,8 @@ def resume_details(resume_directory,name,new_resume_path = ''):
 
 
 '''def populate_resume(file_path):
-
     directory = os.getcwd()
     resume_directory = os.path.join(directory,"Resumes")
-
     #jd_path = r'D:\Intelligent Systems\Practical Language Processing\Project\coocc_jd\jd_509.txt'
     try:
         df,co_occurrence_matrix =  resume_details(resume_directory,file_path)
@@ -565,11 +591,12 @@ def new_resumes_recommendation(new_resume_path,name):
         path = os.path.join(directory,"job_descriptions",filename+'.txt')
         resume_file_name=os.path.split(new_resume_path)[-1]
         print("Newly entered resume is " + resume_file_name)
-        if resume_file_name in [os.path.split(i)[-1] for i in resume_recommendation(path,df,threshold = 0.15,topn = 15,co_occ_update = False)]:
+        if resume_file_name in [os.path.split(i)[-1] for i,degree in resume_recommendation(path,df,threshold = 0.15,topn = 15,co_occ_update = False)]:
             print("New resume got matched " + resume_file_name)
             candidate_dict['manager_id']=managerid
             candidate_dict['job_id']=filename
             candidate_dict['job_title']=title
+            candidate_dict['degree']=degree
             managerids.append(candidate_dict)
 
     return list(managerids)
