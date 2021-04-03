@@ -81,3 +81,7 @@ body {
   font-family: 'Lato';
   font-weight: 600;
 }
+
+.choose-checkbox {
+  position: relative
+}
