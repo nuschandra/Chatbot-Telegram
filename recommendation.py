@@ -65,20 +65,22 @@ def degree_flag(resume_degree, jd_degree):
     for i in degree:
         if i in  word_tokenize(" ".join(jd_degree).replace('.','').replace('\'',' ').lower()):
             jd_deg.append(i)
-            
+    resume_deg = ''        
     for i in degree_lookup.keys():
         for j in degree_lookup[i]:
             if j.lower() in resume_degree.replace('.','').replace('\'',' ').lower():
                 resume_deg = i
-    
-    print(jd_deg,resume_deg)
-    if degree.index(jd_deg[0]) < degree.index(resume_deg):
-        return 'Over Qualified'
-    elif degree.index(jd_deg[0]) > degree.index(resume_deg):
-         return 'Not Qualified'
+    if resume_deg != '':
+        print(jd_deg,resume_deg)
+        if degree.index(jd_deg[0]) < degree.index(resume_deg):
+            return 'Over Qualified'
+        elif degree.index(jd_deg[0]) > degree.index(resume_deg):
+            return 'Not Qualified'
+        else:
+            print('Qualified',jd_deg,resume_deg)
+            return 'Qualified'
     else:
-        print('Qualified',jd_deg,resume_deg)
-        return 'Qualified'
+        return 'NA'
 
 def co_occ_matrix(sentences):
     print("Calculating co-occurence matrix")
