@@ -95,11 +95,11 @@ def select_reject_candidate(bot, chat_id, obj_id, name, date, time,msg_id,title)
     button_list = [button_list[i:i + 2] for i in range(0, len(button_list), 2)]
     reply_markup = InlineKeyboardMarkup(button_list)
     text = 'Kindly click on the buttons below to reject or hire the candidate.\n\n' + "Name: "+name+"\n"+"Timing: "+date + ", " + time + "\n"+"Title: "+title
-    bot.send_message(chat_id=chat_id, text=text,message_id=msg_id,
+    bot.send_message(chat_id=chat_id, text=text,
                      reply_markup=reply_markup)
     return
 
-def close_job_opening(job_id,job_title):
+def close_job_opening(chat_id,job_id,job_title):
     close = ";".join(["close",job_id])
     open_job = ";".join(["open",job_id])
     button_list = [
@@ -133,10 +133,10 @@ def handle_callback(bot,update):
         select_reject_candidate(bot,chat_id,obj_id,name,date,time,msg_id,title)
     if(action=='hire'):
         action,obj_id=telegramcalendar.separate_callback_data(context)
-        job_id,job_title = database_updates.get_job_info_from_interview_obj_id(interview_oid)
+        job_id,job_title = database_updates.get_job_info_from_interview_obj_id(obj_id)
         if(database_updates.update_hiring_status(obj_id,"Candidate Hired")):
             bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "Thank you for the confirmation. We shall notify the candidate on the good news",reply_markup=None)
-            close_job_opening(job_id,job_title)
+            close_job_opening(chat_id,job_id,job_title)
         else:
             bot.edit_message_text(chat_id=chat_id, message_id=msg_id, text = "Sorry, you have already updated the performance of this candidate.",reply_markup=None)
     if(action=='hire_reject'):
@@ -368,7 +368,7 @@ def send_email_to_candidate(name,flag):
     msg.body=body + body_flag+body_close
     mail.send(msg)
     return "Sent"
-    
+
 def send_resumes_to_managers(resume_matched_list,resume_path):
     resume_file_name=resume_path[-36:-4]
     name,email,candidate_id=database_updates.get_candidate_name_email_id(resume_file_name)

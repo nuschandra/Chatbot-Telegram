@@ -108,6 +108,8 @@ def save_jd_in_database(jd_file,job_id,chat_id):
     if 'Title' not in jd_dict.keys():
         title=='N/A'
     else:
+        if(len(jd_dict['Title'])==0):
+            raise Exception("The job description does not have a job title. Kindly include the job title at the top of the file and re-upload it.")
         title=jd_dict['Title'][0]
 
     try:

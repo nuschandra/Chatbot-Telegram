@@ -81,7 +81,7 @@ def get_prev_intent(chat_id):
 def save_job_description(jd_id, chat_id, status,title):
     schema = mydb["jd_collection"]
     data = {"created_date":datetime.now(), "manager_id": chat_id, "job_id": jd_id, "status":status,"job_title":title}
-    myquery={'manager_id':chat_id,'job_title':title}
+    myquery={'manager_id':chat_id,'job_title':title,'status':'OPEN'}
     existing_jd=schema.find_one(myquery)
     if(existing_jd!=None):
         raise Exception("You already have a job opening for this role")
@@ -193,9 +193,9 @@ def find_completed_interviews(manager_id):
     sd, sm, sy = slot_break
     sy, sm, sd = int(sy), int(sm), int(sd)
     start = datetime(sy, sm, sd, 0, 0, 0, 0)
-    completed_interviews = list(schema.find({'interview_date': {'$lt': start},'status':'interview_scheduled'}))
+    completed_interviews = list(schema.find({'interview_date': {'$lt': start},'status':'interview_scheduled','manager_id':manager_id}))
 
-    current_day_interviews = list(schema.find({'interview_date': {'$eq': start},'status':'interview_scheduled'}))
+    current_day_interviews = list(schema.find({'interview_date': {'$eq': start},'status':'interview_scheduled','manager_id':manager_id}))
     for interview in current_day_interviews:
         interview_time = interview['interview_time']
         if(compare_am_pm_times(interview_time)):

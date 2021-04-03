@@ -2,8 +2,12 @@ from pymongo import MongoClient
 from datetime import timedelta
 from sutime import SUTime
 from datetime import datetime
+from datetime import date as d
 from dateutil import relativedelta
 from dateutil.parser import parse
+
+from database_updates import compare_am_pm_times as capt
+
 sutime = SUTime(mark_time_ranges=True, include_range=True)
 
 
@@ -51,16 +55,31 @@ def schedule_list(text, chat_id):
             if entity_extractor == []:
                 lst = []
                 for entry in lakcol.find({'manager_id': chat_id}):
-                    date = entry["interview_date"].strftime(
-                        '%B') + ", " + entry["interview_date"].strftime('%d')
-                    time = entry["interview_time"]
-                    candidate_id = entry["candidate_id"]
-                    dbid = entry["_id"]
-                    for entry in mycol.find({'_id': candidate_id}):
-                        name = entry["Name"]
-                        email = entry["Email"]
-                        lst.append((name + " ", str(dbid), "  " +
-                                    date + "  " + str(time)))
+                    ampm = capt(entry["interview_time"])
+                    if (ampm is False) and (entry["interview_date"].strftime('%Y-%m-%d') == datetime.now().strftime('%Y-%m-%d')):
+                        date = entry["interview_date"].strftime(
+                            '%B') + ", " + entry["interview_date"].strftime('%d')
+                        time = entry["interview_time"]
+                        candidate_id = entry["candidate_id"]
+                        dbid = entry["_id"]
+                        for entry in mycol.find({'_id': candidate_id}):
+                            name = entry["Name"]
+                            email = entry["Email"]
+                            lst.append((name + " ", str(dbid), "  " +
+                                        date + "  " + str(time)))
+                    elif entry["interview_date"].strftime('%Y-%m-%d') > datetime.now().strftime('%Y-%m-%d'):
+                        date = entry["interview_date"].strftime(
+                            '%B') + ", " + entry["interview_date"].strftime('%d')
+                        time = entry["interview_time"]
+                        candidate_id = entry["candidate_id"]
+                        dbid = entry["_id"]
+                        for entry in mycol.find({'_id': candidate_id}):
+                            name = entry["Name"]
+                            email = entry["Email"]
+                            lst.append((name + " ", str(dbid), "  " +
+                                        date + "  " + str(time)))
+                if (len(lst) == 0):
+                    return("No interviews found")
                 return lst
             for ent in entity_extractor:
                 slot = ent["value"]
@@ -83,16 +102,31 @@ def schedule_list(text, chat_id):
                         lst = []
                         for entry in lakcol.find({'interview_date': {'$lt': end, '$gte': start}}):
                             if entry["manager_id"] == chat_id:
-                                date = entry["interview_date"].strftime(
-                                    '%B') + ", " + entry["interview_date"].strftime('%d')
-                                time = entry["interview_time"]
-                                candidate_id = entry["candidate_id"]
-                                dbid = entry["_id"]
-                                for entry in mycol.find({'_id': candidate_id}):
-                                    name = entry["Name"]
-                                    email = entry["Email"]
-                                    lst.append(
-                                        (name + " ", str(dbid), "  " + date + "  " + str(time)))
+                                ampm = capt(entry["interview_time"])
+                                if (ampm is False) and (entry["interview_date"].strftime('%Y-%m-%d') == datetime.now().strftime('%Y-%m-%d')):
+                                    date = entry["interview_date"].strftime(
+                                        '%B') + ", " + entry["interview_date"].strftime('%d')
+                                    time = entry["interview_time"]
+                                    candidate_id = entry["candidate_id"]
+                                    dbid = entry["_id"]
+                                    for entry in mycol.find({'_id': candidate_id}):
+                                        name = entry["Name"]
+                                        email = entry["Email"]
+                                        lst.append(
+                                            (name + " ", str(dbid), "  " + date + "  " + str(time)))
+                                elif entry["interview_date"].strftime('%Y-%m-%d') > datetime.now().strftime('%Y-%m-%d'):
+                                    date = entry["interview_date"].strftime(
+                                        '%B') + ", " + entry["interview_date"].strftime('%d')
+                                    time = entry["interview_time"]
+                                    candidate_id = entry["candidate_id"]
+                                    dbid = entry["_id"]
+                                    for entry in mycol.find({'_id': candidate_id}):
+                                        name = entry["Name"]
+                                        email = entry["Email"]
+                                        lst.append(
+                                            (name + " ", str(dbid), "  " + date + "  " + str(time)))
+                        if (len(lst) == 0):
+                            return(f"No interviews found for {ent['text']}")
                         return lst
                     else:
                         return(f"No interviews found for {ent['text']}")
@@ -129,16 +163,31 @@ def schedule_list(text, chat_id):
                         lst = []
                         for entry in lakcol.find({'interview_date': {'$lt': end, '$gte': start}}):
                             if entry["manager_id"] == chat_id:
-                                date = entry["interview_date"].strftime(
-                                    '%B') + ", " + entry["interview_date"].strftime('%d')
-                                time = entry["interview_time"]
-                                candidate_id = entry["candidate_id"]
-                                dbid = entry["_id"]
-                                for entry in mycol.find({'_id': candidate_id}):
-                                    name = entry["Name"]
-                                    email = entry["Email"]
-                                    lst.append(
-                                        (name + " ", str(dbid), "  " + date + "  " + str(time)))
+                                ampm = capt(entry["interview_time"])
+                                if (ampm is False) and (entry["interview_date"].strftime('%Y-%m-%d') == datetime.now().strftime('%Y-%m-%d')):
+                                    date = entry["interview_date"].strftime(
+                                        '%B') + ", " + entry["interview_date"].strftime('%d')
+                                    time = entry["interview_time"]
+                                    candidate_id = entry["candidate_id"]
+                                    dbid = entry["_id"]
+                                    for entry in mycol.find({'_id': candidate_id}):
+                                        name = entry["Name"]
+                                        email = entry["Email"]
+                                        lst.append(
+                                            (name + " ", str(dbid), "  " + date + "  " + str(time)))
+                                elif entry["interview_date"].strftime('%Y-%m-%d') > datetime.now().strftime('%Y-%m-%d'):
+                                    date = entry["interview_date"].strftime(
+                                        '%B') + ", " + entry["interview_date"].strftime('%d')
+                                    time = entry["interview_time"]
+                                    candidate_id = entry["candidate_id"]
+                                    dbid = entry["_id"]
+                                    for entry in mycol.find({'_id': candidate_id}):
+                                        name = entry["Name"]
+                                        email = entry["Email"]
+                                        lst.append(
+                                            (name + " ", str(dbid), "  " + date + "  " + str(time)))
+                        if (len(lst) == 0):
+                            return(f"No interviews found for {ent['text']}")
                         return lst
                     else:
                         return(f"No interviews found for {ent['text']}")
@@ -170,11 +219,12 @@ def schedule_list(text, chat_id):
                                     email = entry["Email"]
                                     lst.append(
                                         (name + " ", str(dbid), "  " + date + "  " + str(time)))
+                        if (len(lst) == 0):
+                            return(f"No interviews found for {ent['text']}")
                         return lst
                     else:
                         return(f"No interviews found {ent['text']}")
                 else:
-                    print("I am in the method for dates such as 28-03-2021")
                     slot_break = slot.split("-")
                     sy, sm, sd = slot_break
                     ey, em, ed = sy, sm, sd
@@ -184,23 +234,35 @@ def schedule_list(text, chat_id):
                     end = datetime(ey, em, ed, 23, 59, 59, 99999)
                     count = lakcol.find(
                         {'interview_date': {'$lt': end, '$gte': start}}).count()
-
                     if count >= 1:
-                        print("There is a hit in the database")
                         lst = []
                         for entry in lakcol.find({'interview_date': {'$lt': end, '$gte': start}}):
-                            print("There is one interview to be returned")
                             if entry["manager_id"] == chat_id:
-                                date = entry["interview_date"].strftime(
-                                    '%B') + " " + entry["interview_date"].strftime('%d')
-                                time = entry["interview_time"]
-                                candidate_id = entry["candidate_id"]
-                                dbid = entry["_id"]
-                                for entry in mycol.find({'_id': candidate_id}):
-                                    name = entry["Name"]
-                                    email = entry["Email"]
-                                    lst.append(
-                                        (name + " ", str(dbid), "  " + date + "  " + str(time)))
+                                ampm = capt(entry["interview_time"])
+                                if (ampm is False) and (entry["interview_date"].strftime('%Y-%m-%d') == datetime.now().strftime('%Y-%m-%d')):
+                                    date = entry["interview_date"].strftime(
+                                        '%B') + " " + entry["interview_date"].strftime('%d')
+                                    time = entry["interview_time"]
+                                    candidate_id = entry["candidate_id"]
+                                    dbid = entry["_id"]
+                                    for entry in mycol.find({'_id': candidate_id}):
+                                        name = entry["Name"]
+                                        email = entry["Email"]
+                                        lst.append(
+                                            (name + " ", str(dbid), "  " + date + "  " + str(time)))
+                                elif entry["interview_date"].strftime('%Y-%m-%d') != datetime.now().strftime('%Y-%m-%d'):
+                                    date = entry["interview_date"].strftime(
+                                        '%B') + " " + entry["interview_date"].strftime('%d')
+                                    time = entry["interview_time"]
+                                    candidate_id = entry["candidate_id"]
+                                    dbid = entry["_id"]
+                                    for entry in mycol.find({'_id': candidate_id}):
+                                        name = entry["Name"]
+                                        email = entry["Email"]
+                                        lst.append(
+                                            (name + " ", str(dbid), "  " + date + "  " + str(time)))
+                        if (len(lst) == 0):
+                            return(f"No interviews found for {ent['text']}")
                         return lst
                     else:
                         return(f"No interviews found for {ent['text']}")
