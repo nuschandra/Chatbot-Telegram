@@ -61,10 +61,12 @@ def degree_flag(resume_degree, jd_degree):
         return 'Qualified'
     degree = ['associate','diploma','bachelor','master','doctor','phd']
     jd_deg = []
-    
     for i in degree:
-        if i in  word_tokenize(" ".join(jd_degree).replace('.','').replace('\'',' ').lower()):
-            jd_deg.append(i)
+        for k in  word_tokenize(" ".join(jd_degree).replace('.','').replace('\'',' ').lower()):
+            if i in k:
+                jd_deg.append(i)
+    if jd_deg==[]:
+        return 'Qualified'
     resume_deg = ''        
     for i in degree_lookup.keys():
         for j in degree_lookup[i]:
