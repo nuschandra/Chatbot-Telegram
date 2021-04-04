@@ -1,0 +1,39 @@
+
+
+Experience:
+DevOps EngineerJanuary 2017 - January 2018 (1 year 1 month)
+System AdministratorApril 2015 - January 2017 (1 year 10 months)
+DevOps EngineerApril 2019 - September 2020 (1 year 6 months)
+DevOps EngineerSeptember 2020 - Present (7 months)
+DevOps EngineerJanuary 2018 - April 2019 (1 year 4 months)
+
+
+Skills:
+windows
+Grafana
+gitlab
+Jenkins
+Fastlane
+jenkins
+ApacheKafka
+CI CD
+Devops
+Apache Kafka
+CI-CD
+Ansible
+HDFS
+Hadoop
+Kubespray
+Linux
+Azure
+Prometheus
+Docker
+AWS
+Shell Scripting
+BuddyBuild
+HTML
+Kubernetes
+
+
+Degree:
+Bachelor's degree, Computer Engineering

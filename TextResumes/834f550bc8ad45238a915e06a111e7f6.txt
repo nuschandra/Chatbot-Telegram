@@ -1,0 +1,194 @@
+ 
+
+ 
+
+ 
+
+Contact
+leongyunzenben@gmail.com
+www.linkedin.com/in/
+leongyunzenben (LinkedIn)
+
+Ben Leong
+Full Stack Developer at Singtel | React | .NET | Azure Devops
+Singapore
+
+Top Skills
+.NET Framework
+C#
+React.js
+
+Languages
+Spanish (Limited Working)
+English (Full Professional)
+Chinese (Elementary)
+
+Certifications
+DevOps Foundations
+AWS Certified Solutions Architect
+- Associate: 1 Cloud Services
+Overview
+Scrum: The Basics
+Studying for the Certified Business
+Analyst Professional (CBAP®)
+Duolingo Spanish Fluency:
+Elementary (Estimated)
+
+Summary
+Ben is highly passionate in programming web applications and
+database design. Originally a VBA programmer, he has expanded
+his skillset to include React.js, C#, C++, .NET framework, Python,
+SQL, JavaScript, HTML, CSS, Typescript, Git. 
+
+Being naturally versatile, Ben is able to perform in both front-end
+and back-end development. He enjoys to leverage his skills to
+solve difficult and novel problems that employers face. Ben uses a
+combination of online resources (Stack Overflow, Udemy, YouTube)
+and in-company helplines to get the job done on time. If there are
+obstacles to completion, Ben communicates them clearly to the
+managers without delay. 
+
+Despite having strong technical skills, Ben also understands people.
+He understands the stressful position of his management and always
+seek to provide accurate due dates for them to plan the schedule.
+Ben always finishes tasks on time with minimal rework. His codes
+are easy to read, adheres strictly to framework design and is well
+documented in Git commits, making the job of the Tech Lead less
+difficult.
+
+Even as a developer, Ben knows the importance of QA to the team.
+He knows the difficulties the QA faces such as lack of understanding
+of new features and more technical aspects of the application. Ben
+makes the job of the QA easier by using layman terms to explain
+the ins and out of the application so as to improve the efficiency of
+their work. The QA discovers bugs faster, the developer fixes them
+quickly, hence everybody wins. 
+
+Ben's personal strengths:
+• Fast learner. 
+• Easily read other people's code and debugging them.
+• Always on time and submits by due date.
+
+Page 1 of 4
+
+ 
+
+ 
+
+ 
+
+• Great presentation skills and communicates clearly during
+meetings.
+• Great teamwork skills. Very easy for non-technical staff to do work
+with him as he uses layman language effectively. 
+• Independent and high confidence of finishing tasks to a good
+standard. 
+
+Ben's long term goal is to become a Cloud Solutions Architect. He
+is currently learning Azure and AWS on the side and plans to transit
+into deploying cloud services in the near future. 
+
+Experience
+
+Singtel
+Fullstack Developer
+October 2020 - Present (7 months)
+• Did fullstack React/React Native (Desktop/Mobile Frontend) and C#/.NET
+MVC (Backend). 
+• Developed corporate IT systems for SingTel and subsidiary Optus Australia.  
+• Used Azure DevOps for CI/CD, Cloud storage (Azure SQL) and version
+control (Git).
+• Wrote SQL for manual data CRUD for RDBMS, REST API. 
+
+NEC Corporation
+Software Developer
+October 2019 - September 2020 (1 year)
+• Used C#, .NET, CSS, HTML, JavaScript, SQL, Git, SQL server, JIRA. 
+• Programmed using back-end (server, database, REST API) and front-end
+(UI, UX) skills.  
+• Participated in one SDLC using Agile developing end-user software for
+Access Control. 
+• Conveyed to team efficiently by providing concise presentations and
+technical explanations which slashed bug-finding time by 30% for the QA.
+• Composed effective Git commits and well structured code that conserved half
+of the TechLead’s code review time. 
+• Achieved full stack skills promptly within 2 weeks of work during a very critical
+pre-sales period that increased team output by 20%.  
+• United the developers to adhere to coding standards of MVC and refined the
+structure of the code base which delivered 20% faster debugging time.
+
+Page 2 of 4
+
+ 
+
+ 
+
+ 
+
+ExxonMobil
+Inspection Engineering Intern
+August 2016 - December 2016 (5 months)
+1 Pulau Ayer Chawan, Jurong Island, Singapore - Fuels and Lubricants
+Refinery
+
+• Digitized past inspection records and improvised work process by using VBA
+that slashed 60% of wasted working hours due to hardcopy searches. 
+• Initiated and developed MS Access database project to store clamp records
+and inspection photos that replaced old system. New system improved
+working speed of piping inspectors by 70%. 
+• Upgraded the functionalities of the Annual Inspector Salary monitoring
+system by applying VBA for organising personnel records and financial data;
+reduced wasted hours by 50%.
+
+Singapore Armed Forces (SAF)
+Human Resources Lead Administrator
+July 2013 - June 2015 (2 years)
+Singapore (Pasir Laba Ammunition Depot) - An ammunition supply base
+
+• Oversaw Human Resource (HR) assistance to 100 personnel in four outlets
+across Singapore. 
+• Negotiated the services and inspected the work performance of private
+transport contractors for daily functions within the depot.  
+• Eliminated 90% work-hours and 66% manpower needs by programming new
+Microsoft Excel monitoring methods for HR tasks to circumvent the lack of
+replacements for two outgoing personnel in the first six months of service. 
+• Maintained excellent zero-finding record in transport audits and awarded
+Depot Best Soldier for the Month of April 2015 to recognise the implementation
+of novel IT System by four ammunition depots. 
+
+Vopak
+Biotechnologist Intern
+September 2011 - November 2011 (3 months)
+Singapore (Sebarok Island) - Oil and Gas Bulk Storage Island
+
+• Directed a group of foreign workers of diverse ethnic backgrounds to
+remediate groundwater oil seepage using hydrocarbon-consuming bacteria. 
+• Employed effective schedules for growing thrice the usual number of bacteria
+in Singapore Polytechnic as a result of a groundwater hydrocarbon increase
+occurring two weeks into the internship. 
+
+Page 3 of 4
+
+ 
+
+ 
+
+ 
+
+• Achieved at the end of the internship 39% decrease in groundwater oil
+compared to after the increase and a 10% decrease compared to right before
+the internship.
+
+Education
+Nanyang Technological University
+Bachelor’s Degree, Materials Engineering · (2015 - 2018)
+
+Singapore Polytechnic
+Diploma, Biotechnology · (2010 - 2013)
+
+Broadrick Secondary School
+O Level, Sciences · (2006 - 2009)
+
+Page 4 of 4
+
+

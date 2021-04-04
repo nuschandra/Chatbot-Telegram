@@ -1,0 +1,30 @@
+
+
+Experience:
+Senior ConsultantJune 2019 - July 2020 (1 year 2 months)
+Software EngineerDecember 2017 - March 2018 (4 months)
+.NET Developer March 2017 - October 2017 (8 months)
+Full Stack EngineerJuly 2020 - Present (9 months)
+Software EngineerApril 2018 - April 2019 (1 year 1 month)
+
+
+Skills:
+Next.js
+Redux
+C#
+Sql
+Agile
+RESTful
+Redux.js
+CSS
+JavaScript
+Linq
+React.js
+HTML5
+Scrum
+Sass
+ReactJS
+
+
+Degree:
+Diploma, Computer Programming/Programmer, General

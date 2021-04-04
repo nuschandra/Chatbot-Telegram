@@ -1,0 +1,115 @@
+Contact
+503 Striling Road MDIS Residency
+Singapore
++65-96100053 (Mobile)
+msaif.sam@gmail.com
+
+www.linkedin.com/in/msaif02
+(LinkedIn)
+saif0206.github.io/myportfolio/
+(Portfolio)
+github.com/SAIF0206 (Other)
+www.hackerrank.com/msaif_sam1
+(Other)
+
+Top Skills
+Cloud Computing
+Data Analytics
+Software Development
+
+Languages
+Hindi (Native or Bilingual)
+English (Professional Working)
+
+Certifications
+Build On Singapore 2019
+Time Series Modeling 
+Spring Framework Java
+SQL
+Splunk 7.x Fundamental
+
+ 
+
+ 
+
+ 
+
+Mohd Saif Ansari
+IT Engineer at Micron Technology
+Singapore
+
+Summary
+An individual with a keen sense of focus and optimum leadership
+skills looking to contribute to the growth of the organization in a
+challenging and fulfilling atmosphere.
+
+Experience
+
+Micron Technology
+Information Technology Engineer
+August 2020 - Present (8 months)
+Singapore
+
+Providence Solutions Pte Ltd
+Software Engineer
+April 2020 - August 2020 (5 months)
+Singapore
+
+NUS Entrepreneurship Society
+IT Consultant
+September 2019 - July 2020 (11 months)
+Singapore
+
+OpportunitySG
+Software Engineer
+November 2019 - June 2020 (8 months)
+Singapore
+
+Developing Android and IOS application for Senior Citizens sync with
+Bluetooth wearable device to monitor the health. In the case of abnormalities,
+the data is transmitted to Caregivers with an alert message
+Technologies Used: ReactNative,
+Cloud DB: Firebase.
+
+OpportunitySG was a startup that I worked for. OpportunitySG  which provides
+additional opportunities for relationship building between a company and intern
+while also solidifying this relationship long-term by ensuring that both parties
+are culturally fit for each other.
+
+Page 1 of 2
+
+ 
+
+ 
+
+ 
+
+As a Software Engineer in OpportunitySG, I handle the tech system of the
+company and delivered them the final product, for their business.
+
+Chilli Api Catering
+Technical Team Lead
+March 2020 - April 2020 (2 months)
+Singapore
+
+• Developed Automated Route Planning System (ARPS) for the company.
+• Worked on a solution for Last-Mile Delivery using WorkWave API calls.
+• ARPS System made the Route Scheduling easy for the Logistic Planner with
+Drag and Drop 
+Framework
+Technology used: SQL, ExpressJS ReactJS, NodeJS.
+
+Education
+National University of Singapore
+Post Graduation, System Analysis · (2019 - 2020)
+
+P E S College of Engineering, MANDYA
+Bachelor of Engineering - BE, Computer Science and
+Engineering · (2015 - 2019)
+
+Ryan International School - Greater Noida
+CBSE, Mathematics and Science · (2008 - 2012)
+
+Page 2 of 2
+
+

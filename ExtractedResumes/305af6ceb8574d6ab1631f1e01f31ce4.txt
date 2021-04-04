@@ -1,0 +1,45 @@
+
+
+Experience:
+Software EngineerMarch 2018 - Present (3 years 1 month)
+Software DeveloperNovember 2013 - March 2018 (4 years 5 months)
+
+
+Skills:
+microservices
+myBatis
+Servlets
+DesignPatterns
+Harvest
+JSP
+Designing RESTful
+Web/
+Windows
+Oracle
+Microservices
+CSS
+WebSphere
+JavaScript
+Apache Maven
+JUnit
+DB2
+Spring
+SQL Server
+Mockito
+Spring Boot
+Java
+SQL
+GIT
+SVN
+JMS
+JQuery
+JDBC
+HTML
+Unix
+MVC
+Apache Tomcat
+Ajax
+
+
+Degree:
+Bachelor of Technology - BTech

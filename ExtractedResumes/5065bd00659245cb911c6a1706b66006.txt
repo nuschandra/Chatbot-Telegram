@@ -1,0 +1,26 @@
+
+
+Experience:
+Data Science InternDecember 2018 - January 2019 (2 months)
+Business Technology AnalystOctober 2015 - April 2018 (2 years 7 months)
+Data Science InternMay 2019 - August 2019 (4 months)
+Data ScientistOctober 2019 - Present (1 year 7 months)
+
+
+Skills:
+Big Query
+Tableau
+Python
+Data Science
+Google Cloud Platform
+Teradata
+Google Cloud
+SQL
+Machine Learning
+Pyspark
+SAS
+
+
+Degree:
+Bachelor of Engineering (B.E.)
+Master of Science - MS, Business Analytics

@@ -1,0 +1,40 @@
+
+
+Experience:
+Project InternOctober 2017 - April 2018 (7 months)
+Mobile Developer InternOctober 2017 - December 2017 (3 months)
+Web Developer InternAugust 2016 - October 2016 (3 months)
+Data ScientistJanuary 2019 - Present (2 years 4 months)
+
+
+Skills:
+Redis
+Python
+JanusGraph
+Flask
+PostgreSQL
+Bootstrap
+Deep Learning
+React
+JavaScript
+Microsoft SQL Server
+Golang
+Hadoop
+Java
+Android
+Classification
+SQL
+Linux
+Elasticsearch
+NGINX
+MySQL
+Webpack
+Spark
+HBase
+jQuery
+.NET
+ETL
+
+
+Degree:
+Bachelor of Science - BS, Computer Science

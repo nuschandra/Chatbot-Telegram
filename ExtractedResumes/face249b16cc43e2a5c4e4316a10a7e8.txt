@@ -1,0 +1,39 @@
+
+
+Experience:
+R&D EngineerMay 2016 - September 2016 (5 months)
+Senior Data ScientistJuly 2020 - Present (10 months)
+Data ScientistAugust 2018 - July 2020 (2 years)
+Augmented Reality DeveloperMay 2016 - September 2016 (5 months)
+
+
+Skills:
+Natural Language Processing
+Python
+machinetranslation
+Artificial Intelligence
+KubeFlow
+Deep Learning
+Microservices
+Research Associate
+data labelling
+AirFlow
+NLP
+Machine Learning
+CI/CD
+DataScienceFundamentals
+OpenCV
+milestones
+Software Engineering
+Prometheus
+git
+Docker
+REST
+AI
+Kubernetes
+ETL
+
+
+Degree:
+Master of Science - MS, Computer Science
+Bachelor of Engineering (B.E.), Computer Science

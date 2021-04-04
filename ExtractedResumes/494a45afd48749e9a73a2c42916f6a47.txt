@@ -1,0 +1,25 @@
+
+
+Experience:
+Senior SoftwareEngineer and Team Lead.
+Software DeveloperMay 2016 - July 2017 (1 year 3 months)
+Senior Software EngineerJune 2017 - September 2018 (1 year 4 months)
+Development Team LeadJanuary 2018 - September 2018 (9 months)
+Senior Software EngineerOctober 2018 - Present (2 years 7 months)
+
+
+Skills:
+AWS Stack
+AWS
+Nodejs
+Javascript
+Microservices
+NodeJS
+JavaScript
+.NET
+Dynamodb
+.Net
+
+
+Degree:
+Bachelor of Science (BS), Information Technology

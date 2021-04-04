@@ -1,0 +1,53 @@
+
+
+Experience:
+Tech leadJanuary 2017 - April 2018 (1 year 4 months)
+Intern Software DeveloperJuly 2013 - September 2013 (3 months)
+Senior Software EngineerAugust 2018 - January 2020 (1 year 6 months)
+Software EngineerNovember 2013 - December 2016 (3 years 2 months)
+Senior Software EngineerApril 2018 - July 2018 (4 months)
+Senior Full Stack EngineerAugust 2020 - Present (8 months)
+
+
+Skills:
+Redis
+Queue
+Rails
+PostgreSQL
+Sidekiq & RabbitMQ
+Capistrano
+Bootstrap
+Web Applications
+NodeJS
+Go
+Ruby, Rails
+Sidekiq
+SES
+BackboneJS
+CloudFront
+Ansible
+ReactJS
+Ruby on Rails
+Kibana
+CI/CD
+MongoDB
+Java
+ETCD
+Docker
+ElasticSearch
+AWS
+Jira
+RequireJS
+Apache
+REST
+Javascript
+GCP
+Nginx
+GoLang
+Kubernetes
+EmberJS
+Rakuten
+
+
+Degree:
+Bachelor's degree, Computer Science

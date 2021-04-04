@@ -1,0 +1,50 @@
+
+
+Experience:
+Junior Research AssistantJanuary 2016 - April 2016 (4 months)
+Data ScientistSeptember 2020 - Present (8 months)
+Data ScientistAugust 2019 - September 2020 (1 year 2 months)
+Research InternJune 2018 - September 2018 (4 months)
+Co-Founder and CTOJune 2013 - October 2014 (1 year 5 months)
+AI Team Lead March 2020 - September 2020 (7 months)
+Co-Founder and CTOOctober 2014 - May 2016 (1 year 8 months)
+Student ResearcherJune 2012 - January 2016 (3 years 8 months)
+Research AssistantJanuary 2017 - September 2020 (3 years 9 months)
+
+
+Skills:
+Python
+Bayesian Models
+SVM
+Deep Reinforcement
+android
+Pandas
+Graph Theory
+Keras
+Software Requirements Specification
+ScikitDeveloped
+Machine Learning
+CNN
+AliCloud (阿里云)
+Deep Reinforcement Learning
+TensorFlow
+OpenCV
+Android
+Java
+iOS
+Game Theory
+Web Developers
+Matlab
+Decision Trees
+Neural Networks
+Matplotlib
+RNNs),
+PocketSphinx
+TensorSpace.js
+
+
+Degree:
+Doctor of Philosophy (PhD), Artificial Intelligence
+Bachelor's degree, Mechatronics
+Master’s Degree, Medical Imaging
+Bachelor’s Degree, Mechatronics

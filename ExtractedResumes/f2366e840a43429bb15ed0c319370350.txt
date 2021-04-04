@@ -1,0 +1,31 @@
+
+
+Experience:
+Research FellowOctober 2015 - March 2018 (2 years 6 months)
+Data ScientistMarch 2018 - Present (3 years 2 months)
+
+
+Skills:
+Natural Language Processing
+predictive modelling
+Deep Learning
+Perl
+programming
+statistical tests
+Data Analysis
+deep learning
+Data visualizations
+datamanipulation
+NLP
+Linux
+ggplot2
+Machine Learning
+Data Visualization
+data visualization
+unsupervised learning
+
+
+Degree:
+Doctor of Philosophy (Ph.D.), Bioinformatics
+Bachelor, Biotechnology
+Master of Technology in Knowledge Engineering (MTech KE), DataScience

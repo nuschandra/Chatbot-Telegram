@@ -1,0 +1,25 @@
+
+
+Experience:
+Senior Software EngineerJune 2014 - August 2018 (4 years 3 months)
+Senior Application EngineerSeptember 2018 - Present (2 years 7 months)
+
+
+Skills:
+Boot
+J2EE
+AWS
+Spring
+Spring Boot
+Oracle
+Agile
+Microservices
+Java
+Rest
+Hibernate
+Drools
+Docker
+
+
+Degree:
+Master of Computer Applications (M.C.A.), Computer Science

@@ -1,0 +1,38 @@
+
+
+Experience:
+Data ScientistSeptember 2020 - Present (8 months)
+AI ResearcherAugust 2018 - January 2019 (6 months)
+Research AssistantMarch 2020 - September 2020 (7 months)
+AI ResearcherFebruary 2018 - July 2018 (6 months)
+Teaching AssistantFebruary 2017 - January 2020 (3 years)
+Software EngineerMay 2017 - June 2017 (2 months)
+AI ResearcherFebruary 2019 - February 2020 (1 year 1 month)
+
+
+Skills:
+Django REST framework
+Python
+Research
+Flask
+ApacheMaven
+Django
+NodeJS
+Go
+Machine Learning
+ReactJS
+pandas
+Computer Science
+SQL
+Random Forest
+Feature Engineering
+Gradient Boosted Trees
+Neural Network
+Decision Trees
+Internal Data Science
+AWS HPC & GPU Cloud)
+
+
+Degree:
+Bachelor of Computer Science (Artificial Intelligence)
+Bachelor of Computer Science (Artificial Intelligence), ArtificialIntelligence

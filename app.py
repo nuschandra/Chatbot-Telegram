@@ -31,7 +31,7 @@ app.config['MAIL_USE_TLS']=False
 app.config['MAIL_USE_SSL']=True
 mail=Mail(app)
 
-bot_token = "1621891888:AAHBvpvmFNJDQoDlpB3ImaBwdQHOGn5d0Pg"
+bot_token = "1537657914:AAEspo0IA7tiW2CCAnWLfsxOd0YabGC-r50"
 bot_username = "VirtualRecruiterBot"
 bot_url = "https://b9e5a020b8d7.ngrok.io/"
 bot = telegram.Bot(token=bot_token)

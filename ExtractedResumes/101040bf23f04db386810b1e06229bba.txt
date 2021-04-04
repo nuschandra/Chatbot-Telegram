@@ -1,0 +1,41 @@
+
+
+Experience:
+DevOps EngineerAugust 2016 - Present (4 years 8 months)
+DevOps & Cloud Engineer (Certified Specialist in OpenShift and
+Senior Operations Lead SpecialistOctober 2008 - February 2009 (5 months)
+IT AnalystMay 2012 - April 2013 (1 year)
+Customer Support EngineerFebruary 2006 - December 2006 (11 months)
+Server Management EngineerDecember 2006 - October 2008 (1 year 11 months)
+Technical ConsultantFebruary 2009 - January 2012 (3 years)
+
+
+Skills:
+ANT
+Openshift
+Google Cloud
+Jenkins
+Red Hat Certified Specialist
+DevOps
+OpenShift
+System Specialist
+MS SQL Server,
+OPENSHIFT
+PIVOTAL
+Shell
+JIRA
+GIT
+Linux
+System Controller
+WebLogicDatabase
+MySQL
+AWS Certified
+Aix
+JBoss
+Kubernetes
+Maven
+Red Hat Linux
+
+
+Degree:
+Bachelor's Degree, Computer Science

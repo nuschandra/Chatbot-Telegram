@@ -1,0 +1,32 @@
+
+
+Experience:
+SR. Member TechnicalNovember 2010 - June 2012 (1 year 8 months)
+Sr. Configuration Management Engineer( DevOps )March 2017 - November 2019 (2 years 9 months)
+System ExceutiveAugust 2007 - November 2010 (3 years 4 months)
+
+
+Skills:
+AWS
+Python
+Shell Scripting
+Jira
+Bash
+ELK
+CI/CD
+tomcat
+Perl
+OpenShift
+Scripting
+Cisco
+Linux
+scripting
+Ansible
+Jenkins
+Docker
+
+
+Degree:
+Master’s Degree, Computer Science
+Bachelor’s Degree, Computer Science
+High School, Math, Physics, Chemistry

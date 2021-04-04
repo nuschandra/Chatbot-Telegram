@@ -1,0 +1,55 @@
+
+
+Experience:
+Research EngineerMarch 2019 - August 2020 (1 year 6 months)
+JC Specialist TutorJune 2015 - March 2019 (3 years 10 months)
+Assistant Associate August 2014 - December 2014 (5 months)
+Data ScientistSeptember 2020 - November 2020 (3 months)
+Lead PlannerJanuary 2015 - June 2015 (6 months)
+Data ScientistDecember 2020 - Present (5 months)
+
+
+Skills:
+Tableau
+Python
+programming
+kNN
+computer vision
+MATLAB
+SVM
+Scikit-Learn
+Pandas
+Keras
+TfidfVectorizer
+statistical analysis
+Logistic Regression
+NLP
+recommender systems
+data analysis
+Machine Learning
+noSQL
+machine learning
+unsupervised learning
+Recommender Systems
+neural networks
+time series analysis
+OpenCV
+dataanalysis
+SQL
+Random Forest
+Polynomial Regression
+Naive Bayes
+Seaborn
+Natural LanguageProcessing
+Spark
+Matplotlib
+Neural Networks
+Time Series
+DecisionTrees
+K-Means
+Data Visualization
+
+
+Degree:
+Bachelor of Science (Merit), Physics
+Specialist Diploma, Applied Artificial Intelligence

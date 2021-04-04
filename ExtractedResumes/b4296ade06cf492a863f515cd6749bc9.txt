@@ -1,0 +1,79 @@
+
+
+Experience:
+DeveloperMarch 2006 - August 2009 (3 years 6 months)
+Internal requirements• Create and Deploy cloud Infrastructure
+DevOps EngineerJuly 2019 - Present (1 year 9 months)
+Cloud EngineerJanuary 2016 - Present (5 years 3 months)
+DevOps Engineer August 2016 - Present (4 years 8 months)
+SoftLayer’s IaaS cloud offering
+
+
+Skills:
+IBM OpenStack
+Python
+Eclipse
+Shell scripting
+IBM Bluemix / Cloud Foundry
+Apache, IBM HIS
+Databases &
+OpenStack
+AJAX
+JSP
+CI/CD automation
+JMeterApplication
+MongoDB
+Jenkins
+NetBeans
+Cloud Computing
+Git
+MicrosoftVisioDevelopment
+DevOps
+Junit
+Oracle
+JSON
+Microservices
+Designing
+XSLT
+JavaScript
+WebSphere
+IBM AIX
+XML
+Ansible
+SQLDeveloper
+CI/CD
+RSS
+Bash
+Ruby
+XPath
+Cloud Foundry
+Java
+Github
+SQL
+Linux
+HTML5
+CloudWatch
+Docker
+IBM Cloud
+IBM KVM
+AWS EC2
+Jira
+Selenium
+MySQL
+Visual Studio
+Tomcat
+Agile
+Cloudant
+JBoss
+IBM
+IBM FileNet
+jQuery
+Nginx
+YAML
+Kubernetes
+Maven
+RAD
+
+
+Degree:
+BE, ECE

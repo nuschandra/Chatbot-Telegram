@@ -580,7 +580,7 @@ def resume_details(resume_directory,name,new_resume_path = ''):
 
 def trigger_resume_fetching(jd_path,job_id,chat_id):
     df = pd.read_csv('resume_details.csv',keep_default_na=False)
-    recom_file = resume_recommendation(jd_path,df,threshold = 0.15,topn = 15)
+    recom_file = resume_recommendation(jd_path,df,threshold = 0.30,topn = 15)
     return recom_file
 
 
@@ -605,7 +605,7 @@ def new_resumes_recommendation(new_resume_path,name):
         path = os.path.join(directory,"job_descriptions",filename+'.txt')
         resume_file_name=os.path.split(new_resume_path)[-1]
         print("Newly entered resume is " + resume_file_name)
-        recom_files=resume_recommendation(path,df,threshold = 0.10,topn = 15,co_occ_update = False)
+        recom_files=resume_recommendation(path,df,threshold = 0.30,topn = 15,co_occ_update = False)
         for i,degree in recom_files:
             if resume_file_name==os.path.split(i)[-1]:
                 print("New resume got matched " + resume_file_name)

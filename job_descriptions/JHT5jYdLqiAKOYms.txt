@@ -1,0 +1,27 @@
+Data Scientist
+
+We are looking for a team player with full stack data science skill set, who is willing to participate in end to end process from Data Preparation to final Deployment and Tracking. Please note that part of the work mix will also include analytics (non- Data Science) projects. This role is not 100% remote and candidate should be physically present in Singapore while applying for this role. They also need to have hands-on industry experience on listed skill-sets.
+
+Technical Skill Required:
+• Python, and libraries (e.g: pandas, Scikit-learn)
+• Expertize in SQL.
+• GLM/Regression, Random Forest, Boosting, Trees, text mining, network analysis, Time Series, etc.
+• Experience with Hadoop Eco-system, Hive, Spark, PySpark.
+• Experience in developing machine learning solutions for production use.
+• ML, NLP and Big Data use-cases Exposure.
+• Predictive & Prescriptive modelling.
+• Above average knowledge of statistics.
+• Knowledge of A/B testing framework and test model quality.
+• Familiarity with Cloud data science specific ecosystem will be seen favourably.
+
+Focus Areas:
+• Conduct hands-on POC efforts to set-up new data science platform.
+• Conduct R&D for exploration of new AI/ML use cases. Responsible for consolidating best practices.
+• Develop, deploy and track models, including documentation and maintenance.
+• Apply data mining techniques and statistical analysis to uncover insights from data.
+• Translate business requirements into technical specifications and implementation.
+• Visualizing/presenting data for stakeholders.
+
+Experience:
+• 3-5 Years of hands on above listed technical skill-sets.
+• More than 2 years of domain experience in Financial Institute will be seen favourably

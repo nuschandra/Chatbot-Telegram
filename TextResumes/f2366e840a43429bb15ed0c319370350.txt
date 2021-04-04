@@ -1,0 +1,85 @@
+ 
+
+ 
+
+ 
+
+Contact
+
+www.linkedin.com/in/quanyu2015
+(LinkedIn)
+
+Yu QUAN
+Data Scientist at Singapore Airlines
+Singapore
+
+Top Skills
+R programming
+Data Analysis
+Machine Learning
+
+Certifications
+Practical Machine Learning
+Data Visualization
+Deep Learning Specialization
+Natural Language Processing
+Specialization
+Machine Learning
+
+Summary
+My PhD study on human genetics using a large amount of
+sequencing and microarray data leads me to the world of data
+science. I’ve gained years of experience in R programming, data
+manipulation, data visualization, and statistical modelling from
+multiple research projects. As a self-motivated learner, I keep on
+learning new techniques from online courses. In 2019, I finished my
+part-time master courses at NUS. Currently, I'm working on industrial
+problems including predictive modelling, NLP, audio analysis and
+specialised in solving optimisation problems.
+
+Experience
+
+Singapore Airlines
+Data Scientist
+March 2018 - Present (3 years 2 months)
+Singapore
+
+• Solve manpower scheduling problem and customer time slot allocation
+problem
+• Optimize aircraft assignment using constrained optimization 
+• Machine learning model to predict flight delay 
+• Text classification using NLP techniques
+• Audio classification using deep learning 
+• Data visualizations and dashboards, data processing pipeline using Pyspark
+
+National University of Singapore
+Research Fellow
+October 2015 - March 2018 (2 years 6 months)
+•  Developing novel analytical methods to detect genetic regulatory effect on
+gene expression using unsupervised learning and statistical tests.
+•  Process and explore large amount of next-generation sequencing data using
+R, ggplot2, Perl in a Linux environment. Present findings and insights to my
+professor.
+
+Page 1 of 2
+
+ 
+
+ 
+
+ 
+
+Education
+National University of Singapore
+Master of Technology in Knowledge Engineering (MTech KE), Data
+Science · (2017 - 2019)
+
+National University of Singapore
+Doctor of Philosophy (Ph.D.), Bioinformatics · (2015)
+
+Xiamen University
+Bachelor, Biotechnology
+
+Page 2 of 2
+
+

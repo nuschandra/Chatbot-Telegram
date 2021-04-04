@@ -1,0 +1,166 @@
+ 
+
+ 
+
+ 
+
+Contact
+
+www.linkedin.com/in/desmondyeoh
+(LinkedIn)
+dyeoh.com/ (Personal)
+
+Desmond Y.
+Data Scientist at Shopee
+Singapore
+
+Top Skills
+Computer Science
+Machine Learning
+Research
+
+Certifications
+Go: The Complete Developer's
+Guide (Golang)
+Machine Learning with TensorFlow
+on Google Cloud Platform
+Specialization
+Feature Engineering
+Launching into Machine Learning
+How Google does Machine Learning
+
+Summary
+• Data Scientist in Shopee's Machine Learning Platform & Infra DS
+team. 
+• Currently building up Internal Data Science products to improve
+Data Scientists' productivity in Shopee Singapore.
+• Have a background in Applied AI Research (Financial credit
+underwriting, User behavior profiling, Networking fraud detection) &
+Full-Stack Software Development (ReactJS, NodeJS, Flask, Django,
+etc).
+• Graduated with First Class Honours (CGPA 3.94/4.00) from
+Bachelor of Computer Science (Artificial Intelligence), University of
+Malaya.
+
+Experience
+
+Shopee
+Data Scientist
+September 2020 - Present (8 months)
+Singapore
+
+• Data Scientist (Machine Learning Platform & Infra)
+• Exploring machine learning platforms and infrastructures
+• Building Shopee's internal Data Science systems to improve data scientists'
+productivity
+
+National University of Singapore
+Research Assistant
+March 2020 - September 2020 (7 months)
+Singapore
+
+• RA in the NUS-SingTel Cybersecurity R&D Lab
+• Conducted research on semi-supervised machine learning models for fraud
+prediction
+• Implemented one-class models (LSTM-Encoder Decoder, OCCRF, Isolation
+Forest, DBSCAN, LOF) on real-life enterprise networking data
+• Worked on labeling of data using heuristics and alternative data sources
+
+Page 1 of 3
+
+ 
+
+ 
+
+ 
+
+• Proposed new metric to evaluate performance of ML models on Positive-
+Unlabelled data
+• Documenting methods, experiments & results in LaTeX for paper publishing
+
+MoneyLion
+2 years 1 month
+AI Researcher
+February 2019 - February 2020 (1 year 1 month)
+Kuala Lumpur, Malaysia
+
+• Conducted AI research on Explainability and Interpretability of deep learning
+models on financial time series data
+• Performed end-to-end data extraction, data cleaning & feature engineering
+on real-life bank transactions data using SQL, pandas, numpy, sckit-learn
+• Customized published state-of-the-art deep learning model to organisation's
+need
+• Implemented multi-processing codes to run experiments on 32-core
+distributed cloud & Nvidia Tesla GPU (on AWS HPC & GPU Cloud)
+
+AI Researcher
+August 2018 - January 2019 (6 months)
+Kuala Lumpur, Malaysia
+
+• Conducted research on mobile apps & website clickstream data
+• Train and evaluated multiple unsupervised fraud prediction models (LSTM,
+DBSCAN, Encoder-Decoder, GAN models) on application clickstream data
+• Performed user behavior modelling on website and mobile app
+• Worked with fraud detection team on evaluating unlabelled prediction from
+models
+
+AI Researcher
+February 2018 - July 2018 (6 months)
+Kuala Lumpur, Federal Territory of Kuala Lumpur, Malaysia
+
+• Conducted research on micro-loan credit scoring (Real-life data)
+• Evaluated multiple supervised machine learning models (Random Forest,
+Decision Trees, Simple Neural Network, Gradient Boosted Trees) to predict
+loan default
+• Performed feature engineering to improve models' performance
+
+University of Malaya
+Teaching Assistant
+February 2017 - January 2020 (3 years)
+Kuala Lumpur, Malaysia
+
+Page 2 of 3
+
+ 
+
+ 
+
+ 
+
+• Teaching Assistant in 5 different classes (each lasted 6 months)
+• Helped lecturers to prepare challenging quizzes, interesting assignments, &
+evaluation methods for students.
+• The detailed list of classes & lecturers:-
+1. 2020 - Fundamentals of Programming Lab (Lecturer: Dr. Muhammad
+Shahreeza Safiruz bin Kassim)
+2. 2020 - Computer System Organisation Lab (Lecturer: Dr. Tey Kok Soon)
+3. 2019 - Data Structure Tutorial (Lecturer: Prof. Dr. Loo Chu Kiong)
+4.  2019 - Data Structure Lab (Lecturer: Assoc. Prof. Dr. Chan Chee Seng)
+5. 2017 - Fundamentals of Programming (Lecturer: Dr. Liew Chee Sun)
+
+Neruti Technology Sdn Bhd
+Software Engineer
+May 2017 - June 2017 (2 months)
+Kuala Lumpur, Malaysia
+
+• Developed a Drag & Drop UI in React JS to build machine learning models
+• Tech stack: ReactJS, Python, Django, Django REST framework and Apache
+Maven
+
+Education
+University of Malaya
+Bachelor of Computer Science (Artificial Intelligence), Artificial
+Intelligence · (2017 - 2020)
+
+Tsinghua University
+Deep Learning Summer School  · (2019 - 2019)
+
+University of Indonesia
+Southeast Asia Machine Learning School (SEAMLS)  · (2019 - 2019)
+
+Malacca Matriculation College
+Physics, Chemistry, Biology, Maths  · (2015 - 2016)
+
+Page 3 of 3
+
+

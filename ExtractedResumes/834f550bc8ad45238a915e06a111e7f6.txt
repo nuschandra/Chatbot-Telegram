@@ -1,0 +1,39 @@
+
+
+Experience:
+Software DeveloperOctober 2019 - September 2020 (1 year)
+Inspection Engineering InternAugust 2016 - December 2016 (5 months)
+Biotechnologist InternSeptember 2011 - November 2011 (3 months)
+Fullstack DeveloperOctober 2020 - Present (7 months)
+
+
+Skills:
+Python
+programming
+Typescript
+React.js
+database
+Git
+Cloud storage
+CSS
+JavaScript
+Studying
+Scrum
+JIRA
+CI/CD
+ExxonMobil
+C++
+Azure SQL
+SQL
+Azure
+AWS Certified
+REST
+Agile
+HTML
+.NET
+C#
+
+
+Degree:
+Diploma, Biotechnology
+Bachelor’s Degree, Materials Engineering

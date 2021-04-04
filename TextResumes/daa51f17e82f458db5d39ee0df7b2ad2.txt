@@ -1,0 +1,110 @@
+ 
+
+ 
+
+ 
+
+Contact
+yhling@gmail.com
+www.linkedin.com/in/yh-ling
+(LinkedIn)
+
+Ling Yew Hang
+React | Node | Next.js | Full Stack Engineer at Hendricks Corp
+Singapore
+
+Top Skills
+React.js
+Redux.js
+HTML5
+
+Summary
+I am a full stack developer and have several years of programming
+experience and mastery of new technologies. My experience
+includes:
+
+*   Worked on projects with ReactJS
+*   Thorough understanding of Redux Architecture.
+*   React hook.
+*   Strong HTML5 skills
+*   Strong basics of JavaScript, DOM manipulation, JavaScript object
+model, and JS module system.
+*   Understanding of CSS/CSS3, CSS Pre-processors & Sass.
+*   UI should meet the design requirements.
+*   Worked with data structure libraries.
+*   Familiarity with RESTful APIs and modern authorization
+mechanisms.
+*   Database Design Sql and MongoDb
+*   Backend Progamming C#, Asp.net core, Entity Framework, Linq
+*   Teamcity CI/CD
+*   Experience working as part of Agile and Scrum development team
+
+I am a self-starter, I can work independently, as a team player, team
+leader, project management, and perform daily task assignments
+with other team members.
+
+Experience
+
+Hendricks Corp
+Full Stack Engineer
+July 2020 - Present (9 months)
+Singapore
+
+Capgemini
+Senior Consultant
+June 2019 - July 2020 (1 year 2 months)
+
+Page 1 of 2
+
+ 
+
+ 
+
+ 
+
+I am working as a Senior Software consultant.  The job scope as below 
+• Javascript Full stack developer. (React, redux)
+• Cloud - micro-services
+
+Morpheus consulting Ptd Ltd
+Software Engineer
+April 2018 - April 2019 (1 year 1 month)
+Singapore
+
+Javascript
+React.js, Redux, Saga
+
+UOB Kayhian Co.Ltd
+Software Engineer
+December 2017 - March 2018 (4 months)
+Central Singapore
+
+Full stack developer in .net core
+
+Anchorsys
+.NET Developer 
+March 2017 - October 2017 (8 months)
+Singapore
+
+I have worked as a Software developer at Anchorsys. The job scope as below 
+• Design and implement software solutions using C# languages 
+• Handle development of framework processes for applications 
+• Source control using git during developing to ensure source safe of project  
+• Handle configuration management systems and debuggers to ensure
+successful development processes 
+
+MyStock Management Services Sdn Bhd
+Consultant
+February 2009 - May 2015 (6 years 4 months)
+Johor, Malaysia
+
+Work as software support and customer service.  
+Software performance improvement. 
+
+Education
+TAFE NSW
+Diploma, Computer Programming/Programmer, General · (2015 - 2016)
+
+Page 2 of 2
+
+
