@@ -1,0 +1,146 @@
+ 
+
+ 
+
+ 
+
+Contact
+hsaini734@gmail.com
+
+www.linkedin.com/in/dare-rider
+(LinkedIn)
+
+Harpreet Singh
+Full Stack Engineer at Rakuten Viki
+Southern
+
+Top Skills
+Ruby on Rails
+Go
+Web Applications
+
+Summary
+Software Engineer with 8 years experience. 
+Consistently improving by working with but not limited to REST,
+Ruby, Rails, GoLang, Javascript, Redis, Queue Infrastructures
+- Sidekiq & RabbitMQ, AWS, GCP, ETCD, APM and distributed
+tracing using Jaeger with New Relic and Datadog.
+Experience leading small teams backed by agile sprint
+methodologies.
+
+- Stacks : Ruby, Rails, GoLang, NodeJS
+- Datastores : Mysql, PostgreSQL, MongoDB
+- Front End : EmberJS, ReactJS, BackboneJS
+- Monitor & Alert : StatsD, SignalFx, New Relic, Datadog, PagerDuty,
+Opsgenie.
+- Ansible, Terraform, Apache, Nginx (L7 LoadBalancer), AWS, GCP,
+Docker, Kubernetes, Redis, Sidekiq, RabbitMq, Capistrano, Elastic
+Search, Kibana, ETCD
+
+Experience
+
+Rakuten Viki
+Senior Full Stack Engineer
+August 2020 - Present (8 months)
+Singapore
+
+- Structured logging using lograge and logstash, APM and Distributed tracing
+using DataDog.
+- Maintaining GCP CI/CD pipelines for Central and Edge GCP Kubernetes
+clusters.
+- Working on core product features as part of Internal Tools & Workflows team
+developed in Rails 4, Golang, and EmberJS.
+
+Circles.Life
+2 years 1 month
+Staff Engineer
+
+Page 1 of 3
+
+ 
+
+ 
+
+ 
+
+January 2020 - August 2020 (8 months)
+Singapore
+
+Senior Software Engineer
+August 2018 - January 2020 (1 year 6 months)
+Singapore
+
+Worked on HLD, Schema Design, LLD and Implementation of:
+- Shop (Order Management Service) Platform with multiple custom State
+Machine Workflows to support variety of product purchases using GoLang. 
+- Inventory Management Platform (IMS) with Product Catalog to deal with
+organisation wide Telco & Non Telco products using GoLang.
+- Slot Based logistics micro-service using Rails 5.
+- Cart Platform integrated with User Service & IMS using GoLang.
+Directed and worked with a sub team of 4 to grow above in-house products
+using agile sprint methodologies via Atlassian Jira.
+Integration of micro services (GoLang & Rails) with ETCD server for runtime
+configuration updates.
+Implemented a Rails based shared cache mechanism using Redis to drop
+network calls between Logistics and OMS.
+Rails based automated models association handling using meta-programming
+from existing monolith to various micro-services.
+
+StudyPad
+Senior Software Engineer
+April 2018 - July 2018 (4 months)
+Gurgaon, India
+
+Worked on some core product features developed in Rails 4, 
+Initiated the User Authentication micro-service using Rails 5 after studying
+various protocols like Oauth, JWT, Application Gateway, Shared sessions etc. 
+
+LearningBlocks (Former 100Percentile) (Nagarro Subsidiary)
+4 years 6 months
+Tech lead
+January 2017 - April 2018 (1 year 4 months)
+Gurgaon, India
+
+• Worked with and lead a team of 4 for the growth of in-house products.
+• Leap LMS is a SAAS based e-learning platform - Design and Implemented
+from scratch initially and then in team as lead using Rails4 backed by Mysql.
+• Vlyop is a guided learning platform - Design and Implemented from scratch
+using Rails4 backed by Mysql.
+• Deployment on Google cloud and Amazon EC2 servers via Capistrano.
+
+Page 2 of 3
+
+ 
+
+ 
+
+ 
+
+• Used Amazon and Google cloud services like ElasticTranscoder, S3,
+CloudFront, SES, GCM, Firebase.
+• CCAvenue/PayTM/PayUMoney Payment gateway integration.
+• BackboneJS, RequireJS, Bootstrap for frontend.
+• RFID device integration over TCP.
+• FlowPlayer, JwPlayer Integration
+
+Software Engineer
+November 2013 - December 2016 (3 years 2 months)
+Gurgaon, India
+
+Goldfinch Mobile Solutions Pvt.Ltd.
+Intern Software Developer
+July 2013 - September 2013 (3 months)
+Chandigarh Area, India
+
+Worked on Email/SMS notification engine, Product Features using Java
+
+Education
+Kurukshetra University
+Bachelor's degree, Computer Science · (2009 - 2013)
+
+GMSSS - 16, Chandigarh
+Senior Secondary, Metriculation · (2003 - 2009)
+
+Page 3 of 3
+
+

@@ -605,12 +605,14 @@ def new_resumes_recommendation(new_resume_path,name):
         path = os.path.join(directory,"job_descriptions",filename+'.txt')
         resume_file_name=os.path.split(new_resume_path)[-1]
         print("Newly entered resume is " + resume_file_name)
-        if resume_file_name in [os.path.split(i)[-1] for i,degree in resume_recommendation(path,df,threshold = 0.3,topn = 15,co_occ_update = False)]:
-            print("New resume got matched " + resume_file_name)
-            candidate_dict['manager_id']=managerid
-            candidate_dict['job_id']=filename
-            candidate_dict['job_title']=title
-            candidate_dict['degree']=degree
-            managerids.append(candidate_dict)
+        recom_files=resume_recommendation(path,df,threshold = 0.10,topn = 15,co_occ_update = False)
+        for i,degree in recom_files:
+            if resume_file_name==os.path.split(i)[-1]:
+                print("New resume got matched " + resume_file_name)
+                candidate_dict['manager_id']=managerid
+                candidate_dict['job_id']=filename
+                candidate_dict['job_title']=title
+                candidate_dict['degree']=degree
+                managerids.append(candidate_dict)
 
     return list(managerids)

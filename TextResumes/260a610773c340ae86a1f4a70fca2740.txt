@@ -1,0 +1,120 @@
+ 
+
+ 
+
+ 
+
+Contact
+
+www.linkedin.com/in/anis46
+(LinkedIn)
+
+Anis Rehman
+.Net Core | NodeJS | AWS | Senior Software Engineer 6years+ | Full
+Stack
+Singapore
+
+Top Skills
+JavaScript
+.NET
+AWS
+
+Languages
+English (Professional Working)
+Urdu (Professional Working)
+
+Honors-Awards
+Viewer's Choice Award in Soft Expo
+2014
+Runner Up Award in Soft Expo 2014
+Winner Award at COMPPEC`14
+Star of the Month for April 2015
+Star of the Month for December
+2014
+
+Summary
+I am hardworking passionate Full Stack Developer with 6 years
+experience. Proficient in Javascript, .Net and AWS. I have strong
+motivation to work in fast paced environment with a productive team.
+
+Experience
+
+Tigerspike
+Senior Software Engineer
+October 2018 - Present (2 years 7 months)
+Singapore
+
+My job responsibilities includes:
+• Architecting application architectures.
+• Project estimation and Pre Sales.
+• Hands on development and supporting existing clients.
+• Leading team for successful completion of project.
+• Mentoring junior resources.
+• Working with multiple teams as per project needs.
+• Client communication.
+• Documenting each phase of project life cycle.
+Technology Stack: ASP .NET Core, Nodejs, AWS , Dynamodb, AWS Stack,
+Serverless, Microservices.
+
+Servup
+1 year 4 months
+Development Team Lead
+January 2018 - September 2018 (9 months)
+Lahore, Pakistan
+
+Servup is a micro services architecture based SAAS product developed
+on Domain Driven Design. I am working in Servup as Senior Software
+Engineer and Team Lead. Being a developer and Team Lead i have multiple
+responsibilities. 
+• Managing and dividing tasks for maximum productivity.
+• Coordination with all stakeholders for deliverable.
+
+Page 1 of 2
+
+ 
+
+ 
+
+ 
+
+• Developing and giving support for new and existing projects.
+• Training junior for technical growth.
+I've been working on following technologies:
+•ASP.NET Core 2.0 • AWS •Angular •ReactJs •MongoDB  
+•Neo4j  •Elastic Search •RabbitMQ  •MSSQL Server  •Identity Server 4  •Entity
+Framework  •NodeJS  •Quartz  •Hangfire •GIT •TFS •JIRA
+
+Senior Software Engineer
+June 2017 - September 2018 (1 year 4 months)
+Lahore, Pakistan
+
+Servup is a micro services architecture based SAAS product developed on
+Domain Driven Design. I am working in Servup as Senior Software Engineer.
+As being a part of startup I have
+multiple responsibilities including:
+* Designing Application Architecture for scalablility and performance.
+* Developing Microservices as per business needs.
+* Implementing CICD
+* Suggesting implementation plans for in time deliverable.
+I've been working on following tools and technologies
+•ASP.NET Core 2.0 •AWS •Angular •ReactJs •MongoDB •Neo4j •Elastic
+Search •RabbitMQ •MSSQL Server •Identity Server 4 •Entity Framework
+•NodeJS •Quartz •Hangfire •GIT •TFS •JIRA
+
+Cinnova International
+Software Developer
+May 2016 - July 2017 (1 year 3 months)
+Lahore, Punjab, Pakistan
+
+CureMD
+Full Stack .Net developer
+July 2014 - May 2016 (1 year 11 months)
+Lahore
+
+Education
+Punjab University
+Bachelor of Science (BS), Information Technology · (2010 - 2014)
+
+Page 2 of 2
+
+

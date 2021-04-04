@@ -1,0 +1,141 @@
+ 
+
+ 
+
+ 
+
+Contact
+
+www.linkedin.com/in/santosh-
+penigalapati-3454a577 (LinkedIn)
+
+Santosh Penigalapati
+DevOps & Cloud Engineer (Certified Specialist in OpenShift and
+AWS) at DBS
+Singapore
+
+Top Skills
+DevOps
+Openshift
+Red Hat Linux
+
+Languages
+English
+
+Certifications
+AWS Certified Solutions Architect -
+Associate
+Red Hat Certified Specialist in
+OpenShift Administration
+
+Summary
+DevOps (Certified Specialist in OpenShift and AWS) Engineer with a
+strong Linux and UNIX background.
+
+Certifications:-
+Red Hat Certified Specialist in OpenShift Administration
+AWS Certified Solutions Architect - Associate
+
+Professional Summary:
+Experience in Cloud infrastructure services Amazon Cloud and
+Google Cloud
+Hands on experience in Docker containerization, Kubernetes,
+OpenShift, Pivotal Cloud Foundry.
+Experience in Platform automation through Shell script
+
+Version Control Software : Subversion(SVN) and GIT
+Build/Script Tools : ANT, Maven and Shell Scripting
+Application Servers : JBoss and WebLogic
+Database : MySQL, MS SQL Server, Oracle9i/10g
+Bug/Issue Tracking Tool : JIRA
+CI Tools : CloudBees Jenkins
+Code Analysis Tool : SonarQube
+Deployment Tool : CA Release Automation
+Public Cloud : AWS and GCP.
+PaaS : OPENSHIFT and PIVOTAL CLOUD FOUNDARY (PCF)
+
+Best Regards
+Santosh P
++65 85713935
+Email:- p.santosh2k4@gmail.com
+
+Experience
+
+Page 1 of 3
+
+ 
+
+ 
+
+ 
+
+DBS Bank
+DevOps Engineer
+August 2016 - Present (4 years 8 months)
+Singapore
+
+Sun Technologies
+System Specialist
+April 2013 - July 2016 (3 years 4 months)
+Bangalore , India
+
+Tata Consultancy Services
+IT Analyst
+May 2012 - April 2013 (1 year)
+Handled Oracle Solaris, Linux, Aix, VXVM, VCS, ZFS and 3PAR Storage
+Technologies.
+Worked for Ericsson
+Develop, document, and maintain operational processes and tasks.
+Root Cause Analysis after Panic/Dump/Crash related to Solaris by
+coordinating with vendors as and when required.
+Knowledge and hands on experience with administration of remote consoles
+Of Sun Hardware - ALOM/ILOM/System Controller/RSC
+Taking care of the 4000+ Sun servers  , 1500+ Linux Servers, and 1000+ AIX
+servers In critical production environment with 24/7 support.
+
+Hewlett-Packard
+Technical Consultant
+February 2009 - January 2012 (3 years)
+Handling Installation, configure and troubleshooting of Solaris & Linux.
+Handled Nokia Unix Datacenter located in finland
+Maintain service levels as per the established Service Level Agreements.
+Decommission & commission of Solaris servers.
+Up-gradation of Firmware of Linux & Solaris servers.
+Administration of user management  on Linux servers
+Kernel Tuning and Patch Management.
+
+IBM
+Senior Operations Lead Specialist
+October 2008 - February 2009 (5 months)
+Worked for Visteon client
+
+Page 2 of 3
+
+ 
+
+ 
+
+ 
+
+Wipro
+Server Management Engineer
+December 2006 - October 2008 (1 year 11 months)
+Mumbai Area, India and Bangalore
+
+Worked as a Datacenter Engineer at Union Bank of India and Wipro
+datacenter.
+Handled Solaris and Aix, servers
+
+Accel Frontline Ltd
+Customer Support Engineer
+February 2006 - December 2006 (11 months)
+Worked as residence engineer at Hindustan Times (Datacenter)
+Provided FM (Facility Management) Support on Solaris and Linux
+
+Education
+Sri Venkateswara University
+Bachelor's Degree, Computer Science · (2001 - 2004)
+
+Page 3 of 3
+
+

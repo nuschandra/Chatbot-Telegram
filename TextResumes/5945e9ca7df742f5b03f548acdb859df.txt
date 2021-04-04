@@ -1,0 +1,234 @@
+ 
+
+ 
+
+Contact
++65 8402 0800 (Home)
+aishwaryaprabhat@gmail.com
+
+www.linkedin.com/in/
+aishwaryaprabhat (LinkedIn)
+www.aishwaryaprabhat.com/
+(Personal)
+towardsdatascience.com/
+@aishwaryaprabhat (Blog)
+github.com/aishwaryaprabhat
+(Other)
+
+Top Skills
+Artificial Intelligence
+Machine Learning
+Software Engineering
+
+Languages
+English
+Hindi
+
+Certifications
+Monitoring and Alerting with
+Prometheus
+Product Management:  Become a
+Product Manager & Get the Job
+API Technical Writing 2: REST for
+Writers
+Microservices introduction for Data
+Science
+Fundamentals of Kubernetes
+
+Honors-Awards
+Exemplary Intern Award
+Top Poster and Presentation
+(Augmented Reality
+Troubleshooting) - HP Innovation
+Fair
+Student Leader Award
+
+Publications
+Augmented Reality Troubleshooting
+'Court Trial For Print Quality';
+Adjudicating the alleged culprits of
+graininess
+
+ 
+
+Aishwarya Prabhat
+Senior Data Scientist @ Shopee | Ex - Nvidia, A*STAR, HP Inc | I
+architect and build end-to-end Data Science, ML and AI solutions
+Singapore
+
+Summary
+The first two letters of Aishwarya's name are "AI" and AI (Artificial
+Intelligence) and Machine Learning are what he is passionate about.
+He is a full stack Data Scientist who loves building Machine Learning
+and AI products. Aishwarya possesses a strong foundation of skills
+and knowledge in AI, ML and Software Engineering. He is also an
+excellent communicator and loves sharing ideas through lectures,
+keynotes and blog posts. Aishwarya is a driven individual and a
+zealous team-player, with a growth mindset and positive attitude.  
+
+Experience
+
+Shopee
+2 years 9 months
+Senior Data Scientist
+July 2020 - Present (10 months)
+Singapore
+
+Machine Learning Platform
+- Architecting and building end-to-end Machine Learning solutions, by
+leveraging MLOps and Software Engineering technologies such as Docker,
+Kubernetes, CI/CD tools, AirFlow, KubeFlow etc.
+- Building critical infrastructure such as HA Kubernetes clusters for training,
+UAT, testing and production, both on-premise and on cloud (GCP)
+- Building full stack AI/ML products such as data labelling tools and other
+supporting solutions such as monitoring & logging solutions, load balancing
+solutions and identity & access management solutions
+- Establishing Site Reliability Engineering practices in ML product lifecycles
+across all of Shopee's Data Science solutions
+- Managing team's project management process, milestones, goals and
+progress
+- Establishing standards, documentation and training Shopee's 100 over Data
+Scientists  in essential technologies such as containerisation using Docker,
+container orchestration using Kubernetes, git, CI/CD and API design
+
+Page 1 of 4
+
+ 
+
+ 
+
+ 
+
+Data Scientist
+August 2018 - July 2020 (2 years)
+Singapore
+
+Category Recommendation
+- Built a Deep Learning model that uses a fusion of image and language
+features for classifying a multi-modal input
+- Improved previous model drastically by using (the then) state-of-the-art
+techniques such as attention, bi-directional LSTMs and YOLO
+- Built ETL and model retraining pipelines
+
+Peak Concurrent User Prediction
+- Built and producitonized a Machine Learning model for predicting peak
+concurrent user traffic on Shopee platform using digital attribution data
+- Led this cross-functional project and managed resources and stakeholders
+from Marketing, Data Engineering, Tech Ops and Data Science teams
+- Brought project from conception to production in 7 months
+- Built ETL and model re-training pipelines
+
+Towards Data Science
+Machine Learning, AI and Data Science Writer
+January 2020 - Present (1 year 4 months)
+Singapore
+
+- https://medium.com/@aishwaryaprabhat 
+- Most 'popular' article has 40k+ views and 2.8k+ claps
+
+NVIDIA
+Research Associate (Artificial Intelligence)
+January 2018 - August 2018 (8 months)
+Singapore
+
+- Conducted Deep Learning experiments to investigate the utility of
+CapsuleNets in Natural Language Processing (NLP) tasks such as machine
+translation, text classification and text generation
+- Implemented CapsuleNet architecture for NLP tasks in TensorFlow 
+- Wrote Python scripts, libraries and packages for text pre-processing tasks
+such as text format conversion, tokenisation, lemmatisation, embeddings
+generation for downstream Deep Learning NLP tasks
+- Conducted training for Nvidia's R&D Engineers on fundamentals of NLP and
+CapsuleNets
+
+HP
+Artificial Intelligence (R&D) Engineer
+
+Page 2 of 4
+
+ 
+
+ 
+
+ 
+
+May 2017 - September 2017 (5 months)
+Singapore
+
+- Pioneered the development of an AI-based document classification system to
+be integrated into HP's printing and scanning technologies
+- Curated a dataset, built ETL pipelines and trained Deep Learning models for
+document classification
+- Filed patent invention disclosure for aforementioned system
+
+HP
+5 months
+R&D Engineer
+May 2016 - September 2016 (5 months)
+Singapore
+
+- Analyzed and designed image processing algorithms and developed
+methods to quantify and improve print image quality
+- Published findings in a peer-reviewed conference (HPICS'16, Vancouver,
+USA)
+- Wrote Python scripts to automate data collection and processing
+
+Augmented Reality Developer
+May 2016 - September 2016 (5 months)
+- Pioneered the development of augmented reality Android applications for
+troubleshooting HP printers
+- Published invention in a peer-reviewed poster conference and won top 10
+posters award (only intern to publish and win top 10)
+
+SUTD-MIT International Design Centre
+Undergraduate Researcher - Virtual Reality
+January 2016 - August 2016 (8 months)
+SUTD-MIT International Design Centre
+
+Virtual/Augmented Reality
+- Built knowledge graphs in virtual reality space 
+- Integrated technologies such as gaming engines such as Unity and Oculus
+Rift
+- Developed VR and AR applications as Android applications
+- Project was featured by Temasek for the Ecosperity Young Leaders'
+Conference 
+
+Singapore University of Technology and Design (SUTD)
+Assistant Researcher - Nanotechnology
+September 2015 - May 2016 (9 months)
+
+Page 3 of 4
+
+ 
+
+ 
+
+ 
+
+Piezoelectric Nanofiber-based
+Devices                                                                                              
+- Developed Python programs using OpenCV for analysing images of nano
+fibres obtained from analogue and digital microscopes 
+- Conducting experiments to investigate humidity sensing capabilities of
+porous and non-porous KNo fibre-based humidity sensing device
+- Optimised collection method of aligned nano fibres
+
+Education
+Georgia Institute of Technology
+Master of Science - MS, Computer Science · (2020 - 2022)
+
+Singapore University of Technology and Design (SUTD)
+Bachelor of Engineering (B.E.), Computer Science (ISTD) - Artificial
+Intelligence & Cyber Security · (2015 - 2018)
+
+Victoria Junior College
+Singapore-Cambridge General Certificate of Education 'A'
+Level  · (2013 - 2014)
+
+Victoria School (Singapore)
+Singapore-Cambridge General Certificate of Education 'O'
+Level  · (2011 - 2012)
+
+Page 4 of 4
+
+

@@ -306,7 +306,11 @@ def handle_call(bot,update):
 
                 response = "Thank you for uploading the job description. Our algorithm will identify and recommend the best suited candidates to you."
                 bot.sendMessage(chat_id=chat_id, text=response, reply_to_message_id=msg_id)
-            
+                if(not os.path.isfile("resume_details.csv")):
+                    response = "Sorry! We did not find any resume matching your requirements. We will notify if we find anything in the future."
+                    bot.sendMessage(chat_id=chat_id, text=response)
+                    return
+
                 resume_info = telegram_message_processing.trigger_resume_fetching(jd_file,job_id,chat_id)
                 if (len(resume_info)==0):
                     response = "Sorry! We did not find any resume matching your requirements. We will notify if we find anything in the future."
@@ -485,7 +489,7 @@ def send_update_performance_reminder():
 
 schedule.every().day.at("08:00").do(send_reminder)
 schedule.every().day.at("09:00").do(send_update_performance_reminder)
-schedule.every().monday.at("08:30").do(email_blast_to_candidates)
+schedule.every().monday.at("10:00").do(email_blast_to_candidates)
 Thread(target=schedule_checker,args=[app]).start()
 
 if __name__ == "__main__":

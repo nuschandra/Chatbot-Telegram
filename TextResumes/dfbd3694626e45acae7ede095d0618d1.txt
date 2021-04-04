@@ -1,0 +1,122 @@
+ 
+
+ 
+
+ 
+
+Contact
+
+Phuc Le
+Data Scientist at Shopee
+Singapore
+
+www.linkedin.com/in/phuchle
+(LinkedIn)
+drive.google.com/file/
+d/1T1MlZPT2PYGcaOip9vJpdUw0DjFx5ZIf/
+view (Portfolio)
+
+Experience
+
+Top Skills
+Python
+JavaScript
+SQL
+
+Languages
+English (Professional Working)
+
+Publications
+Deep Learning in Cross-Lingual
+English-Vietnamese Sentiment
+Classification
+
+Shopee
+Data Scientist
+January 2019 - Present (2 years 4 months)
+Singapore
+
+Working in Knowledge Graph team
+
+Main responsibilities:
+* Building graph analytics pipeline (Collect, ETL, Modelling, Evaluation).
+* Building graph infrastructure using JanusGraph (database), HBase
+(persistence) and Elasticsearch (indexer).
+* Building geolocation search/index service using Elasticsearch.
+* Building geolocation-based/temporal user profile.
+* Building graph DSL/computational layer on Hadoop/Spark.
+* Experimenting deep learning on graph (GCN-based methods, Trans-based,
+etc.) in distributed manner.
+* Applications: Fraud detection, product categories, geolocation, knowledge
+graph.
+
+Umbala, Inc.
+Project Intern
+October 2017 - April 2018 (7 months)
+Vietnam
+
+Umbala TV was a video streaming mobile application which targeted young
+music talents and audiences with gifting features for audiences to support their
+idols.
+
+Main responsibilities:
+* Create a web version for Umbala TV which showcases some of the main
+features of the mobile version to attract more users from the web platform.
+* Write JavaScript code to create React components and fetch correct APIs.
+* Write Golang code with Gin as the framework to connect with the databases
+and handle requests.
+* Setup a Linux server which has a compatibility to host both the front-end and
+back-end code.
+
+Page 1 of 2
+
+ 
+
+ 
+
+ 
+
+* Setup NGNIX to direct the requests to the correct location on the server.
+
+Main technologies: React, Webpack, Golang, PostgreSQL, Redis, NGINX.
+
+Lac Long Co. Ltd.
+Mobile Developer Intern
+October 2017 - December 2017 (3 months)
+Vietnam
+
+Lac Long Co. Ltd. is a manufacturing company which produces pedi-spa
+equipment ranging from spa base, chair, table, etc. During the time at Lac
+Long, I worked on the pedi-spa booking mobile application for pedicure
+saloons in the US market.
+
+Main responsibilities:
+* Write back-end code using Python with Flask as the framework to shape
+APIs for the mobile client.
+* Write log-in and sign-up function for the iOS client using Swift.
+
+Main technologies: Swift for iOS client, Java for Android client, Python,
+MySQL.
+
+SunIvy International
+Web Developer Intern
+August 2016 - October 2016 (3 months)
+Vietnam
+
+SunIvy International Inc. is providing CRM solutions at a cheaper cost for
+small/mid level companies.
+
+Main responsibilities:
+* Create a new interface for Telesales web application using Bootstrap and
+jQuery.
+* Work alongside with back-end team to integrate .NET into the new interface.
+
+Main technologies: .NET, Microsoft SQL Server, Bootstrap, jQuery.
+
+Education
+VNUHCM - University of Science
+Bachelor of Science - BS, Computer Science · (2014 - 2018)
+
+Page 2 of 2
+
+
