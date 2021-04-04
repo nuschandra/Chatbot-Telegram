@@ -90,6 +90,8 @@ def save_job_description(jd_id, chat_id, status,title):
 def get_candidate_name_email_id(candidate_id):
     schema = mydb["resume_details"]
     candidate= schema.find_one({"Resume_Doc":candidate_id})
+    if(candidate==None):
+        return None,None,None
     return candidate['Name'], candidate['Email'],str(candidate['_id'])
 
 def save_interview_date(selected_date,candidate_id,manager_id,job_id,status):
@@ -127,6 +129,8 @@ def get_candidate_and_interview_info(object_id):
     interview_id = ObjectId(object_id)
     myquery = {"_id":interview_id}
     interview_info= schema.find_one(myquery)
+    if(interview_info==None):
+        raise Exception("Your request is invalid. You might have already clicked on this candidate's button and duplicate requests are not permitted. If you would like to reschedule an interview, kindly request me to list interviews on a given date.")
     date = interview_info["interview_date"].strftime(
                                     '%B') + " " + interview_info["interview_date"].strftime('%d')
     time = interview_info["interview_time"]
@@ -142,11 +146,14 @@ def get_candidate_and_interview_info(object_id):
 def get_interview_details_manager_candidate_id_title(manager_id,candidate_id,title):
     schema = mydb["interview_details"]
     can_id=ObjectId(candidate_id)
-    myquery = {"manager_id":manager_id,"candidate_id":can_id,"title":title}
+    myquery = {"manager_id":manager_id,"candidate_id":can_id,"job_title":title}
     interview_info= schema.find_one(myquery)
 
     if(interview_info!=None):
-        date = interview_info["interview_date"].strftime(
+        if(interview_info['interview_date']=='N/A'):
+            date='N/A'
+        else:
+            date = interview_info["interview_date"].strftime(
                                     '%B') + " " + interview_info["interview_date"].strftime('%d')
         time = interview_info["interview_time"]
         status= interview_info['status']
@@ -284,12 +291,39 @@ def reject_pending_candidates(job_id,chat_id):
 def get_candidate_busy_dates(candidate_id):
     schema=mydb['interview_details']
     candidate_id=ObjectId(candidate_id)
-    myquery={'candidate_id':candidate_id}
+    myquery={'candidate_id':candidate_id,'status':'interview_scheduled'}
     candidate_interviews=list(schema.find(myquery))
     return candidate_interviews
 
 def get_manager_busy_dates(manager_id):
     schema=mydb['interview_details']
-    myquery={'manager_id':manager_id}
+    myquery={'manager_id':manager_id,'status':'interview_scheduled'}
     manager_interviews=list(schema.find(myquery))
     return manager_interviews
+
+def check_if_candidate_hired(candidate_id):
+    schema=mydb['interview_details']
+    candidate_id=ObjectId(candidate_id)
+    myquery={'candidate_id':candidate_id,'status':'Candidate Hired'}
+    interview_details = schema.find_one(myquery)
+    if (interview_details!=None):
+        return True
+    else:
+        return False
+
+def get_all_candidates():
+    schema=mydb['resume_details']
+    return list(schema.find())
+
+def check_if_candidate_in_interview_details_table(candidate_id):
+    schema=mydb['interview_details']
+    myquery={'candidate_id':candidate_id}
+    interview_details=schema.find_one(myquery)
+    if (interview_details!=None):
+        return True
+    else:
+        return False
+
+def get_all_managers():
+    schema=mydb['chatbot_user_details']
+    return list(schema.find())

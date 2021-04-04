@@ -27,7 +27,7 @@ nlp_model = spacy.load('jd_model')
 nlp_exp_model = spacy.load('jd_exp_model')
 mystopwords=stopwords.words("English") + ['experience','computer,','science','expert','knowledge','plus','proficiency','understanding','excellent','ability','skill','responsibility']
 
-nlp=spacy.load('resume_model')
+nlp=spacy.load('resume_model3')
 #nlp_experience = spacy.load('resume_model')
 #nlp_degree = spacy.load('resume_model5')
 
@@ -151,6 +151,16 @@ def extract_jd_details(jd_path):
               "Exp"   : exp,
               "Title" : title,
               "Skill": skill}
+
+    directory = os.getcwd()
+    job_id=jd_path[-20:-4]
+    f=open(os.path.join(directory,"ExtractedJobDescriptions/"+job_id+".txt"),"w")
+
+    for i in set(result.keys()):
+        f.write("\n\n")
+        f.write(i +":"+"\n")
+        for j in set(result[i]):
+            f.write(j.replace('\n','')+"\n")
     return(result)
 
 def look_up_skill(skills):
@@ -593,7 +603,7 @@ def new_resumes_recommendation(new_resume_path,name):
         path = os.path.join(directory,"job_descriptions",filename+'.txt')
         resume_file_name=os.path.split(new_resume_path)[-1]
         print("Newly entered resume is " + resume_file_name)
-        if resume_file_name in [os.path.split(i)[-1] for i,degree in resume_recommendation(path,df,threshold = 0.15,topn = 15,co_occ_update = False)]:
+        if resume_file_name in [os.path.split(i)[-1] for i,degree in resume_recommendation(path,df,threshold = 0.3,topn = 15,co_occ_update = False)]:
             print("New resume got matched " + resume_file_name)
             candidate_dict['manager_id']=managerid
             candidate_dict['job_id']=filename

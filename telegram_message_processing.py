@@ -129,12 +129,16 @@ def trigger_resume_fetching(jd_file,job_id,chat_id):
         candidate_details = {}
         candidate_details['resume_doc']=resume_file_name
         candidate_details['name'],candidate_details['email'],candidate_details['id']=database_updates.get_candidate_name_email_id(resume_file_name)
+        if(candidate_details['name']==None):
+            continue
         candidate_id=candidate_details['id']
         candidate_details['degree']=degree
         job_title=database_updates.get_job_title_based_on_jobid(job_id)
         date,time,status=check_duplicate_interview(chat_id,candidate_id,job_title)
         states_not_to_return=['interview_scheduled','Candidate Hired','Candidate Rejected']
         if status in states_not_to_return:
+            continue
+        if(database_updates.check_if_candidate_hired(candidate_id)):
             continue
         resume_info.append(candidate_details)    
         max_count+=1
